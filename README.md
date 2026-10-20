@@ -2,7 +2,7 @@
 
 基于 **Arduino Uno + ESP32-S3 摄像头 + AI** 的健身姿势反馈 IoT 课程项目。
 
-GitHub：[Steven-ZYC/int4089-STEM-AI-GP](https://github.com/Steven-ZYC/int4089-STEM-AI-GP)（私有仓库；组员需要先获得仓库访问权限，并使用各自的 GitHub 账号）。
+GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4089-fitness-aid-bot)（私有仓库；组员需要先获得仓库访问权限，并使用各自的 GitHub 账号）。
 
 项目面向健身新手及希望更高效训练的人：通过采集动作、分析姿势并发出灯光或声音提醒，帮助用户发现和纠正不规范动作。当前仓库处于项目初始化阶段，硬件、固件、AI 模型及端到端效果均待实现与验证。
 
@@ -54,7 +54,7 @@ PIC 指该模块负责人。**每人只在自己的分支修改并提交；默�
 Zhang Haoyu：
 
 ```powershell
-git clone --branch Feat-Arduino-Haoyu --single-branch https://github.com/Steven-ZYC/int4089-STEM-AI-GP.git int4089-haoyu
+git clone --branch Feat-Arduino-Haoyu --single-branch https://github.com/Steven-ZYC/int4089-fitness-aid-bot.git int4089-haoyu
 cd int4089-haoyu
 git branch --show-current
 ```
@@ -62,7 +62,7 @@ git branch --show-current
 Dong Yuankun：
 
 ```powershell
-git clone --branch Feat-Esp-Yuankun --single-branch https://github.com/Steven-ZYC/int4089-STEM-AI-GP.git int4089-yuankun
+git clone --branch Feat-Esp-Yuankun --single-branch https://github.com/Steven-ZYC/int4089-fitness-aid-bot.git int4089-yuankun
 cd int4089-yuankun
 git branch --show-current
 ```
