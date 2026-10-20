@@ -1,0 +1,34 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+secrets.h
+secrets.*.h
+*.pem
+*.key
+
+# Captures, recordings and local training data (at any directory depth)
+captures/
+data/
+recordings/
+
+# Firmware and development build output
+.pio/
+build/
+dist/
+*.elf
+*.hex
+*.bin
+*.map
+
+# Local caches and editor / OS state
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
