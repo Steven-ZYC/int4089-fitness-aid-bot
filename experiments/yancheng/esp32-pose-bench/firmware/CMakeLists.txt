@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+project(yancheng_pose_bench)
+if(NOT IDF_TARGET STREQUAL "esp32")
+    message(FATAL_ERROR "This camera configuration is verified only for the classic ESP32-CAM, not S3/C3.")
+endif()

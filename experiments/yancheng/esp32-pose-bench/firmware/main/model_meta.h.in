@@ -1,0 +1,3 @@
+#pragma once
+#define BENCH_MODEL_SIZE @MODEL_SIZE@
+#define BENCH_MODEL_SHA "@MODEL_SHA@"

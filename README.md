@@ -120,6 +120,12 @@ git push -u origin Feat-Esp-Yuankun
 
 不要提交 Wi-Fi 密码或令牌。日常实拍照片、训练视频、训练记录放在被忽略的 `captures/` 或 `data/` 目录中。本分支按 Dong Yuankun 本次明确要求，将两张指定的演示照片单独归档到 `firmware/esp32-camera/evidence/2026-10-23/`；后续采集默认继续保存在本地忽略目录。
 
+## Yancheng 的性能测试
+
+Zhang Yancheng 的板端推理实验位于 [experiments/yancheng/esp32-pose-bench](experiments/yancheng/esp32-pose-bench/README.md)：针对已识别的经典 ESP32-CAM，分别预检硬件、量化低分辨率 INT8 YOLO11n-Pose 并测量板端速度。相机取帧吞吐与 AI 推理 FPS 分开记录；测试完成情况见该目录的说明。
+
+2026-10-23 本板实测 PSRAM 为 **2 MB**；128×128 INT8 模型纯推理约 **15.126 秒／帧，0.0661 FPS**，当前配置无法实时纠姿，关键点准确度尚未验证。见 [实测记录](experiments/yancheng/esp32-pose-bench/results/2026-10-23-classic-esp32.md)。
+
 ## 概念参考图
 
 ![用户提供的 AI 生成健身姿势辅助装置概念图](docs/reference/ai-fitness-form-coach.png)
@@ -133,5 +139,6 @@ AGENTS.md                         # 身份确认、分支边界与 agent 操作�
 README.md                         # 项目介绍、成员分工和 Git 入门
 firmware/arduino-uno/README.md     # Haoyu 的硬件任务与验收
 firmware/esp32-camera/            # Yuankun 的离线拍照固件、接收脚本、README 和样张
+experiments/yancheng/esp32-pose-bench/ # Yancheng 的板端姿态推理与性能测试
 docs/reference/                   # 用户提供的概念参考图
 ```

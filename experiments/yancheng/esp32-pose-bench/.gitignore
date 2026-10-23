@@ -1,0 +1,16 @@
+artifacts/
+datasets/
+results/local/
+.cache/
+.venv-model/
+managed_components/
+sdkconfig
+sdkconfig.old
+sdkconfig.*.old
+*.espdl
+*.onnx
+*.pt
+*.data
+*.raw
+firmware/main/model_manifest.json
+firmware/dependencies.lock
