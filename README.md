@@ -4,7 +4,13 @@
 
 GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4089-fitness-aid-bot)（私有仓库；组员需要先获得仓库访问权限，并使用各自的 GitHub 账号）。
 
-项目面向健身新手及希望更高效训练的人：通过采集动作、分析姿势并发出灯光或声音提醒，帮助用户发现和纠正不规范动作。当前仓库处于项目初始化阶段，硬件、固件、AI 模型及端到端效果均待实现与验证。
+项目面向健身新手及希望更高效训练的人：通过采集动作、分析姿势并发出灯光或声音提醒，帮助用户发现和纠正不规范动作。项目仍处于原型阶段；ESP32 摄像头模块已归档单张拍照成果，AI 模型、Uno 联动及端到端效果仍待实现与验证。
+
+## ESP32 摄像头阶段成果（2026-10-23）
+
+Dong Yuankun 已完成 **AI Thinker ESP32-CAM 经 USB 串口离线拍照并保存为 JPG** 的演示。本分支包含 Arduino IDE 草图、无需 Python 的 Windows PowerShell 接收脚本，以及本次指定归档的两张 640×480 演示照片。
+
+运行命令、实际环境、引脚表、照片预览和排错步骤见 [ESP32-CAM 离线演示 README](firmware/esp32-camera/README.md)。本次硬件按 AI Thinker ESP32-CAM 配置，与下方原方案规划的 ESP32-S3 区分记录；USB 传输使用串口，当前实现逐张拍照。
 
 ## 项目方案
 
@@ -112,7 +118,7 @@ git push -u origin Feat-Esp-Yuankun
 2. **Yuankun / ESP32 摄像头**：程序可初始化实际摄像头，至少获取一张可读取的照片；记录板卡、摄像头、环境、实际 pin map 和复现步骤。见 [摄像头任务说明](firmware/esp32-camera/README.md)。
 3. **后续集成**：确定板间通信与消息格式，接入 AI 判定及实时提醒，再完善用户记录和纠正建议平台。
 
-不要提交 Wi-Fi 密码或令牌。实拍照片、训练视频、训练记录放在被忽略的 `captures/` 或 `data/` 目录中；测试记录可写入 README，但不提交可识别人像。
+不要提交 Wi-Fi 密码或令牌。日常实拍照片、训练视频、训练记录放在被忽略的 `captures/` 或 `data/` 目录中。本分支按 Dong Yuankun 本次明确要求，将两张指定的演示照片单独归档到 `firmware/esp32-camera/evidence/2026-10-23/`；后续采集默认继续保存在本地忽略目录。
 
 ## 概念参考图
 
@@ -126,6 +132,6 @@ git push -u origin Feat-Esp-Yuankun
 AGENTS.md                         # 身份确认、分支边界与 agent 操作规则
 README.md                         # 项目介绍、成员分工和 Git 入门
 firmware/arduino-uno/README.md     # Haoyu 的硬件任务与验收
-firmware/esp32-camera/README.md    # Yuankun 的摄像头任务与验收
+firmware/esp32-camera/            # Yuankun 的离线拍照固件、接收脚本、README 和样张
 docs/reference/                   # 用户提供的概念参考图
 ```
