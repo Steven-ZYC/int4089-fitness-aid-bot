@@ -1,0 +1,7 @@
+# 模型权重与实验产物不入库（体积大、可复现）
+runs/
+export/
+*.pt
+*.onnx
+*.bin
+data_demo/

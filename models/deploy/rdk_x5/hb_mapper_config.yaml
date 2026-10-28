@@ -1,0 +1,42 @@
+# RDK X5 (Sunrise 3 / bayes-e) 模型编译配置
+# 在 OpenExplore 工具链环境里执行： hb_compile -c hb_mapper_config.yaml
+#
+# 注意：hb_mapper 只有 Linux 版。Windows 上请用 WSL2 或官方 docker：
+#   docker run -it --rm -v "$PWD":/work openexplorer/ai_toolchain_ubuntu_20_x5_cpu:v1.2.8
+
+model_parameters:
+  onnx_model: './model.onnx'
+  # bayes-e = 旭日3(X3/X5) 的 BPU 架构。X5 就是 bayes-e，别写成 bernoulli2(那是 X3 旧称)
+  march: 'bayes-e'
+  working_dir: './model_output'
+  output_model_file_prefix: 'fitness'
+  layer_out_dump: False
+  remove_node_type: 'Quantize;Dequantize'   # 输出纯定点网络
+
+input_parameters:
+  input_name: 'input'
+  input_shape: '1x3x224x224'
+  # 板上摄像头直接给 NV12，YUV→RGB 由 BPU 预处理硬件完成，最省 CPU
+  # 若改用 cv2 读图 + 手动归一化，把下面改成 'rgb'
+  input_type_rt: 'nv12'
+  input_type_train: 'rgb'
+  input_layout_train: 'NCHW'
+  norm_type: 'data_mean_and_scale'
+  # = ImageNet mean × 255，与训练端 Normalize(MEAN, STD) 对应
+  mean_value: '123.675 116.28 103.53'
+  # = 1 / (std × 255)
+  scale_value: '0.017124754 0.017507 0.01742919'
+
+calibration_parameters:
+  # int8 量化的校准集：从训练集每个类别随机抽 20~50 张，转成 float32 npy，
+  # 形状 (1,3,224,224)，文件名任意（0001.npy, 0002.npy ...）
+  # 必须是"真实画面"，不能用随机噪声，否则量化误差会很大
+  cal_data_dir: './calib_data'
+  cal_data_type: 'float32'
+  calibration_type: 'default'
+
+compiler_parameters:
+  compile_mode: 'latency'   # 单帧延迟优先（实时姿势反馈，不需要吞吐）
+  optimize_level: 'O3'
+  debug: False
+  core_num: 1

@@ -1,0 +1,6 @@
+torch>=2.7.0
+torchvision>=0.22.0
+onnx>=1.16
+onnxruntime>=1.19
+numpy>=1.26
+pillow>=10.0

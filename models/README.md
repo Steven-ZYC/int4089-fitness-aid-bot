@@ -35,3 +35,71 @@ Arduino Uno 的 LED／蜂鸣器[基础控制说明](../firmware/arduino-uno/READ
 
 本目录当前为研究任务说明，不代表已经训练完成或验证板上部署成功。
 不要提交凭据、可识别人像或原始训练视频；实验数据和模型产物的保存方式按项目现有忽略规则处理，提交前检查是否会被 Git 跟踪。
+
+---
+
+# 训练流水线（已实现，2026-10-28）
+
+> 部署目标按 2026-10-28 的决定调整为 **RDK X5**，导出格式从原计划的 ESP32 TFLite 改为
+> **ONNX → Horizon BPU `.bin`**。若 Dr Davy Ng consult 后路线再变，本节结论需重新评估。
+
+## 核心结论：ONNX 不是终点
+
+RDK X5 使用旭日 3 BPU（架构 `bayes-e`），**不能直接推理 ONNX**。必须用 Horizon OpenExplore
+的 `hb_mapper` / `hb_compile` 编译成 `.bin`，板上通过 `libdnn` 加载。只交 ONNX 会退回 CPU 推理，
+NPU 完全闲置。
+
+```
+PyTorch → ONNX(opset 11, 1×3×224×224) → hb_mapper → fitness.bin → libdnn
+```
+
+`hb_mapper` 仅有 Linux 版，Windows 需 WSL2 或官方 docker 镜像。
+
+## 目录结构
+
+| 文件 | 用途 |
+| --- | --- |
+| `src/model.py` | 模型构建，默认 `mobilenet_v2`（全 ReLU6，BPU 算子风险最低） |
+| `src/dataset.py` | ImageFolder 数据加载与预处理，训练/评估变换 |
+| `train.py` | 训练主程序（AMP、AdamW、余弦退火、早停） |
+| `export_onnx.py` | 导出 ONNX：opset 11、静态 shape、TorchScript 导出器 |
+| `verify_onnx.py` | PyTorch 与 onnxruntime 输出一致性校验 |
+| `make_demo_data.py` | 合成数据，仅用于跑通链路 |
+| `deploy/rdk_x5/` | `hb_mapper` 编译配置与板上推理说明 |
+
+## 已实测（非计划）
+
+环境：Windows 11 26100 / RTX 5080 Laptop（Blackwell, sm_120）/ torch 2.11.0+cu128 / onnx 1.23.2
+
+| 环节 | 结果 |
+| --- | --- |
+| 合成数据 3 类 180 张，mobilenet_v2 @224，关数据增强 | val acc **100%** @ epoch 7 |
+| 同上但开数据增强 | val 卡在 33%：合成数据的判别信息（背景色+固定图案）被 ColorJitter / RandomResizedCrop 抹掉，**非代码缺陷** |
+| ONNX 导出 | 8.47 MB，opset 11，170 nodes，输入 `1×3×224×224` |
+| PyTorch vs onnxruntime | `max|Δ| = 1.43e-06`，argmax 一致 → **PASS** |
+
+## 复现
+
+```bash
+pip install -r models/requirements.txt
+# GPU 为 Blackwell(sm_120) 时必须装 cu128 轮子，否则报 no kernel image
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+
+python models/make_demo_data.py --out data_demo --n-train 60 --n-val 20
+python models/train.py --data data_demo --out runs/smoke --epochs 10 --workers 0 --no-aug
+python models/export_onnx.py --ckpt runs/smoke/best.pt --out export/model.onnx
+python models/verify_onnx.py --ckpt runs/smoke/best.pt --onnx export/model.onnx
+```
+
+真实数据按 `data/train/<class>/*.jpg` + `data/val/<class>/*.jpg` 组织，去掉 `--no-aug`。
+
+## 尚未完成 / 待确认
+
+- **真实数据训练**：类别表（动作 × 错误类型）与数据来源均未定，当前只有占位类
+- **`hb_mapper` 编译**：需 Linux 工具链环境，本机为 Windows，尚未执行
+- **板上实测**：精度、单帧延迟、可达帧率均未测
+- **与部署端对齐**：原定与 Dong Yuankun 对齐 ESP32-S3 约束，路线改为 RDK X5 后对齐目标
+  变为 BPU 算子限制与 `.bin` 接口，需同步告知
+- **是否引入姿态估计**：纯分类只能说「这一帧不标准」，无法给出「膝盖内扣 / 塌腰」这类具体
+  成因。若课程要求逐项反馈，需叠加 MoveNet / YOLOv8-pose，工作量显著更大，建议二期评估
+
