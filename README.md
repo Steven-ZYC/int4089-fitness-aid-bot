@@ -5,8 +5,8 @@
 > [!NOTE]
 > **最新方案（2026-10-30，Dr Davy Ng consultation 后）**
 >
-> - 当前为 **prototype**；AI 模型的训练、推理和姿势判断应在**电脑**完成，而不是在 ESP32 上运行。
-> - 若原型验证效果良好，未来考虑把 AI 服务迁移到**云端 HPC / GPU 计算平台**；**尚未部署云端**。
+> - 当前为 **prototype**；AI 模型的训练、推理和姿势判断在**电脑**完成。
+> - 未来可将 AI 服务迁移到**云端 HPC / GPU**；目前未部署。
 > - 两块 ESP32 分别负责**摄像头采集**和**IMU 采集／联网网关**，Arduino Uno 继续负责本地 LED／蜂鸣器等控制。
 
 > [!IMPORTANT]
@@ -26,7 +26,7 @@ GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4
 
 ## 项目背景
 
-针对健身新手缺乏即时指导的问题，本项目尝试在健身动作过程中识别姿势异常，向用户提供低成本、直观的提醒。课程要求使用 **Arduino Uno**，并结合传感器与执行器；ESP32 和电脑只是协作模块，不能完全取代 Uno。
+针对健身新手缺乏即时指导的问题，本项目尝试在健身动作过程中识别姿势异常，向用户提供低成本、直观的提醒。课程要求以 **Arduino Uno** 参与传感器与执行器控制；ESP32 和电脑作为协作模块。
 
 ### 为什么改变方案？
 
@@ -39,7 +39,7 @@ GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4
 | 纯推理速度 | 0.0661 FPS |
 | 包含采集与前／后处理的速度 | 0.0655 FPS |
 
-以上为**先前硬件方案的测试记录**，不是新架构的实测吞吐量。consultation 后，Dr Davy Ng 认为原型阶段**无须强制在本地微控制器上进行 AI 推理**，并建议增加传感器，因此调整为图像 + IMU 采集、电脑端 AI 处理。此前讨论的 ESP32-S3 板上 AI 推理与 RDK X5 NPU 路线不再是本阶段的主要任务。
+以上是旧方案实测，不是新架构的吞吐量。consultation 后，原型改为图像 + IMU 采集、电脑端 AI 处理；ESP32-S3 板上推理和 RDK X5 不再是本阶段主线。
 
 ## 项目方案与架构
 
@@ -48,48 +48,51 @@ GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4
 | 模块 | 职责 | 当前定位 |
 | --- | --- | --- |
 | **ESP32-CAM（Camera Node）** | 获取健身图像／图像帧，并与 **Arduino Uno** 建立硬件连接 | 图像采集端；**不负责运行姿势识别 AI** |
-| **ESP32-S3 N16R8（Main ESP / Gateway，待核实实物）** | 连接 **Bosch BMI-series IMU**，采集运动数据，统筹与计算机的网络通信 | 两块 ESP32 中的主 ESP；不承担主要 AI 推理 |
-| **Bosch BMI-series IMU** | 提供加速度／角速度等运动信息，辅助姿势分析 | consultation 后加入的传感器；**准确型号待确认** |
-| **Arduino Uno** | 保留课程要求的控制职责，最终控制 LED、蜂鸣器等提醒装置 | 与 ESP32-CAM 连接；具体通信／反馈接线待验证 |
+| **ESP32-S3 N16R8（Main ESP / Gateway）** | 连接 **Bosch BMI-series IMU**，采集运动数据，统筹与计算机的网络通信 | 两块 ESP32 中的主 ESP；不承担主要 AI 推理 |
+| **Bosch BMI-series IMU** | 提供加速度／角速度等运动信息，辅助姿势分析 | consultation 后加入的传感器 |
+| **Arduino Uno** | 保留课程要求的控制职责，最终控制 LED、蜂鸣器等提醒装置 | 与 ESP32-CAM 连接 |
 | **电脑（Prototype AI Platform）** | 接收两路信息，负责数据预处理、AI 推理、姿势判断、结果回传；用于模型开发与测试 | **当前首选计算平台** |
-| **Cloud HPC / GPU Server** | 将来替代团队电脑承载 AI 服务，供进一步扩展和部署 | **未来方向，尚未启动，估计只在ppt中介绍** |
+| **Cloud HPC / GPU Server** | 将来替代电脑承载 AI 服务，供进一步扩展和部署 | **未来方向，尚未启动，估计只在ppt中介绍** |
 
-**主 ESP32** 的“算力较好”是相对于旧 ESP32-CAM 的硬件能力描述；新的 AI 计算仍由**电脑／未来 HPC**承担，不意味着要把姿态模型迁回主 ESP32。
+待确认：ESP32-S3 实物型号、IMU 具体型号、Arduino Uno 的通信与反馈接线。
 
 ### 计划数据流
 
 ```mermaid
 flowchart LR
     USER["用户健身动作"] --> CAM["ESP32-CAM<br/>图像采集"]
-    IMU["Bosch BMI-series IMU<br/>型号待确认"] --> MASTER["ESP32-S3 N16R8<br/>主 ESP · 运动采集／联网"]
-    CAM -->|"图像数据 · 板间传输待选型"| MASTER
-    MASTER <-->|"网络传输图像 + IMU 数据／反馈"| PC["团队电脑<br/>AI 分析与姿势判定"]
-    CAM ---|"硬件连接 · 引脚／协议待确认"| UNO["Arduino Uno<br/>LED／蜂鸣器控制"]
-    PC -. "姿势结果回传 · 路径待验证" .-> UNO
-    PC -. "未来：服务迁移（非当前实现）" .-> HPC["云端 HPC / GPU"]
+    IMU["Bosch BMI-series IMU"] --> MASTER["ESP32-S3 N16R8<br/>主 ESP · 运动采集／联网"]
+    CAM -->|"图像数据"| MASTER
+    MASTER <-->|"图像 + IMU 数据／反馈"| PC["电脑<br/>AI 分析与姿势判定"]
+    CAM ---|"硬件连接"| UNO["Arduino Uno<br/>LED／蜂鸣器控制"]
+    PC -. "姿势结果回传" .-> UNO
+    PC -. "未来：服务迁移" .-> HPC["云端 HPC / GPU"]
     UNO --> LED["LED / 蜂鸣器提醒"]
 ```
 
-这是**计划架构**，不代表双板通信、IMU、电脑推理及闭环提示已全部完成。具体数据通路可以由主 ESP 汇聚后上传，摄像头节点与主 ESP 间的链路须根据带宽、延迟及板卡能力实际选型。
+> [!TIP]
+> Camera Node ↔ Main ESP 可优先评估 **ESP-NOW**（Espressif 官方无线协议）或 **UART**（有线）。ESP-NOW 适合小数据包，传图像帧需要分片并实测吞吐；UART 的速率取决于波特率和接线长度。最终按帧大小、带宽、距离和稳定性选择。
 
-**需要验证的集成边界：**
+这是**计划架构**；双板通信、IMU、电脑推理和闭环提示的具体链路待联调确认。
 
-- **Camera Node ↔ Main ESP**：选择适合图像帧传输的协议（例如 Wi-Fi 数据链路，或针对实际负载验证的其他方式）。不能默认 ESP-NOW 能无代价承载连续高分辨率图像。
-- **IMU ↔ Main ESP**：确认 Bosch BMI 实物型号、通信接口（如 I²C/SPI）、引脚和供电；记录 IMU 数据时间戳并与图像对齐。
-- **Main ESP ↔ Computer**：建立端到端上传与结果回传，验证数据格式、可靠性、延迟与网络中断处理。
-- **ESP32-CAM ↔ Arduino Uno**：满足硬件连接要求，明确 Arduino 如何获取最终姿势结果并控制输出；结果回传的具体物理路径尚未最终敲定。
-- **AI 模型**：明确动作范围、判断标准与数据集、训练／评估方法；用电脑测量实际推理延迟、判断表现和端到端响应时间。
+**待联调的接口：**
+
+- **Camera Node ↔ Main ESP**：优先评估 **ESP-NOW**（无线）或 **UART**（有线），再按帧大小、带宽、距离和延迟实测选择。
+- **IMU ↔ Main ESP**：确认 Bosch BMI 型号、I²C/SPI 接口、引脚和供电，并做时间戳对齐。
+- **Main ESP ↔ Computer**：打通端到端上传与结果回传，检查数据格式、可靠性、延迟和断网处理。
+- **ESP32-CAM ↔ Arduino Uno**：确定连接方式和姿势结果的回传路径。
+- **AI 模型**：确定动作范围、判断标准、数据集和评估指标，并在电脑上测量推理延迟与端到端响应。
 
 ### 两阶段计算部署路线
 
 | 阶段 | AI 所在位置 | 目标 | 状态 |
 | --- | --- | --- | --- |
-| **Phase 1 — Prototype** | 团队电脑（可用 GPU／CPU） | 跑通摄像头与 IMU 数据接收、数据集准备、模型训练、实时／准实时姿势分析、LED／蜂鸣器反馈 | **当前开发方向；完整链路尚未验证** |
+| **Phase 1 — Prototype** | 电脑（可用 GPU／CPU） | 跑通摄像头与 IMU 数据接收、数据集准备、模型训练、实时／准实时姿势分析、LED／蜂鸣器反馈 | **当前开发方向；完整链路尚未验证** |
 | **Phase 2 — Future Extension** | 云端 HPC／GPU 计算平台 | 在原型有效后评估可扩展服务、远程推理性能、部署成本与网络延迟 | **长期规划；不是目前必做项** |
 
 ## 成员与分工
 
-PIC 指模块负责人。**每位同学只在本人分支提交；`main` 仅用于经审核合并的成果。** 现有分支名保留；Haoyu 的 `Feat-Arduino-Haoyu` 是历史命名，并不表示当前仍以 Arduino 开发为主。
+PIC 指模块负责人。**每位同学只在本人分支提交；`main` 仅用于经审核合并的成果。** 现有分支名保留；Haoyu 的 `Feat-Arduino-Haoyu` 是历史命名。
 
 | 成员 | 最新职责 | 本人工作分支 |
 | --- | --- | --- |
@@ -168,7 +171,7 @@ git commit -m "feat(esp32): integrate camera imu and networking"
 git push -u origin Feat-Esp-Yuankun
 ```
 
-将示例文件占位符替换为实际文件名，只暂存本次相关文件。**不要执行 `git push --all`、强制推送或向 `main` 推送。** 然后在 GitHub 选择 Compare & pull request：base 为 `main`，compare 为本人分支。PR 写明改动、研究结论、相关模型或板卡配置、复现步骤和实测结果；尚未训练或未做板上验证时明确注明。这些文档约定不等于 GitHub 服务端的分支保护。
+将示例文件占位符替换为实际文件名，只暂存本次相关文件。**不要执行 `git push --all`、强制推送或向 `main` 推送。** 然后在 GitHub 选择 Compare & pull request：base 为 `main`，compare 为本人分支。PR 写明改动、研究结论、相关模型或板卡配置、复现步骤和实测结果；尚未训练或未做板上验证时明确注明。
 
 ## 当前进展/To-do list
 
@@ -180,13 +183,13 @@ git push -u origin Feat-Esp-Yuankun
 - [ ] **未来评估**：只有在本地原型有效后，才考虑云端 HPC 的部署可行性、网络和成本问题。
 
 > [!WARNING]
-> 以上待办属于计划，不是已完成成果。没有实测时不填写 FPS、延迟、准确率或传感器精度的预期值冒充结果。不要提交 Wi-Fi 密码、密钥、原始含可识别人像的图像／视频或不符合数据许可的数据集。
+> 以上为计划，未实测的数据不要写成结果。不要提交 Wi-Fi 密码、密钥、可识别人像或未授权数据集。
 
 ## 概念参考图
 
 ![用户提供的 AI 生成健身姿势辅助装置概念图](docs/reference/ai-fitness-form-coach.png)
 
-此图为先前 AI 生成的**产品概念参考**，不是当前真实硬件接线或已完成系统。**IMU 已成为新方案的计划传感器**；图中的压力垫、屏幕和外壳等仍属于可选扩展，不构成当前交付承诺。请以本文文字和实际验证记录为准。
+此图为 AI 生成的产品概念参考，不代表真实接线或已完成系统；压力垫、屏幕和外壳为可选扩展。
 
 ## 仓库结构
 
@@ -196,5 +199,5 @@ README.md                         # 方案、技术架构、进度、协作流�
 models/README.md                  # Haoyu：数据集、训练与电脑端 AI 推理
 firmware/esp32-camera/README.md   # Yuankun：双 ESP32、Camera、IMU 与联网通信
 firmware/arduino-uno/README.md    # Arduino Uno 的 LED／蜂鸣器控制基线
-docs/reference/                   # 概念参考图（不是接线依据）
+docs/reference/                   # 概念参考图
 ```
