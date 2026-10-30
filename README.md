@@ -63,9 +63,10 @@ flowchart LR
     USER["用户健身动作"] --> CAM["ESP32-CAM<br/>图像采集"]
     IMU["Bosch BMI-series IMU"] --> MASTER["ESP32-S3 N16R8<br/>主 ESP · 运动采集／联网"]
     CAM -->|"图像数据"| MASTER
-    MASTER <-->|"图像 + IMU 数据／反馈"| PC["电脑<br/>AI 分析与姿势判定"]
-    CAM ---|"硬件连接"| UNO["Arduino Uno<br/>LED／蜂鸣器控制"]
-    PC -. "姿势结果回传" .-> UNO
+    MASTER -->|"图像 + IMU 数据"| PC["电脑<br/>AI 分析与姿势判定"]
+    PC -. "姿势结果" .-> MASTER
+    MASTER -. "姿势结果" .-> CAM
+    CAM -. "姿势结果" .-> UNO["Arduino Uno<br/>LED／蜂鸣器控制"]
     PC -. "未来：服务迁移" .-> HPC["云端 HPC / GPU"]
     UNO --> LED["LED / 蜂鸣器提醒"]
 ```
@@ -77,10 +78,10 @@ flowchart LR
 
 **待联调的接口：**
 
-- **Camera Node ↔ Main ESP**：优先评估 **ESP-NOW**（无线）或 **UART**（有线），再按帧大小、带宽、距离和延迟实测选择。
+- **Camera Node ↔ Main ESP**：图像上传和姿势结果回传；优先评估 **ESP-NOW**（无线）或 **UART**（有线），再按帧大小、带宽、距离和延迟实测选择。
 - **IMU ↔ Main ESP**：确认 Bosch BMI 型号、I²C/SPI 接口、引脚和供电，并做时间戳对齐。
-- **Main ESP ↔ Computer**：打通端到端上传与结果回传，检查数据格式、可靠性、延迟和断网处理。
-- **ESP32-CAM ↔ Arduino Uno**：确定连接方式和姿势结果的回传路径。
+- **Main ESP ↔ Computer**：打通图像 + IMU 上传和姿势结果回传，检查数据格式、可靠性、延迟和断网处理。
+- **ESP32-CAM ↔ Arduino Uno**：姿势结果按 **电脑 → Main ESP → ESP32-CAM → Arduino Uno** 回传；确认 CAM–Uno 的硬件连接、接口和时序。
 - **AI 模型**：确定动作范围、判断标准、数据集和评估指标，并在电脑上测量推理延迟与端到端响应。
 
 ### 两阶段计算部署路线
