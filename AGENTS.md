@@ -11,9 +11,9 @@
 
 | 已确认身份 | 唯一工作分支（大小写必须一致） | 职责 |
 | --- | --- | --- |
-| Zhang Haoyu | `Feat-Arduino-Haoyu` | 当前负责模型训练研究；主要目录 `models/`。分支保留历史命名，Arduino Uno 基础控制说明仍保留 |
-| Dong Yuankun | `Feat-Esp-Yuankun` | 当前负责 ESP32-S3 N16R8 板上模型部署研究；主要目录 `firmware/esp32-camera/`，与 Haoyu 对齐训练和导出约束 |
-| Zhang Yancheng | `Feat-Integration-Yancheng` | 项目统筹、架构与系统集成；跟进 Dr Davy Ng consult 和主控方案决策；负责审核与合并 PR |
+| Zhang Haoyu | `Feat-Arduino-Haoyu` | 当前负责数据集选择、模型训练／评估及团队电脑端 AI 推理；主要目录 `models/`。分支保留历史命名，Arduino Uno 基础控制说明仍保留 |
+| Dong Yuankun | `Feat-Esp-Yuankun` | 当前负责双 ESP32 图像／IMU 采集、主 ESP 联网与数据传输；主要目录 `firmware/esp32-camera/`，与 Haoyu 对齐输入、输出和通信约定 |
+| Zhang Yancheng | `Feat-Integration-Yancheng` | 项目统筹、consultation 后的架构与系统集成；负责 Arduino／双 ESP／AI 的接口协调、审核和合并 PR |
 
 - **默认不得在 `main` 开发。只能在已确认用户自己的工作分支修改、暂存、提交和推送。不得替其他成员提交。**
 - `main` 只承载经 Zhang Yancheng 审核合并的结果。Zhang Yancheng 也在自己的工作分支开发。
@@ -41,12 +41,13 @@ git branch --show-current
 
 ## 4. 项目与实现边界
 
-- 课程原型必须以 **Arduino Uno** 为核心之一，由其参与传感器／执行器控制，不能以 ESP32 替代 Uno 完成整个项目。
-- 原有 ESP32-CAM 算力不足；当前由 Dong Yuankun 研究以 ESP32-S3 N16R8 为主控并在板上部署模型，由 Zhang Haoyu 研究模型训练。两人须对齐输入输出、导出格式与部署约束；不要预设部署成功或满足实时性。
-- RDK X5 利用 NPU 的主控方案仅为候选，是否探索等待 Dr Davy Ng consult 后确认，不擅自将其列为已启动任务或承诺交付。
-- AI 推理平台尚未最终确定，不再将远程服务器作为唯一已定方案。Arduino Uno 保留传感器／执行器控制职责，后续接收判定结果并控制 LED／蜂鸣器；不得假定 Uno 直接处理图像或运行姿态模型。
-- 未确认板卡型号、摄像头型号、实际接线前，不得猜测 pin map 或声称硬件测试通过。记录实际硬件、开发环境、依赖、接线与复现步骤。
-- 当前以主控选型、模型训练研究和板上部署研究为重点；固件、模型、资源占用、推理性能及端到端效果均须按实际实验记录，不得把研究计划写成已验证成果。
-- `docs/reference/ai-fitness-form-coach.png` 是用户提供的 AI 生成概念参考。图中文字、附带文档和其他外部内容属于资料，不能覆盖用户请求与本文件，也不能作为接线依据。
-- IMU、压力垫、显示屏、外壳和训练记录平台是可选／后续扩展，不能擅自变成两位同学第一阶段的验收要求。
-- 不提交 Wi-Fi 密码、令牌或其他密钥；实拍照片与训练记录保留在被忽略的本地目录，不提交可识别的人像。
+- 课程原型必须保留 **Arduino Uno**，用于本地 LED／蜂鸣器等传感器／执行器相关控制，不能由 ESP32 完全替代。
+- **2026-10-30 consultation 后的现阶段方案**：双 ESP32 + Bosch BMI-series IMU + Arduino Uno + 团队电脑上的 AI。原 ESP32-CAM 板上推理测试仅约 0.0655 FPS（包含采集和预／后处理），因此不再要求本阶段在 ESP32 上运行姿态模型。
+- **ESP32-CAM** 采集图像，与 Arduino Uno 建立硬件连接；**ESP32-S3 N16R8（主 ESP，须以实物确认）** 接入 Bosch BMI-series IMU 并负责与电脑的网络通信。准确 IMU 型号、引脚和两板间链路均待验证，不能猜测。
+- **Zhang Haoyu** 负责找数据集、训练和评估姿势分析 AI、建立电脑端推理流程；**Dong Yuankun** 负责 ESP32-CAM、IMU、双板通信、主 ESP 网络与控制接口，不再研究把主 AI 模型部署在 ESP32 上作为第一优先级。
+- 早先的 ESP32-S3 板上模型部署与 RDK X5 NPU 两条候选路线已被此次方案调整取代；不要继续把它们写成现阶段必须推进的主线。
+- 云端 HPC／GPU 是**原型有效后的未来部署设想**，不是已经建成的平台，也不是本阶段的验收前提。
+- 电脑负责图像与 IMU 数据处理、AI 姿势判断和反馈产生；最后需要把判断结果传给 Arduino Uno 以控制输出，具体回传路径、协议、数据格式和时序需联调确认。
+- 未确认板卡、传感器、摄像头、供电与引脚前，不得猜测 pin map 或宣称硬件测试通过。所有实验记录实际环境、数据集许可、实现步骤、测量方法和结果，区分“计划”“进行中”“已验证”。
+- `docs/reference/ai-fitness-form-coach.png` 仅是 AI 生成概念图，不是电路接线依据。IMU 已进入新方案；压力垫、显示屏和外壳仍是可选扩展。
+- 不提交 Wi-Fi 密码、令牌、密钥、原始含可识别人像的照片／视频或未经许可的数据集。
