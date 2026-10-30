@@ -12,7 +12,7 @@
 > [!IMPORTANT]
 >
 > - **每人只在自己的工作分支修改并提交；默认不要在 `main` 开发。**
-> - 组员与编程 agent 开始任务前应先阅读 [AGENTS.md](AGENTS.md)；所有未完成事项须明确标记。
+> - 组员与编程 agent 开始任务前应先阅读本 README 和 [AGENTS.md](AGENTS.md)；所有未完成事项须明确标记。
 
 > [!TIP]
 >
@@ -191,7 +191,7 @@ git push -u origin Feat-Esp-Yuankun
 ## 仓库结构
 
 ```text
-AGENTS.md                         # 身份确认、分支边界与最新职责
+AGENTS.md                         # 身份确认、分支边界与协作规则
 README.md                         # 方案、技术架构、进度、协作流程
 models/README.md                  # Haoyu：数据集、训练与电脑端 AI 推理
 firmware/esp32-camera/README.md   # Yuankun：双 ESP32、Camera、IMU 与联网通信
