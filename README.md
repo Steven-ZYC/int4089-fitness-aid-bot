@@ -5,20 +5,22 @@
 > [!NOTE]
 > **最新方案（2026-10-30，Dr Davy Ng consultation 后）**
 >
-> - 当前为 **prototype**；AI 模型的训练、推理和姿势判断优先在**团队电脑**完成，而不是在 ESP32 上运行。
+> - 当前为 **prototype**；AI 模型的训练、推理和姿势判断应在**电脑**完成，而不是在 ESP32 上运行。
 > - 若原型验证效果良好，未来考虑把 AI 服务迁移到**云端 HPC / GPU 计算平台**；**尚未部署云端**。
 > - 两块 ESP32 分别负责**摄像头采集**和**IMU 采集／联网网关**，Arduino Uno 继续负责本地 LED／蜂鸣器等控制。
 
 > [!IMPORTANT]
+>
 > - **每人只在自己的工作分支修改并提交；默认不要在 `main` 开发。**
-> - 组员与编程 agent 开始任务前应先阅读 [AGENTS.md](AGENTS.md)；所有未完成事项须明确标记，不能把计划写成测试成功。
+> - 组员与编程 agent 开始任务前应先阅读 [AGENTS.md](AGENTS.md)；所有未完成事项须明确标记。
 
 > [!TIP]
+>
 > - [项目方案与架构](#项目方案与架构)
 > - [成员与分工](#成员与分工)
 > - [给两位同学及其 agent 的最短指引](#给两位同学及其-agent-的最短指引)
 > - [打开自己的分支](#打开自己的分支)
-> - [当前阶段交付](#当前阶段交付)
+> - [当前进展/To-do list](#当前进展to-do-list)
 
 GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4089-fitness-aid-bot)（私有仓库；组员须先获得访问权限）。
 
@@ -49,8 +51,8 @@ GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4
 | **ESP32-S3 N16R8（Main ESP / Gateway，待核实实物）** | 连接 **Bosch BMI-series IMU**，采集运动数据，统筹与计算机的网络通信 | 两块 ESP32 中的主 ESP；不承担主要 AI 推理 |
 | **Bosch BMI-series IMU** | 提供加速度／角速度等运动信息，辅助姿势分析 | consultation 后加入的传感器；**准确型号待确认** |
 | **Arduino Uno** | 保留课程要求的控制职责，最终控制 LED、蜂鸣器等提醒装置 | 与 ESP32-CAM 连接；具体通信／反馈接线待验证 |
-| **团队电脑（Prototype AI Platform）** | 接收两路信息，负责数据预处理、AI 推理、姿势判断、结果回传；用于模型开发与测试 | **当前首选计算平台** |
-| **Cloud HPC / GPU Server** | 将来替代团队电脑承载 AI 服务，供进一步扩展和部署 | **未来方向，尚未启动** |
+| **电脑（Prototype AI Platform）** | 接收两路信息，负责数据预处理、AI 推理、姿势判断、结果回传；用于模型开发与测试 | **当前首选计算平台** |
+| **Cloud HPC / GPU Server** | 将来替代团队电脑承载 AI 服务，供进一步扩展和部署 | **未来方向，尚未启动，估计只在ppt中介绍** |
 
 **主 ESP32** 的“算力较好”是相对于旧 ESP32-CAM 的硬件能力描述；新的 AI 计算仍由**电脑／未来 HPC**承担，不意味着要把姿态模型迁回主 ESP32。
 
@@ -103,11 +105,11 @@ PIC 指模块负责人。**每位同学只在本人分支提交；`main` 仅用�
 
 **Zhang Haoyu：**
 
-> 我是 Zhang Haoyu。请先读根目录 AGENTS.md，确认当前分支为 Feat-Arduino-Haoyu，只在我的分支工作。最新任务是选择适合健身动作／姿势分析的数据集、训练和评估模型，并搭建**在团队电脑运行的 AI 推理／分析流程**。请按 models/README.md 执行，与 Dong Yuankun 对齐图像、IMU 数据及分析结果的通信格式；**本阶段不要求把模型部署在 ESP32**。
+> 我是 Zhang Haoyu。请先读根目录 AGENTS.md，确认当前分支为 Feat-Arduino-Haoyu，只在我的分支工作。最新任务是选择适合健身动作／姿势分析的数据集、训练和评估模型，并搭建**在团队电脑运行的 AI 推理／分析流程**。请按 models/README.md 执行，与 Dong Yuankun 对齐图像、IMU 数据及分析结果的通信格式；**本阶段不要求把模型部署在 ESP32**。每轮对话后给我一个recap。
 
 **Dong Yuankun：**
 
-> 我是 Dong Yuankun。请先读根目录 AGENTS.md，确认当前分支为 Feat-Esp-Yuankun，只在我的分支工作。最新任务是实现**双 ESP32 采集与通信**：ESP32-CAM 采集图像并与 Arduino Uno 连接；ESP32-S3 N16R8 作为主 ESP，接入 Bosch BMI-series IMU 并负责联网、上传数据与结果回传。请按 firmware/esp32-camera/README.md 执行，优先验证硬件接口和数据链路，**不再以板上 AI 模型部署作为主要任务**。
+> 我是 Dong Yuankun。请先读根目录 AGENTS.md，确认当前分支为 Feat-Esp-Yuankun，只在我的分支工作。最新任务是实现**双 ESP32 采集与通信**：ESP32-CAM 采集图像并与 Arduino Uno 连接；ESP32-S3 N16R8 作为主 ESP，接入 Bosch BMI-series IMU 并负责联网、上传数据与结果回传。请按 firmware/esp32-camera/README.md 执行，优先验证硬件接口和数据链路，**不再以板上 AI 模型部署作为主要任务**。每轮对话后给我一个recap。
 
 ### 打开自己的分支
 
@@ -168,7 +170,7 @@ git push -u origin Feat-Esp-Yuankun
 
 将示例文件占位符替换为实际文件名，只暂存本次相关文件。**不要执行 `git push --all`、强制推送或向 `main` 推送。** 然后在 GitHub 选择 Compare & pull request：base 为 `main`，compare 为本人分支。PR 写明改动、研究结论、相关模型或板卡配置、复现步骤和实测结果；尚未训练或未做板上验证时明确注明。这些文档约定不等于 GitHub 服务端的分支保护。
 
-## 当前阶段交付
+## 当前进展/To-do list
 
 - [x] **完成方案 consultation**：确认可由电脑承担 prototype 的 AI 推理，并根据建议增加 IMU。
 - [x] **记录旧 ESP32-CAM 本地推理性能**：明确该方案不符合团队对交互速度的预期。
