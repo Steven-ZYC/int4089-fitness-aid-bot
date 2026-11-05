@@ -128,6 +128,17 @@ Zhang Yancheng 的板端推理实验位于 [experiments/yancheng/esp32-pose-benc
 
 2026-10-23 本板实测 PSRAM 为 **2 MB**；128×128 INT8 模型纯推理约 **15.126 秒／帧，0.0661 FPS**，当前配置无法实时纠姿，关键点准确度尚未验证。见 [实测记录](experiments/yancheng/esp32-pose-bench/results/2026-10-23-classic-esp32.md)。
 
+## Yancheng 的 IMU 零飘处理与位置面板
+
+2026-11-05 起，`tools/imu-position/` 提供 Windows 端 IMU 工具：读取 ESP32-S3 + BMI160 的串口六轴数据，
+按 JSON 零飘 profile 去陀螺零偏、静态检测（ZUPT）、互补滤波与位置积分，并在两页面板（处理后源数据 /
+3D 姿态与位置）中显示，支持 profile 导入、编辑与从静止 CSV 重新标定。
+
+基于 `capture.csv` 静止记录实测：陀螺零偏 gx −0.2394 / gy −0.3691 / gz +0.2943 °/s，30 秒纯积分会漂移
+7–11°；处理静止判定 96.7%、位置保持 0。实时串口（COM4）已实测通过：打开端口时用 RTS/EN 复位板子后
+49.73 Hz、CONFIG 0x69、无畸形行。用法与已知局限（BMI160 无磁力计、运动段位置会漂移）见
+[工具 README](tools/imu-position/README.md)。
+
 ## 概念参考图
 
 ![用户提供的 AI 生成健身姿势辅助装置概念图](docs/reference/ai-fitness-form-coach.png)
