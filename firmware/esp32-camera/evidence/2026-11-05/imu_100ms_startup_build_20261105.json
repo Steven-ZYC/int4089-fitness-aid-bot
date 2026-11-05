@@ -1,0 +1,24 @@
+{
+  "schema": "imu-100ms-startup-v1",
+  "recorded_utc": "2026-11-05T05:59:40.0896325Z",
+  "firmware": "S3_WiFi_Gateway_Check_v1",
+  "program_bytes": 931614,
+  "global_bytes": 48740,
+  "bin_bytes": 931760,
+  "bin_sha256": "F5D4E6F1A0349A71D319C36B6CE97AD48EC2AA5F804C4D1E6C58A50D788B496C",
+  "source_files": {
+    "S3_WiFi_Gateway_Check.ino": "6DF54C87EDA90416996D48126B0943A6BEAEA975A6EB415FF140DBFB46754FBE",
+    "imu_trace.h": "E903F67923BC091EAC27BE3EA972D35B4C711107F17221BE354D6D2D8D0FD846",
+    "gateway_io.h": "4095202B0AE2613BC93B23F33B5D607B2FCA41370CBB0A56BA2AEB3D002E8D06"
+  },
+  "compiled": true,
+  "uploaded": true,
+  "upload_verified": true,
+  "i2c_timeout_ms": 100,
+  "imu_ready": false,
+  "observed_imu": "FAULT",
+  "fault_code": 4,
+  "total_samples": 0,
+  "wifi_image_imu_tested": false,
+  "scope": "Restart and initialize from the beginning with 100ms timeout; no power measurement"
+}

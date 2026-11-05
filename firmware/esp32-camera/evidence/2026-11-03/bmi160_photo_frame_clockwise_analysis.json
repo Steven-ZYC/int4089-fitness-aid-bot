@@ -1,0 +1,16 @@
+{
+  "input_csv": "bmi160_photo_frame_clockwise.csv",
+  "source_sha256": "907EA414F7FCA5A46AA945B3E84FA88246FBDC031A31B2E35762DD9BAE7945E4",
+  "gyro_z_bias_dps": 0.2810284000000001,
+  "net_integrated_z_deg": -26.55018748885028,
+  "positive_integrated_z_deg": 2.76678876761725,
+  "negative_integrated_z_deg": -29.316976256467065,
+  "active_threshold_dps": 3,
+  "active_rows": 57,
+  "first_active_s": 51.777,
+  "last_active_s": 53.688,
+  "last10s_rows": 498,
+  "last10s_corrected_gz_mean_dps": 0.023476419277108296,
+  "last10s_corrected_gz_std_dps": 0.1867029387581056,
+  "note": "Illustrative trapezoidal integration after host-side static bias subtraction; no known-angle or scale-factor calibration. Both signs occur; reported net motion is negative."
+}

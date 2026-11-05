@@ -1,0 +1,65 @@
+{
+  "schema": "camera-reconnect-legacy-observations-v1",
+  "purpose": "USB reconnect before uploading the new check firmware",
+  "camera_esptool_observation": {
+    "chip": "ESP32-D0WD-V3",
+    "probe_exit": 0,
+    "flash_bytes": 4194304,
+    "tool": "esptool 5.3.1 flash-id",
+    "revision": "v3.1",
+    "port": "COM11"
+  },
+  "freshness_verified": false,
+  "samples": [
+    {
+      "started_utc": "2026-11-03T13:05:07.4291365Z",
+      "finished_utc": "2026-11-03T13:05:10.0525998Z",
+      "photo": "photo_20261103_210509_856.jpg",
+      "original_photo_location": "Local outputs/s3-bringup-20261031/cam-captures only",
+      "bytes": 11702,
+      "width": 640,
+      "height": 480,
+      "bitmap_decode_pass": true,
+      "photo_sha256": "216E820C4A8D589F334946CA5BE809CEAE887114AD45ACF537BCBD2440CD4002",
+      "receiver_exit": 0,
+      "whole_receiver_command_elapsed_s": 2.6151301,
+      "duration_scope": "Whole PowerShell receiver command including process startup, READY wait, request, transfer, validation and save; not pure transfer or FPS",
+      "receiver_sha256": "F7D5EAA0E540FFAD07A18381BF87B44ECBB14CCEEB00F5CCDBE2C945E36504E1",
+      "source_match_to_flashed_binary": "Not independently confirmed in this retest; existing firmware used without uploading"
+    },
+    {
+      "started_utc": "2026-11-03T13:07:25.6411532Z",
+      "finished_utc": "2026-11-03T13:07:28.5890447Z",
+      "photo": "photo_20261103_210728_487.jpg",
+      "original_photo_location": "Local outputs/s3-bringup-20261031/cam-captures only",
+      "bytes": 18259,
+      "width": 640,
+      "height": 480,
+      "bitmap_decode_pass": true,
+      "photo_sha256": "C2DD488E83383625E7C67875EEA48666E01762CC1B3522628DE30846E8D6150D",
+      "receiver_exit": 0,
+      "whole_receiver_command_elapsed_s": 2.9369211,
+      "duration_scope": "Whole PowerShell receiver command including process startup, READY wait, request, transfer, validation and save; not pure transfer or FPS",
+      "receiver_sha256": "F7D5EAA0E540FFAD07A18381BF87B44ECBB14CCEEB00F5CCDBE2C945E36504E1",
+      "source_match_to_flashed_binary": "Not independently confirmed in this retest; existing firmware used without uploading"
+    },
+    {
+      "started_utc": "2026-11-03T13:08:25.527265Z",
+      "finished_utc": "2026-11-03T13:08:27.6227649Z",
+      "photo": "photo_20261103_210827_518.jpg",
+      "original_photo_location": "Local outputs/s3-bringup-20261031/cam-captures only",
+      "bytes": 11527,
+      "width": 640,
+      "height": 480,
+      "bitmap_decode_pass": true,
+      "photo_sha256": "9B485053A0494A65C12F878FDA08BE028F4FDAD4067CE57BB91F87ACAE362121",
+      "receiver_exit": 0,
+      "whole_receiver_command_elapsed_s": 2.0868986,
+      "duration_scope": "Whole PowerShell receiver command including process startup, READY wait, request, transfer, validation and save; not pure transfer or FPS",
+      "receiver_sha256": "F7D5EAA0E540FFAD07A18381BF87B44ECBB14CCEEB00F5CCDBE2C945E36504E1",
+      "source_match_to_flashed_binary": "Not independently confirmed in this retest; existing firmware used without uploading"
+    }
+  ],
+  "image_handling": "The three legacy photos contain people and remain only in local outputs, outside the repository",
+  "notes": "Three captures decoded. Visual lag suspected; no frame timestamp in old protocol to prove freshness."
+}

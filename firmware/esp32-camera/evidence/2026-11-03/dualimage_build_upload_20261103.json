@@ -1,0 +1,39 @@
+{
+  "firmware": "DualESP_Image_Check_v1",
+  "arduino_cli": "1.5.1",
+  "esp32_core": "3.3.12",
+  "esp_idf": "v5.5.5",
+  "source_sha256": "05A928E8B655C41E19680FE43B4F85EB523BBFD0F6776A47A38556C2D79008F0",
+  "tool_sha256": "2F42FC89DA74C1B0C450A2793804CDF5B8CD43E03E57C1095B0534A58F3E5F79",
+  "cam": {
+    "role": "CAM",
+    "port": "COM11",
+    "fqbn": "esp32:esp32:esp32cam:CPUFreq=240,FlashMode=dio,FlashFreq=40,PartitionScheme=huge_app,DebugLevel=none,EraseFlash=none",
+    "program_bytes": 1012681,
+    "globals_bytes": 58632,
+    "bin_bytes": 1012832,
+    "source_sha256": "05A928E8B655C41E19680FE43B4F85EB523BBFD0F6776A47A38556C2D79008F0",
+    "bin_sha256": "ADAB7B24A9C61B10643192A033BDA1188A97006BF265B237EF1F4A5417019353",
+    "upload_exit": 0,
+    "uploaded_utc": "2026-11-03T14:59:54.8046623Z"
+  },
+  "s3": {
+    "role": "S3",
+    "port": "COM9",
+    "fqbn": "esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot=default,USBMode=hwcdc,PartitionScheme=app3M_fat9M_16MB,UploadSpeed=115200",
+    "program_bytes": 878682,
+    "globals_bytes": 45820,
+    "bin_bytes": 878832,
+    "source_sha256": "05A928E8B655C41E19680FE43B4F85EB523BBFD0F6776A47A38556C2D79008F0",
+    "bin_sha256": "F17FEF8A7FD1CB8EFE4510CF9171D89174285DE1E4B929E87BBC8120C1A290B8",
+    "upload_exit": 0,
+    "uploaded_utc": "2026-11-03T15:00:59.7853151Z"
+  },
+  "checks": {
+    "radio_preflight": "PASS",
+    "image_transfer": "NOT_RUN_WAITING_CAMERA_SCENE",
+    "numeric_hash_field_parser": "PASS",
+    "host_crc32_known_vector": "CBF43926",
+    "powershell_syntax": "PASS"
+  }
+}

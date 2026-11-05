@@ -1,0 +1,27 @@
+{
+  "schema": "wifi-gateway-build-v1",
+  "date_label": "2026-11-05",
+  "recorded_utc": "2026-11-05T05:36:19.4195743Z",
+  "firmware": "S3_WiFi_Gateway_Check_v1",
+  "target": "ESP32-S3",
+  "compiled": true,
+  "uploaded": true,
+  "upload_verified": true,
+  "program_bytes": 930886,
+  "global_bytes": 48740,
+  "bin_bytes": 931040,
+  "bin_sha256": "3EE20ACAD8E8EF54C8EC5835CF0603494C81BF30ED6F3B2C429AFBC7229910DB",
+  "source_files": {
+    "S3_WiFi_Gateway_Check.ino": "6DF54C87EDA90416996D48126B0943A6BEAEA975A6EB415FF140DBFB46754FBE",
+    "imu_trace.h": "67E2BB3C19F09AD80C27BC754FA7B911A8CCC7235876175B0B0997B0E17F5EAB",
+    "gateway_io.h": "4095202B0AE2613BC93B23F33B5D607B2FCA41370CBB0A56BA2AEB3D002E8D06"
+  },
+  "fqbn": "esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot=default,USBMode=hwcdc,PartitionScheme=app3M_fat9M_16MB,UploadSpeed=115200",
+  "arduino_cli": "1.5.1",
+  "esp32_core": "3.3.12",
+  "network_control_tested": true,
+  "network_test_scope": "Six TEST_ONLY messages and idle TCP reconnect on earlier build; final build only adds IMU boot diagnosis",
+  "network_image_imu_tested": false,
+  "imu_state": "FAULT",
+  "failure_stage": "GYRO_WAKE_WRITE"
+}

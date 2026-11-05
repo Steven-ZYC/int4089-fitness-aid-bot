@@ -1,0 +1,42 @@
+IMU_PROBE address=0x68 ack=0 read=0 id=0x00
+IMU_PROBE address=0x69 ack=0 read=0 id=0x00
+IMU_INIT_FAILED stage=INITIAL_ID
+IMU_FAULT code=4 reason=INIT network_only=YES
+INFO fw=S3_WiFi_Gateway_Check_v1 role=S3 chip=ESP32-S3 boot=51621597 peer_boot=0 paired=0 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=FAULT
+STATE role=S3 boot=51621597 paired=0 peer_boot=0 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_CONFIG chip_id=0x00 address=0x68 acc_conf=0x00 acc_range=0x00 gyr_conf=0x00 gyr_range=0x00 pmu=0x00 err=0x00 odr_hz=50 i2c_timeout_ms=100 accel_lsb_per_g=8192 gyro_lsb_per_dps=65.6 calibrated=NO task_core=1 task_priority=3 capacity=4096
+IMU_STATUS trace=0 count=0 recording=0 overflow=0 read_errors=0 config_errors=0 fault=4 total_samples=0 started_us=0 stopped_us=0 first_us=0 last_us=0 max_gap_us=0
+LINK transport=USB ap=0 channel=1 port=4089 sessions=0 disconnects=0
+READY role=S3
+INFO fw=S3_WiFi_Gateway_Check_v1 role=S3 chip=ESP32-S3 boot=51621597 peer_boot=0 paired=0 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=FAULT
+STATE role=S3 boot=51621597 paired=0 peer_boot=0 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_CONFIG chip_id=0x00 address=0x68 acc_conf=0x00 acc_range=0x00 gyr_conf=0x00 gyr_range=0x00 pmu=0x00 err=0x00 odr_hz=50 i2c_timeout_ms=100 accel_lsb_per_g=8192 gyro_lsb_per_dps=65.6 calibrated=NO task_core=1 task_priority=3 capacity=4096
+IMU_STATUS trace=0 count=0 recording=0 overflow=0 read_errors=0 config_errors=0 fault=4 total_samples=0 started_us=0 stopped_us=0 first_us=0 last_us=0 max_gap_us=0
+LINK transport=USB ap=0 channel=1 port=4089 sessions=0 disconnects=0
+INFO fw=S3_WiFi_Gateway_Check_v1 role=S3 chip=ESP32-S3 boot=51621597 peer_boot=0 paired=0 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=FAULT
+STATE role=S3 boot=51621597 paired=0 peer_boot=0 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_CONFIG chip_id=0x00 address=0x68 acc_conf=0x00 acc_range=0x00 gyr_conf=0x00 gyr_range=0x00 pmu=0x00 err=0x00 odr_hz=50 i2c_timeout_ms=100 accel_lsb_per_g=8192 gyro_lsb_per_dps=65.6 calibrated=NO task_core=1 task_priority=3 capacity=4096
+IMU_STATUS trace=0 count=0 recording=0 overflow=0 read_errors=0 config_errors=0 fault=4 total_samples=0 started_us=0 stopped_us=0 first_us=0 last_us=0 max_gap_us=0
+LINK transport=USB ap=0 channel=1 port=4089 sessions=0 disconnects=0
+INFO fw=S3_WiFi_Gateway_Check_v1 role=S3 chip=ESP32-S3 boot=51621597 peer_boot=0 paired=0 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=FAULT
+STATE role=S3 boot=51621597 paired=0 peer_boot=0 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_CONFIG chip_id=0x00 address=0x68 acc_conf=0x00 acc_range=0x00 gyr_conf=0x00 gyr_range=0x00 pmu=0x00 err=0x00 odr_hz=50 i2c_timeout_ms=100 accel_lsb_per_g=8192 gyro_lsb_per_dps=65.6 calibrated=NO task_core=1 task_priority=3 capacity=4096
+IMU_STATUS trace=0 count=0 recording=0 overflow=0 read_errors=0 config_errors=0 fault=4 total_samples=0 started_us=0 stopped_us=0 first_us=0 last_us=0 max_gap_us=0
+LINK transport=USB ap=0 channel=1 port=4089 sessions=0 disconnects=0
+STATE role=S3 boot=51621597 paired=0 peer_boot=0 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_FAULT code=4 network_only=YES
+INFO fw=S3_WiFi_Gateway_Check_v1 role=S3 chip=ESP32-S3 boot=51621597 peer_boot=0 paired=0 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=FAULT
+STATE role=S3 boot=51621597 paired=0 peer_boot=0 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_CONFIG chip_id=0x00 address=0x68 acc_conf=0x00 acc_range=0x00 gyr_conf=0x00 gyr_range=0x00 pmu=0x00 err=0x00 odr_hz=50 i2c_timeout_ms=100 accel_lsb_per_g=8192 gyro_lsb_per_dps=65.6 calibrated=NO task_core=1 task_priority=3 capacity=4096
+IMU_STATUS trace=0 count=0 recording=0 overflow=0 read_errors=0 config_errors=0 fault=4 total_samples=0 started_us=0 stopped_us=0 first_us=0 last_us=0 max_gap_us=0
+LINK transport=USB ap=0 channel=1 port=4089 sessions=0 disconnects=0
+INFO fw=S3_WiFi_Gateway_Check_v1 role=S3 chip=ESP32-S3 boot=51621597 peer_boot=895870479 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=FAULT
+STATE role=S3 boot=51621597 paired=1 peer_boot=895870479 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_CONFIG chip_id=0x00 address=0x68 acc_conf=0x00 acc_range=0x00 gyr_conf=0x00 gyr_range=0x00 pmu=0x00 err=0x00 odr_hz=50 i2c_timeout_ms=100 accel_lsb_per_g=8192 gyro_lsb_per_dps=65.6 calibrated=NO task_core=1 task_priority=3 capacity=4096
+IMU_STATUS trace=0 count=0 recording=0 overflow=0 read_errors=0 config_errors=0 fault=4 total_samples=0 started_us=0 stopped_us=0 first_us=0 last_us=0 max_gap_us=0
+LINK transport=USB ap=0 channel=1 port=4089 sessions=0 disconnects=0
+INFO fw=S3_WiFi_Gateway_Check_v1 role=S3 chip=ESP32-S3 boot=51621597 peer_boot=895870479 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=FAULT
+STATE role=S3 boot=51621597 paired=1 peer_boot=895870479 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+IMU_CONFIG chip_id=0x00 address=0x68 acc_conf=0x00 acc_range=0x00 gyr_conf=0x00 gyr_range=0x00 pmu=0x00 err=0x00 odr_hz=50 i2c_timeout_ms=100 accel_lsb_per_g=8192 gyro_lsb_per_dps=65.6 calibrated=NO task_core=1 task_priority=3 capacity=4096
+IMU_STATUS trace=0 count=0 recording=0 overflow=0 read_errors=0 config_errors=0 fault=4 total_samples=0 started_us=0 stopped_us=0 first_us=0 last_us=0 max_gap_us=0
+LINK transport=USB ap=0 channel=1 port=4089 sessions=0 disconnects=0

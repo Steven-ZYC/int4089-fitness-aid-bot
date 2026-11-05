@@ -1,0 +1,23 @@
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=1 peer_role=S3 peer_boot=1048792636 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=1 peer_boot=1048792636 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=1 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=2 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=3 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=4 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=5 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=6 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=7 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=8 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=9 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=10 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=11 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=12 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=13 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=14 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=15 duplicate=0 text=HELLO_FROM_S3
+STATE role=CAM boot=4036166495 paired=1 peer_boot=1048792636 rx_unique=15 rx_duplicate=0 ack_queued=15 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=16 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=17 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=18 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=19 duplicate=0 text=HELLO_FROM_S3
+APP_RX role=CAM from=S3 from_boot=1048792636 target_boot=4036166495 seq=20 duplicate=0 text=HELLO_FROM_S3

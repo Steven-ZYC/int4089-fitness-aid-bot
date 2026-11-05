@@ -1,0 +1,20 @@
+{
+  "schema": "known-good-baseline-recheck-v1",
+  "recorded_utc": "2026-11-05T07:04:42.2329881Z",
+  "user_report": "Reconnected the IMU wires; preserve wiring for software comparison",
+  "baseline_firmware": "S3_Image_IMU_Check_v1",
+  "baseline_success_report": "2026-11-04/imageimu_20261104_010412_465_normal.json",
+  "baseline_binary_sha256": "9E169486B66DF3350139B59AE4D441D116992D8ADDB38EA19B1D95FB57726779",
+  "baseline_bytes": 909424,
+  "matches_successful_binary": true,
+  "flash_write_verified": true,
+  "first_post_upload_open": "COM9 temporarily missing",
+  "later_com9_detected": true,
+  "usb_serial_ok": true,
+  "application_init_pass": false,
+  "observed": "FATAL role=S3 reason=IMU_INIT",
+  "detailed_stage_in_baseline": "NOT_AVAILABLE",
+  "hardware_voltage_measured": false,
+  "conclusion_scope": "Same previously successful application binary fails to initialize under current conditions; root cause unconfirmed",
+  "camera_reflashed": false
+}

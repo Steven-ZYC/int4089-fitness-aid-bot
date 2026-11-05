@@ -1,0 +1,6 @@
+# Preserve captured evidence bytes: reports include hashes of CSVs and images.
+evidence/** -text
+
+# Keep host-tool source hashes stable on Windows and other systems.
+*.ps1 text eol=lf
+*.cs text eol=lf

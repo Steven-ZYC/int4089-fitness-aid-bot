@@ -1,0 +1,85 @@
+﻿{
+    "schema":  "dual-esp-text-v1",
+    "started_utc":  "2026-11-03T14:18:42.8368576Z",
+    "pass":  false,
+    "transport":  "ESP-NOW",
+    "channel":  1,
+    "packet_bytes":  48,
+    "ports":  {
+                  "S3":  "COM9",
+                  "CAM":  "COM11"
+              },
+    "serial_baud":  115200,
+    "acquisition_running":  false,
+    "latency_scope":  "Initiator local clock from first radio send to matching application ACK; includes retries, no inter-device clock synchronization",
+    "pairing_scope":  "Bench discovery by project magic/version/opposite role; no authentication or encrypted payload in this diagnostic",
+    "host_role":  "Only sends serial test commands and records both boards; does not relay radio messages",
+    "tool_sha256":  "5406D4EF52DB2D1BC354BB2E14705945C0AD76084E7F719994A082E6DDAC58FB",
+    "sketch_sha256":  "E8A3EAAB4F3824C8A4BB57C112CC76AEF6CDDF3778DF64A03482778BDD07F607",
+    "cases":  [
+
+              ],
+    "device_info":  {
+                        "S3":  {
+                                   "boot":  "1048792636",
+                                   "peer_role":  "CAM",
+                                   "acquisition":  "OFF",
+                                   "peer_boot":  "4036166495",
+                                   "fw":  "DualESP_Text_Check_v1",
+                                   "usb_cdc":  "0",
+                                   "role":  "S3",
+                                   "channel":  "1",
+                                   "chip":  "ESP32-S3",
+                                   "packet_bytes":  "48",
+                                   "paired":  "1"
+                               },
+                        "CAM":  {
+                                    "boot":  "4036166495",
+                                    "peer_role":  "S3",
+                                    "acquisition":  "OFF",
+                                    "peer_boot":  "1048792636",
+                                    "fw":  "DualESP_Text_Check_v1",
+                                    "usb_cdc":  "0",
+                                    "role":  "CAM",
+                                    "channel":  "1",
+                                    "chip":  "ESP32-D0WD-V3",
+                                    "packet_bytes":  "48",
+                                    "paired":  "1"
+                                }
+                    },
+    "initial_state":  {
+                          "S3":  {
+                                     "tx_api_errors":  "0",
+                                     "paired":  "1",
+                                     "tx_queue_drop":  "0",
+                                     "peer_boot":  "4036166495",
+                                     "invalid":  "0",
+                                     "rx_duplicate":  "0",
+                                     "boot":  "1048792636",
+                                     "rx_queue_drop":  "0",
+                                     "bad_crc":  "0",
+                                     "ack_queued":  "0",
+                                     "tx_radio_fail":  "0",
+                                     "role":  "S3",
+                                     "rx_unique":  "0"
+                                 },
+                          "CAM":  {
+                                      "tx_api_errors":  "0",
+                                      "paired":  "1",
+                                      "tx_queue_drop":  "0",
+                                      "peer_boot":  "1048792636",
+                                      "invalid":  "0",
+                                      "rx_duplicate":  "0",
+                                      "boot":  "4036166495",
+                                      "rx_queue_drop":  "0",
+                                      "bad_crc":  "0",
+                                      "ack_queued":  "0",
+                                      "tx_radio_fail":  "0",
+                                      "role":  "CAM",
+                                      "rx_unique":  "0"
+                                  }
+                      },
+    "error":  "Cannot process argument because the value of argument \"Property\" is not valid. Change the value of the \"Property\" argument and run the operation again.",
+    "finished_utc":  "2026-11-03T14:18:47.4331807Z",
+    "elapsed_s":  4.5226961999999995
+}

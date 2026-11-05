@@ -1,0 +1,14 @@
+{
+  "schema": "wifi-gateway-software-check-v1",
+  "date_label": "2026-11-05",
+  "recorded_utc": "2026-11-05T05:14:26.7890301Z",
+  "pass": true,
+  "scope": "PC loopback TCP only, not ESP32 or Wi-Fi",
+  "binary_bytes": 32768,
+  "fragmented_binary_exact": true,
+  "read_timeout": true,
+  "peer_close_detected": true,
+  "host_parser": "PASS",
+  "adapter_sha256": "AF7430E6D121AA81CB865F5B6CA3D4980D6488AAC6035456FD801AC612DE3A02",
+  "test_tool_sha256": "B655E5036E95CC7523A9443CC21CB59ECCE9EB67C3443A6F62EEC1F3FF966ED2"
+}

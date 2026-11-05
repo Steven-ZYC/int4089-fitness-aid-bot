@@ -1,0 +1,24 @@
+{
+  "schema": "imu-power-checked-retry-v1",
+  "recorded_utc": "2026-11-05T07:52:38.7070129Z",
+  "port": "COM9",
+  "firmware": "S3_Image_IMU_Check_v1",
+  "user_visual_checks": [
+    "VIN empty",
+    "BMI160 3v3 to S3 3V3",
+    "BMI160 GND to S3 GND"
+  ],
+  "reset_method": "esptool flash-id read followed by hard-reset",
+  "reset_read_exit_code": 0,
+  "usb_serial_ok": true,
+  "application_observed": "FATAL role=S3 reason=IMU_INIT",
+  "imu_initialization_pass": false,
+  "imu_samples_captured": 0,
+  "firmware_uploaded_this_retry": false,
+  "full_power_cycle_confirmed": false,
+  "wifi_changed": false,
+  "camera_touched": false,
+  "voltage_measured": false,
+  "continuity_measured": false,
+  "root_cause": "UNCONFIRMED"
+}
