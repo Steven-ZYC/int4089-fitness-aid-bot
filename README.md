@@ -1,5 +1,7 @@
 # INT4089 Group Project — AI Fitness Form Coach
 
+> **2026-11-05 Yancheng 本机复现：** ESP32-S3 + BMI160 已在 COM4 通过 30 秒六轴采集（1496 组、49.73 Hz）。本机传感器地址为 0x69，已为诊断和六轴程序加入 0x68/0x69 自动识别。源码来源、实测与使用方法见 [复现记录](firmware/esp32-camera/YANCHENG_BMI160_REPRO.md)。本次只验证 S3／IMU／USB 数据链路。
+
 基于 **Arduino Uno + ESP32-S3 摄像头 + AI** 的健身姿势反馈 IoT 课程项目。
 
 GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4089-fitness-aid-bot)（私有仓库；组员需要先获得仓库访问权限，并使用各自的 GitHub 账号）。

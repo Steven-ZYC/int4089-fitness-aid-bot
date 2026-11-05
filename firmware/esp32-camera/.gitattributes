@@ -1,0 +1,3 @@
+# Preserve the bytes used for measurement and checksum verification.
+evidence/** -text
+*.ps1 text eol=lf

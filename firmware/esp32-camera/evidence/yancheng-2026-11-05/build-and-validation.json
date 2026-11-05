@@ -1,0 +1,115 @@
+{
+  "date": "2026-11-05",
+  "timezone": "Asia/Singapore",
+  "user": "Zhang Yancheng",
+  "branch": "Feat-Integration-Yancheng",
+  "integration_base": "c9646cc175c0b9ab44fe9ee70b234b8c3f5619ca",
+  "upstream_branch": "Feat-Esp-Yuankun",
+  "upstream_commit": "9d583fd1cf0c070752298a1a1233336b12645249",
+  "core": "esp32:esp32@3.3.3",
+  "arduino_cli": "1.5.2-rc.1 fef6e48df",
+  "upload_esptool": "5.1.0",
+  "backup_esptool": "4.5.1",
+  "fqbn": "esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot=default,USBMode=hwcdc,PartitionScheme=app3M_fat9M_16MB,UploadSpeed=115200",
+  "port": "COM4",
+  "address": "0x69",
+  "diagnostic_samples": 150,
+  "diagnostic_errors": 0,
+  "continuous_capture": {
+    "label": "yancheng_reproduction",
+    "port_open_utc": "2026-11-05T11:43:48.9812936Z",
+    "capture_start_utc": "2026-11-05T11:43:49.0449374Z",
+    "port": "COM4",
+    "address": "address=0x69",
+    "requested_seconds": 30,
+    "valid_rows": 1496,
+    "config_reports": 6,
+    "malformed_rows": 0,
+    "startup_fragments": 0,
+    "diagnostic_errors": 0,
+    "sequence_discontinuities": 0,
+    "nonmonotonic_read_times": 0,
+    "read_span_seconds": 30.061,
+    "measured_read_rate_hz": 49.73221117061974,
+    "read_interval_us": {
+      "mean": 20107.69230769231,
+      "stddev": 337.188553766072,
+      "min": 16992,
+      "max": 23008
+    },
+    "read_intervals_over_30ms": 0,
+    "clipping_rows": 0,
+    "accel_norm_g": {
+      "mean": 1.0042240679121308,
+      "stddev": 0.0010356880060768603,
+      "min": 0.9976111832773328,
+      "max": 1.0102367808588242
+    },
+    "axes": {
+      "ax_g": {
+        "mean": -0.07546054812834213,
+        "stddev": 0.0007837950514209373,
+        "min": -0.07788,
+        "max": -0.07288
+      },
+      "ay_g": {
+        "mean": -0.08662204545454535,
+        "stddev": 0.0009915039557427782,
+        "min": -0.09082,
+        "max": -0.08228
+      },
+      "az_g": {
+        "mean": 0.9976305414438493,
+        "stddev": 0.0010414319513621791,
+        "min": 0.9906,
+        "max": 1.00378
+      },
+      "gx_dps": {
+        "mean": -0.23943796791443775,
+        "stddev": 0.03482676327792117,
+        "min": -0.3506,
+        "max": -0.1067
+      },
+      "gy_dps": {
+        "mean": -0.36907092245989453,
+        "stddev": 0.03065183954746409,
+        "min": -0.4726,
+        "max": -0.2744
+      },
+      "gz_dps": {
+        "mean": 0.29434578877005296,
+        "stddev": 0.02948502906180378,
+        "min": 0.1982,
+        "max": 0.3811
+      }
+    },
+    "transport_check_passed": true,
+    "calibrated": false,
+    "note": "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+  },
+  "source_sha256": {
+    "BMI160_Bus_Check/BMI160_Bus_Check.ino": "0c9e9a5dfacbdebcf0154e8b3ecfa497ba308da32244a0b568d57cf885527bf3",
+    "BMI160_SixAxis/BMI160_SixAxis.ino": "ac28dc1d13f50aa0c6f25f3ed3b242a561fdc308affc2eb465f5b723a40d6c18",
+    "capture_bmi160.ps1": "bec1b8a25075674d578d7fc0b46b526d313136acdbda7b179a101d1139ce01a4"
+  },
+  "application_sha256": {
+    "BMI160_Bus_Check": "35c01995892895b5f3de2b2fba6054cc65c2d0eb06e589c8130c81388de7e53c",
+    "BMI160_SixAxis": "6e7286c0ccf23bc91d32334cd8c8556fd0ab1219e0d2fc0e2d86e15caac163c9"
+  },
+  "evidence_sha256": {
+    "autoaddr-diagnostic.txt": "9a2334033bd7a9e6d78c9b7d4fdfe9d2cba8176d16c75e51361ec3fb799accbe",
+    "capture-serial.txt": "d1407885bb7f2fdcd9d3415e8cc3c14c1dd1f6bd75ec02cfa73cd2878bec3bf5",
+    "capture.csv": "a063e842def7e12aa14d0ffdb6422fdf756462fd56536a49226c1d0e24c86726",
+    "capture.json": "e89aef3ba3916980591407b0c55dec46942ecf897c94b8f228dbeb523ae7a607",
+    "independent-validation.json": "e35e1500b31b621d41cd42de95be6d0c2b0f1b2bc8bcaaa53cf0ed6660b3ca93",
+    "initial-diagnostic.txt": "5d8890bd387a2427efd6de9a930eb87cf1ceaddd9e338c1b82921cf1d6c09e87",
+    "upload-bus-check.txt": "e1b23f92f3f0fabc7ad9e87e3c0d7fb2c9467a36258c369466b11efcfb008b0d",
+    "upload-sixaxis.txt": "016123f243b7d470d8622635a50a033baf4cc78f60958453399018f21d1fe7dd"
+  },
+  "backup": {
+    "bytes": 524288,
+    "offset": 0,
+    "sha256": "1487766a7fb0cf13f06d148362d1298abd71c812569b899eb3706c5201b11897",
+    "complete_flash_backup": false
+  }
+}

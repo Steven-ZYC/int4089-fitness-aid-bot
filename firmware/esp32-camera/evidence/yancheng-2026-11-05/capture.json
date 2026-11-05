@@ -1,0 +1,72 @@
+{
+    "label":  "yancheng_reproduction",
+    "port_open_utc":  "2026-11-05T11:43:48.9812936Z",
+    "capture_start_utc":  "2026-11-05T11:43:49.0449374Z",
+    "port":  "COM4",
+    "address":  "address=0x69",
+    "requested_seconds":  30,
+    "valid_rows":  1496,
+    "config_reports":  6,
+    "malformed_rows":  0,
+    "startup_fragments":  0,
+    "diagnostic_errors":  0,
+    "sequence_discontinuities":  0,
+    "nonmonotonic_read_times":  0,
+    "read_span_seconds":  30.061,
+    "measured_read_rate_hz":  49.732211170619742,
+    "read_interval_us":  {
+                             "mean":  20107.692307692309,
+                             "stddev":  337.188553766072,
+                             "min":  16992,
+                             "max":  23008
+                         },
+    "read_intervals_over_30ms":  0,
+    "clipping_rows":  0,
+    "accel_norm_g":  {
+                         "mean":  1.0042240679121308,
+                         "stddev":  0.0010356880060768603,
+                         "min":  0.99761118327733278,
+                         "max":  1.0102367808588242
+                     },
+    "axes":  {
+                 "ax_g":  {
+                              "mean":  -0.075460548128342131,
+                              "stddev":  0.00078379505142093728,
+                              "min":  -0.07788,
+                              "max":  -0.07288
+                          },
+                 "ay_g":  {
+                              "mean":  -0.086622045454545354,
+                              "stddev":  0.00099150395574277824,
+                              "min":  -0.09082,
+                              "max":  -0.08228
+                          },
+                 "az_g":  {
+                              "mean":  0.99763054144384933,
+                              "stddev":  0.0010414319513621791,
+                              "min":  0.9906,
+                              "max":  1.00378
+                          },
+                 "gx_dps":  {
+                                "mean":  -0.23943796791443775,
+                                "stddev":  0.034826763277921169,
+                                "min":  -0.3506,
+                                "max":  -0.1067
+                            },
+                 "gy_dps":  {
+                                "mean":  -0.36907092245989453,
+                                "stddev":  0.030651839547464092,
+                                "min":  -0.4726,
+                                "max":  -0.2744
+                            },
+                 "gz_dps":  {
+                                "mean":  0.29434578877005296,
+                                "stddev":  0.02948502906180378,
+                                "min":  0.1982,
+                                "max":  0.3811
+                            }
+             },
+    "transport_check_passed":  true,
+    "calibrated":  false,
+    "note":  "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+}

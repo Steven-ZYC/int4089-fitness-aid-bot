@@ -1,0 +1,17 @@
+{
+  "csv": "yancheng_reproduction_20261105_194348_871.csv",
+  "rows": 1496,
+  "independent_check_passed": true,
+  "checks": [
+    "finite values",
+    "int16 ranges",
+    "raw-to-unit conversion",
+    "sequence continuity",
+    "monotonic read clock",
+    "fresh modulo-24-bit sensor clock"
+  ],
+  "sensor_tick_delta_min": 433,
+  "sensor_tick_delta_max": 586,
+  "read_interval_us_min": 16992,
+  "read_interval_us_max": 23008
+}
