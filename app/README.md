@@ -20,7 +20,14 @@ ESP32-CAM ──WiFi / MJPEG──> 电脑（本程序）──> 本地网页 UI
 | `sources.py` | 视频源抽象：本地摄像头、ESP32 的 MJPEG 流 |
 | `detector.py` | 检测器：YOLOv8n（默认）／OpenCV HOG |
 | `find_camera.py` | 扫描局域网，找出 ESP32-CAM 的流地址 |
+| `pose_app.py` | 动作规范判定入口（姿态估计 + 规则判决，见 `POSE.md`） |
+| `pose_engine.py` | YOLOv8n-pose 封装，输出 17 个 COCO 关键点 |
+| `form_rules.py` | 关节角度、深蹲/俯卧撑规则、计次状态机 |
+| `test_rules.py` | 规则引擎单元测试（合成关键点，不依赖摄像头） |
 | `firmware/esp32_cam_stream/` | 临时推流固件 + `secrets.example.h` |
+
+两个入口共用 `sources.py`：
+`app.py` 只判断「画面里有没有人」，`pose_app.py` 判断「动作做得规不规范」。
 
 ## 环境
 
@@ -116,6 +123,24 @@ arduino-cli upload -p <COM口> --fqbn "esp32:esp32:esp32cam" \
 - 弱光下噪点大，检测框会抖动
 - ESP32 IP 由 DHCP 分配，路由器重启后可能变化
 - 帧率受 ESP32 推流能力限制
+
+## 动作规范判定
+
+上面的 `app.py` 只回答「画面里有没有人」。项目真正需要的是「**动作做得规不规范**」，
+这部分由 `pose_app.py` 实现：
+
+```bash
+python pose_app.py --source http://<ESP32_IP>/stream --rotate 270 --action squat
+python test_rules.py            # 规则引擎自测，不需要硬件
+```
+
+链路：`YOLOv8n-pose → 17 关键点 → 关节角度 → 阈值规则 → 判决 + 计次`。
+支持深蹲、俯卧撑，输出 `{action, phase, reps, angles, violations, score}`。
+
+**完整方案、规则阈值表、测试结果和拍摄要求见 [`POSE.md`](POSE.md)。**
+
+⚠️ 姿态判定对取景比人体检测苛刻得多：**必须全身入画**，只拍上半身时踝关节没有关键点，
+膝角恒为空值、无法判定。距离 2–3 米、侧面或正前 45°、避免逆光。
 
 ## 下一步
 
