@@ -1,0 +1,17 @@
+# 凭据：代码里 include 的 secrets.h 含 Wi-Fi 明文密码，绝对不能入库
+secrets.h
+# 但模板文件必须入库（根目录的 secrets.*.h 规则会连带忽略它，这里显式放行）
+!firmware/esp32_cam_stream/secrets.example.h
+
+# 模型权重：首次运行由 ultralytics 自动下载
+*.pt
+*.onnx
+
+# 运行产物与抓帧（可能包含可识别人像）
+*.jpg
+*.jpeg
+*.png
+runs/
+__pycache__/
+*.py[cod]
+.venv/

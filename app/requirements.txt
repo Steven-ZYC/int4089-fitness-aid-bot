@@ -1,0 +1,8 @@
+# 注意：OpenCV 必须是 4.x
+# 5.0 移除了 HOGDescriptor / CascadeClassifier 的 Python 绑定
+opencv-python>=4.10,<5
+ultralytics>=8.3
+torch>=2.7
+torchvision>=0.22
+numpy>=1.26
+pyserial>=3.5
