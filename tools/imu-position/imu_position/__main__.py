@@ -25,6 +25,8 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="zero-drift profile JSON (default: the calibrated profile shipped in profiles/)",
     )
+    parser.add_argument("--unified", action="store_true", help="show pose and IMU in one dashboard")
+    parser.add_argument("--pose-url", default="http://127.0.0.1:8010", help="Haoyu pose service URL")
     args = parser.parse_args(argv)
 
     app = QApplication(sys.argv[:1])
@@ -46,7 +48,11 @@ def main(argv: list[str] | None = None) -> int:
         QMessageBox.critical(None, "profile 无效", str(error))
         return 2
 
-    window = MainWindow(profile, profile_path)
+    if args.unified:
+        from .ui.unified_window import UnifiedWindow
+        window = UnifiedWindow(profile, profile_path, args.pose_url)
+    else:
+        window = MainWindow(profile, profile_path)
     window.show()
     return app.exec()
 

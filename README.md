@@ -42,6 +42,8 @@ PIC 指该模块负责人。**每人只在本人当前任务对应的分支修�
 | **Zhang Haoyu** | **PIC 电脑端应用**：接收摄像头图像，在电脑端进行姿态分析、显示结果并参与联调；临时 ESP32-CAM 推流固件仅供打通链路，摄像头采集固件以 Dong Yuankun 的实现为准 | `Feat-PC-App-Haoyu` |
 | **Dong Yuankun** | **PIC ESP32 摄像头**：正确调用已经接好的 ESP32-S3 摄像头，至少拍到一张可读取的照片，并记录环境和复现步骤 | `Feat-Esp-Yuankun` |
 
+`Feat-UI-Design` 是三位成员均可参与的共享 UI 分支，用于把电脑端姿态判定和 ESP32-S3／IMU 数据合并到同一面板。提交使用本人身份；`main` 仍通过 PR 审核合并。使用方式见 [统一面板说明](tools/imu-position/UNIFIED_UI.md)。
+
 `main` 保存经 Zhang Yancheng 审核合并的成果。两位同学完成工作后从本人分支发起 Pull Request（PR），目标为 `main`，由 Zhang Yancheng 集成；不要直接提交或推送到 `main`，也不要改动对方分支。
 
 ## 给两位同学及其 agent 的最短指引
