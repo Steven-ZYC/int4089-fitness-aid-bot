@@ -4,15 +4,18 @@ from __future__ import annotations
 
 import json
 import threading
+import time
 import urllib.request
 
 from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
-    QFrame, QGridLayout, QLabel, QScrollArea, QVBoxLayout, QWidget,
+    QFileDialog, QFrame, QGridLayout, QLabel, QPushButton, QScrollArea,
+    QVBoxLayout, QWidget,
 )
 
-from .main_window import MainWindow
+from ..fusion import FusionBuffer, ImuPoint
+from .main_window import MainWindow, TOOL_ROOT
 
 
 class PoseFeed(QObject):
@@ -66,7 +69,7 @@ class PoseFeed(QObject):
                     self.stats.emit(json.load(response))
             except Exception as exc:
                 self.error.emit(f"姿态服务未连接：{exc}")
-            self.stop_event.wait(0.7)
+            self.stop_event.wait(0.2)
 
 
 def _card(title: str, body: QWidget) -> QFrame:
@@ -85,6 +88,7 @@ class UnifiedWindow(MainWindow):
 
     def __init__(self, profile, profile_path=None, pose_url="http://127.0.0.1:8010") -> None:
         self.pose_url = pose_url
+        self.fusion = FusionBuffer()
         super().__init__(profile, profile_path)
         self.setWindowTitle("FitCoach AI · 运动分析")
         self.resize(1500, 980)
@@ -128,7 +132,18 @@ class UnifiedWindow(MainWindow):
         self.pose_feedback.setWordWrap(True)
         self.pose_state = QLabel("姿态服务：连接中")
         self.pose_state.setWordWrap(True)
-        for widget in (self.result, self.pose_details, self.pose_feedback, self.pose_state):
+        self.fusion_state = QLabel("数据配对：等待摄像头与 IMU")
+        self.fusion_state.setWordWrap(True)
+        self.fusion_details = QLabel("两路数据到达后显示同一时刻的姿态与 IMU 数值。")
+        self.fusion_details.setWordWrap(True)
+        self.rep_fusion = QLabel("完整动作配对：等待首次计次。")
+        self.rep_fusion.setWordWrap(True)
+        self.export_button = QPushButton("导出已配对动作记录")
+        self.export_button.setEnabled(False)
+        self.export_button.clicked.connect(self._export_records)
+        for widget in (self.result, self.pose_details, self.pose_feedback,
+                       self.pose_state, self.fusion_state, self.fusion_details,
+                       self.rep_fusion, self.export_button):
             verdict_layout.addWidget(widget)
         verdict_layout.addStretch(1)
         grid.addWidget(_card("动作分析", verdict), 0, 1)
@@ -167,6 +182,7 @@ class UnifiedWindow(MainWindow):
     def _show_stats(self, payload: dict) -> None:
         pose = payload.get("pose") or {}
         stats = payload.get("stats") or {}
+        self.fusion.add_pose(stats.get("frame_id", 0), stats.get("frame_time_ms", 0), pose)
         action = pose.get("action") or "—"
         phase = pose.get("phase") or "—"
         reps = pose.get("reps", 0)
@@ -184,9 +200,85 @@ class UnifiedWindow(MainWindow):
             self.result.setText("等待完整动作")
             self.pose_feedback.setText("请确保全身进入画面。")
         self.pose_state.setText(f"姿态服务：{stats.get('state', '未知')} · {stats.get('fps', 0)} FPS")
+        self._refresh_fusion()
 
     def _show_error(self, message: str) -> None:
         self.pose_state.setText(message)
+        self._refresh_fusion()
+
+    def _apply_profile(self, profile) -> None:
+        super()._apply_profile(profile)
+        self.fusion = FusionBuffer()
+        self.rep_fusion.setText("完整动作配对：等待首次计次。")
+        self._refresh_fusion()
+
+    def _start_replay(self) -> None:
+        self.fusion = FusionBuffer()
+        self.rep_fusion.setText("完整动作配对：等待首次计次。")
+        super()._start_replay()
+
+    def _toggle_connection(self, checked: bool) -> None:
+        if checked:
+            self.fusion = FusionBuffer()
+            self.rep_fusion.setText("完整动作配对：等待首次计次。")
+        super()._toggle_connection(checked)
+
+    def _feed(self, sample) -> None:
+        if self._paused:
+            return
+        super()._feed(sample)
+        processed = self._all_processed[-1]
+        self.fusion.add_imu(ImuPoint(
+            host_ms=time.time_ns() // 1_000_000,
+            seq=processed.seq,
+            roll_deg=processed.roll_deg,
+            pitch_deg=processed.pitch_deg,
+            yaw_deg=processed.yaw_deg,
+            gyro_dps=processed.gyro_dps,
+            accel_g=processed.accel_g,
+            is_static=processed.is_static,
+            source="串口" if self.reader is not None else "CSV 回放",
+        ))
+        self._refresh_fusion()
+
+    def _refresh_fusion(self) -> None:
+        now_ms = time.time_ns() // 1_000_000
+        self.export_button.setEnabled(bool(self.fusion.rep_records))
+        if self.fusion.rep_records:
+            event = self.fusion.rep_records[-1]
+            result = event.pose["last"]
+            self.rep_fusion.setText(
+                f"第 {result['rep']} 次动作：相机判定{'标准' if result['ok'] else '需调整'}；"
+                f"同刻 IMU roll {event.imu.roll_deg:+.1f}° / "
+                f"pitch {event.imu.pitch_deg:+.1f}°（差 {event.offset_ms:+d} ms）"
+            )
+        joined = self.fusion.latest(now_ms)
+        if joined is None:
+            self.fusion_state.setText("数据配对：等待两路新数据（允许时间差 ±400 ms）")
+            self.fusion_details.setText("摄像头与 IMU 尚无可配对样本。")
+            return
+        self.fusion_state.setText(
+            f"数据已配对 · 时间差 {joined.offset_ms:+d} ms · IMU {joined.imu.source}"
+        )
+        self.fusion_details.setText(
+            f"相机：{joined.pose.get('action', '—')} / {joined.pose.get('phase', '—')}  "
+            f"IMU：roll {joined.imu.roll_deg:+.1f}°、pitch {joined.imu.pitch_deg:+.1f}°、"
+            f"yaw {joined.imu.yaw_deg:+.1f}° · "
+            f"{'静止' if joined.imu.is_static else '运动'}"
+        )
+
+    def _export_records(self) -> None:
+        capture_dir = TOOL_ROOT / "captures"
+        capture_dir.mkdir(exist_ok=True)
+        path, _ = QFileDialog.getSaveFileName(
+            self, "导出已配对动作记录", str(capture_dir / "fused-reps.jsonl"),
+            "JSON Lines (*.jsonl)",
+        )
+        if not path:
+            return
+        with open(path, "w", encoding="utf-8") as stream:
+            for record in self.fusion.rep_records:
+                stream.write(json.dumps(record.as_dict(), ensure_ascii=False) + "\n")
 
     def closeEvent(self, event) -> None:  # noqa: N802
         self.feed.stop()

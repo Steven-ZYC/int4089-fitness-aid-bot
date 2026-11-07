@@ -27,7 +27,8 @@ from sources import open_source
 STATE = {"jpeg": None, "fid": 0,
          "pose": {"action": "", "phase": "启动中", "reps": 0, "angles": {},
                   "primary": None, "last": None},
-         "stats": {"fps": 0.0, "frames": 0, "persons": 0, "source": "", "state": "启动中"}}
+         "stats": {"fps": 0.0, "frames": 0, "persons": 0, "source": "", "state": "启动中",
+                   "frame_time_ms": 0, "frame_id": 0}}
 _LOCK = threading.Lock()
 
 GREEN = (90, 220, 130)
@@ -157,7 +158,8 @@ class Pipeline(threading.Thread):
                 frame = draw_cn(frame, [("未检测到人 — 请确保全身进入画面",
                                          (10, 9), 17, (180, 180, 180))])
 
-            self._times.append(time.time())
+            frame_time = time.time()
+            self._times.append(frame_time)
             fps = 0.0
             if len(self._times) >= 2:
                 span = self._times[-1] - self._times[0]
@@ -166,12 +168,16 @@ class Pipeline(threading.Thread):
             ok, buf = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality])
             if not ok:
                 continue
+            if res.get("last") is not None and "completed_at_ms" not in res["last"]:
+                res["last"]["completed_at_ms"] = int(frame_time * 1000)
             with _LOCK:
                 STATE["jpeg"] = buf.tobytes()
                 STATE["fid"] += 1
                 STATE["pose"] = json.loads(json.dumps(res, default=str))
                 STATE["stats"].update(fps=round(fps, 1), persons=int(kpts is not None),
-                                      frames=STATE["stats"]["frames"] + 1)
+                                      frames=STATE["stats"]["frames"] + 1,
+                                      frame_time_ms=int(frame_time * 1000),
+                                      frame_id=STATE["fid"])
         src.release()
 
 
