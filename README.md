@@ -33,12 +33,13 @@ Dong Yuankun 已完成 **AI Thinker ESP32-CAM 经 USB 串口离线拍照并保�
 
 ## 成员与分工
 
-PIC 指该模块负责人。**每人只在自己的分支修改并提交；默认不要在 `main` 开发。分支名区分大小写，请完整复制。**
+PIC 指该模块负责人。**每人只在本人当前任务对应的分支修改并提交；默认不要在 `main` 开发。分支名区分大小写，请完整复制。**
 
 | 成员 | 分工与第一阶段交付 | 本人工作分支 |
 | --- | --- | --- |
 | **Zhang Yancheng** | 项目统筹、架构、AI／服务器及系统集成；审核并合并 PR | `Feat-Integration-Yancheng` |
 | **Zhang Haoyu** | **PIC Arduino**：接好 Arduino Uno 的蜂鸣器和 LED，能分别完成基础调用，并记录接线和复现步骤 | `Feat-Arduino-Haoyu` |
+| **Zhang Haoyu** | **PIC 电脑端应用**：接收摄像头图像，在电脑端进行姿态分析、显示结果并参与联调；临时 ESP32-CAM 推流固件仅供打通链路，摄像头采集固件以 Dong Yuankun 的实现为准 | `Feat-PC-App-Haoyu` |
 | **Dong Yuankun** | **PIC ESP32 摄像头**：正确调用已经接好的 ESP32-S3 摄像头，至少拍到一张可读取的照片，并记录环境和复现步骤 | `Feat-Esp-Yuankun` |
 
 `main` 保存经 Zhang Yancheng 审核合并的成果。两位同学完成工作后从本人分支发起 Pull Request（PR），目标为 `main`，由 Zhang Yancheng 集成；不要直接提交或推送到 `main`，也不要改动对方分支。
@@ -47,9 +48,13 @@ PIC 指该模块负责人。**每人只在自己的分支修改并提交；默�
 
 开始时把下面对应的一句发给自己的 agent；**agent 必须先读 [AGENTS.md](AGENTS.md)，确认你的身份，再检查或切换到你的分支后才可改动。身份不明必须询问，不能跳过。**
 
-**Zhang Haoyu：**
+**Zhang Haoyu／Arduino 任务：**
 
 > 我是 Zhang Haoyu。请先读根目录 AGENTS.md，确认当前分支是 Feat-Arduino-Haoyu，只在我的分支工作。我的任务是 Arduino Uno 蜂鸣器和 LED 的接线与基础调用，请按 firmware/arduino-uno/README.md 执行。
+
+**Zhang Haoyu／电脑端应用任务：**
+
+> 我是 Zhang Haoyu。请先读根目录 AGENTS.md，确认当前分支是 Feat-PC-App-Haoyu，只在我的分支工作。我的任务是电脑端摄像头画面接入、姿态分析和结果展示，请按 app/README.md 执行；摄像头采集固件由 Dong Yuankun 负责。
 
 **Dong Yuankun：**
 
@@ -57,13 +62,21 @@ PIC 指该模块负责人。**每人只在自己的分支修改并提交；默�
 
 ### 打开自己的分支
 
-安装 Git 后打开终端。**两人各自只运行对应的一组**，这样首次克隆就会进入本人分支。若提示仓库不存在或无权限，先联系 Zhang Yancheng 确认访问权限，不要创建另一个仓库。
+安装 Git 后打开终端。**按当前任务只运行对应的一组**，这样首次克隆就会进入本人分支。若提示仓库不存在或无权限，先联系 Zhang Yancheng 确认访问权限，不要创建另一个仓库。
 
-Zhang Haoyu：
+Zhang Haoyu／Arduino 任务：
 
 ```powershell
 git clone --branch Feat-Arduino-Haoyu --single-branch https://github.com/Steven-ZYC/int4089-fitness-aid-bot.git int4089-haoyu
 cd int4089-haoyu
+git branch --show-current
+```
+
+Zhang Haoyu／电脑端应用任务：
+
+```powershell
+git clone --branch Feat-PC-App-Haoyu --single-branch https://github.com/Steven-ZYC/int4089-fitness-aid-bot.git int4089-haoyu-app
+cd int4089-haoyu-app
 git branch --show-current
 ```
 
@@ -84,11 +97,11 @@ git pull --ff-only
 git branch --show-current
 ```
 
-若本地没有本人分支，改用 `git switch --track origin/<本人分支>`。上面的 `<本人分支>` 必须替换成分工表中的完整名字。如果远端没有这个分支，联系 Zhang Yancheng，不要回退到 `main`。有未提交改动时先停止切换，不能直接丢弃或覆盖。
+若本地没有当前任务对应的本人分支，改用 `git switch --track origin/<本人分支>`。上面的 `<本人分支>` 必须替换成分工表中当前任务对应的完整名字。如果远端没有这个分支，联系 Zhang Yancheng，不要回退到 `main`。有未提交改动时先停止切换，不能直接丢弃或覆盖。
 
 ### 保存、提交与推送
 
-每次修改前、提交前都确认 `git branch --show-current` 输出是自己的分支；输出为 `main`、对方分支或空白时停止操作。第一次提交前，请用自己的姓名和邮箱设置仓库级 `git config user.name`、`git config user.email`，不要复制别人的身份。
+每次修改前、提交前都确认 `git branch --show-current` 输出是本人当前任务对应的分支；输出为 `main`、对方分支或空白时停止操作。第一次提交前，请用自己的姓名和邮箱设置仓库级 `git config user.name`、`git config user.email`，不要复制别人的身份。
 
 Zhang Haoyu 的提交示例：
 
@@ -100,6 +113,8 @@ git diff --cached
 git commit -m "feat(arduino): add LED and buzzer basic control"
 git push -u origin Feat-Arduino-Haoyu
 ```
+
+电脑端应用任务使用 `Feat-PC-App-Haoyu`，只暂存 `app/` 下本次修改的文件，并显式推送到 `origin Feat-PC-App-Haoyu`。
 
 Dong Yuankun 的提交示例：
 
@@ -118,7 +133,8 @@ git push -u origin Feat-Esp-Yuankun
 
 1. **Haoyu / Arduino**：LED 可按预期亮灭；蜂鸣器可按预期发声与停止；接线、实际引脚、开发环境、代码入口和验证结果可复现。见 [Arduino 任务说明](firmware/arduino-uno/README.md)。
 2. **Yuankun / ESP32 摄像头**：程序可初始化实际摄像头，至少获取一张可读取的照片；记录板卡、摄像头、环境、实际 pin map 和复现步骤。见 [摄像头任务说明](firmware/esp32-camera/README.md)。
-3. **后续集成**：确定板间通信与消息格式，接入 AI 判定及实时提醒，再完善用户记录和纠正建议平台。
+3. **Haoyu / 电脑端应用**：接入摄像头图像，展示姿态分析结果；记录运行环境、输入接口、复现步骤和真实场景验证结果。见 [`Feat-PC-App-Haoyu` 分支的应用说明](https://github.com/Steven-ZYC/int4089-fitness-aid-bot/blob/Feat-PC-App-Haoyu/app/README.md)。
+4. **后续集成**：确定板间通信与消息格式，将判定结果回传并驱动 Uno 实时提醒，再完善用户记录和纠正建议平台。
 
 不要提交 Wi-Fi 密码或令牌。日常实拍照片、训练视频、训练记录放在被忽略的 `captures/` 或 `data/` 目录中。本分支按 Dong Yuankun 本次明确要求，将两张指定的演示照片单独归档到 `firmware/esp32-camera/evidence/2026-10-23/`；后续采集默认继续保存在本地忽略目录。
 
@@ -152,6 +168,7 @@ AGENTS.md                         # 身份确认、分支边界与 agent 操作�
 README.md                         # 项目介绍、成员分工和 Git 入门
 firmware/arduino-uno/README.md     # Haoyu 的硬件任务与验收
 firmware/esp32-camera/            # Yuankun 的离线拍照固件、接收脚本、README 和样张
+app/                              # Haoyu 的电脑端姿态分析与展示（位于 Feat-PC-App-Haoyu 分支）
 experiments/yancheng/esp32-pose-bench/ # Yancheng 的板端姿态推理与性能测试
 docs/reference/                   # 用户提供的概念参考图
 ```
