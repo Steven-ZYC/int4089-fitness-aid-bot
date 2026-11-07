@@ -10,7 +10,7 @@ import urllib.request
 from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
-    QFileDialog, QFrame, QGridLayout, QLabel, QPushButton, QScrollArea,
+    QFileDialog, QFrame, QGridLayout, QHBoxLayout, QLabel, QPushButton, QScrollArea,
     QVBoxLayout, QWidget,
 )
 
@@ -101,6 +101,41 @@ class UnifiedWindow(MainWindow):
     def _build_ui(self) -> None:
         super()._build_ui()
         outer = self.centralWidget().layout()
+        old_top = outer.takeAt(0).layout()
+        controls = (self.connect_button, self.port_combo, self.refresh_button,
+                    self.reset_checkbox, self.replay_button,
+                    self.replay_pick_button, self.pause_button,
+                    self.profile_combo, self.profile_button)
+        while old_top.count():
+            widget = old_top.takeAt(0).widget()
+            if widget in controls:
+                widget.setParent(None)
+            elif widget is not None:
+                widget.deleteLater()
+        old_top.setParent(None)
+
+        header = QFrame()
+        header.setObjectName("header")
+        header_layout = QVBoxLayout(header)
+        headline = QHBoxLayout()
+        title = QLabel("FitCoach AI  /  运动分析")
+        title.setObjectName("pageTitle")
+        headline.addWidget(title)
+        headline.addStretch(1)
+        headline.addWidget(QLabel("零飘 Profile"))
+        headline.addWidget(self.profile_combo)
+        headline.addWidget(self.profile_button)
+        header_layout.addLayout(headline)
+        toolbar = QHBoxLayout()
+        for widget in (self.connect_button, QLabel("端口"), self.port_combo,
+                       self.refresh_button, self.reset_checkbox,
+                       self.replay_button, self.replay_pick_button,
+                       self.pause_button):
+            toolbar.addWidget(widget)
+        toolbar.addStretch(1)
+        header_layout.addLayout(toolbar)
+        outer.insertWidget(0, header)
+
         outer.removeWidget(self.tabs)
         source = self.tabs.widget(0)
         scene = self.tabs.widget(1)
@@ -163,6 +198,8 @@ class UnifiedWindow(MainWindow):
         outer.addWidget(scroll, 1)
         self.setStyleSheet("""
             QMainWindow, QScrollArea, QWidget { background: #f3ede4; color: #201b16; }
+            QFrame#header { background: #f3ede4; border: 0; }
+            QLabel#pageTitle { font-size: 22px; font-weight: 700; color: #33291d; }
             QFrame#card { background: #fffaf3; border: 1px solid #dfd4c5; border-radius: 13px; }
             QLabel#cardTitle { font-size: 16px; font-weight: 700; color: #46502a; padding: 3px; }
             QLabel#video { background: #242824; color: #f7f2e9; border-radius: 8px; font-size: 17px; }
