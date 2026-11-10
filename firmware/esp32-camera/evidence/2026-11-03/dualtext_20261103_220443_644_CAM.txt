@@ -1,0 +1,44 @@
+﻿INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+INFO fw=DualESP_Text_Check_v1 role=CAM chip=ESP32-D0WD-V3 channel=1 packet_bytes=48 boot=4036166495 paired=0 peer_role=S3 peer_boot=0 usb_cdc=0 acquisition=OFF
+STATE role=CAM boot=4036166495 paired=0 peer_boot=0 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0

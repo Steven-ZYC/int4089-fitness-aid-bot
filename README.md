@@ -140,4 +140,12 @@ firmware/
 
 ## 本地同步说明（2026-11-10）
 
-本次已执行 `git fetch origin`，取回 `main`、`Feat-Arduino-Haoyu`、`Feat-PC-App-Haoyu` 和 `Feat-Esp-Yuankun` 的最新远程引用。本 README 以 `origin/main` 的 `e5757b6` 为基础更新，保留其 consultation 背景与协作说明。**取回分支不等于已合并代码**：各成员实现尚需差异审查与集成测试；本轮文档与报警模块修改位于 `Feat-Integration-Yancheng`，未直接修改 main 或同学分支。
+本次已执行 `git fetch origin`，取回 `main`、`Feat-Arduino-Haoyu`、`Feat-PC-App-Haoyu` 和 `Feat-Esp-Yuankun` 的最新远程引用。本 README 以 `origin/main` 的 `e5757b6` 为基础更新，保留其 consultation 背景与协作说明。**取回分支不等于已合并代码**：取回时各成员实现尚待整合；随后 Yuankun 分支已在下述摄像头集成中合入。文档与报警模块修改位于 `Feat-Integration-Yancheng`，未直接修改 main 或同学分支。
+
+## 摄像头与 ESP-NOW 集成（2026-11-10）
+
+本次合入 `origin/Feat-Esp-Yuankun` 的 `9d583fd`，保留原贡献历史与当前报警／BMI160 自动地址修正。包含 USB 单张拍照、ESP-NOW 文本和分片图像、S3 图像／IMU 并发等独立实验固件；这些独立固件不会同时运行。
+
+后续预期使用 **ESP-NOW** 进行 ESP32-CAM 与 S3 间通信：CAM 分片发送 JPEG，S3 重组后经 USB 交给电脑，电脑仍负责 AI。该路线是对当前 CAM 直接连电脑方案的后续演进，尚未集成进 S3 报警／IMU 主固件。历史 ESP-NOW 自检不能视为实时视频或完整 AI 闭环。参见 [图像协议与复现](firmware/esp32-camera/DUAL_ESP_IMAGE.md)。
+
+本轮摄像头 USB 单张复现连续两次通过：OV2640、640×480 JPEG，约 10.8KB，串口接收约 0.92 秒。Windows PowerShell 默认输出目录问题已修复。当前 CAM 运行 USB 自检固件，S3 未重刷。详见 [摄像头复现记录](docs/validation/2026-11-10-camera-reproduction.json)。ESP-NOW 源码已合入，当前硬件无线传图尚待单独验收。

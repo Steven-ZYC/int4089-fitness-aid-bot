@@ -1,0 +1,71 @@
+{
+  "label": "photo_frame_clockwise_card",
+  "port_open_utc": "2026-11-03T10:20:48.9773018Z",
+  "capture_start_utc": "2026-11-03T10:20:49.0602245Z",
+  "port": "COM9",
+  "requested_seconds": 90,
+  "valid_rows": 4479,
+  "config_reports": 18,
+  "malformed_rows": 0,
+  "startup_fragments": 0,
+  "diagnostic_errors": 0,
+  "sequence_discontinuities": 0,
+  "nonmonotonic_read_times": 0,
+  "read_span_seconds": 90.042,
+  "measured_read_rate_hz": 49.732347126896336,
+  "read_interval_us": {
+    "mean": 20107.637338097364,
+    "stddev": 322.91378319528246,
+    "min": 17979.0,
+    "max": 23021.0
+  },
+  "read_intervals_over_30ms": 0,
+  "clipping_rows": 0,
+  "accel_norm_g": {
+    "mean": 1.0049132585577663,
+    "stddev": 0.0012220531060073774,
+    "min": 0.9999169881545168,
+    "max": 1.0207617800446882
+  },
+  "axes": {
+    "ax_g": {
+      "mean": -0.02400090198705064,
+      "stddev": 0.005133082294739445,
+      "min": -0.06506,
+      "max": 0.01245
+    },
+    "ay_g": {
+      "mean": -0.09950465059164923,
+      "stddev": 0.004885980775128044,
+      "min": -0.18945,
+      "max": -0.03662
+    },
+    "az_g": {
+      "mean": 0.9996616722482744,
+      "stddev": 0.0011237038560735857,
+      "min": 0.98547,
+      "max": 1.01624
+    },
+    "gx_dps": {
+      "mean": -0.08201913373520833,
+      "stddev": 0.1747639628437514,
+      "min": -9.8476,
+      "max": 2.3171
+    },
+    "gy_dps": {
+      "mean": -0.3698190221031482,
+      "stddev": 0.22485499324131888,
+      "min": -13.0183,
+      "max": 2.7896
+    },
+    "gz_dps": {
+      "mean": -0.013714467515070902,
+      "stddev": 3.0917416659453227,
+      "min": -59.3598,
+      "max": 19.7256
+    }
+  },
+  "transport_check_passed": true,
+  "calibrated": false,
+  "note": "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+}

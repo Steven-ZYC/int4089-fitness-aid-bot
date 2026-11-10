@@ -1,0 +1,485 @@
+﻿{
+    "schema":  "dual-esp-text-v1",
+    "started_utc":  "2026-11-03T14:20:16.8680347Z",
+    "pass":  true,
+    "transport":  "ESP-NOW",
+    "channel":  1,
+    "packet_bytes":  48,
+    "ports":  {
+                  "S3":  "COM9",
+                  "CAM":  "COM11"
+              },
+    "serial_baud":  115200,
+    "acquisition_running":  false,
+    "latency_scope":  "Initiator local clock from first radio send to matching application ACK; includes retries, no inter-device clock synchronization",
+    "pairing_scope":  "Bench discovery by project magic/version/opposite role; no authentication or encrypted payload in this diagnostic",
+    "host_role":  "Only sends serial test commands and records both boards; does not relay radio messages",
+    "tool_sha256":  "4B7E2FB6E31BDBB0BF9E820783FF1D8C9D766B5AB49655B7EAA18EBE1C091BB0",
+    "sketch_sha256":  "E8A3EAAB4F3824C8A4BB57C112CC76AEF6CDDF3778DF64A03482778BDD07F607",
+    "cases":  [
+                  {
+                      "initiator":  "S3",
+                      "responder":  "CAM",
+                      "deliberate_drop_ack":  false,
+                      "pass":  true,
+                      "requested":  20,
+                      "acked":  20,
+                      "failed":  0,
+                      "retries":  0,
+                      "remote_duplicate_rx":  0,
+                      "deliberate_drops":  0,
+                      "first_seq":  21,
+                      "last_seq":  40,
+                      "rtt_min_ms":  4.026,
+                      "rtt_mean_ms":  5.0427500000000007,
+                      "rtt_max_ms":  6.013,
+                      "transactions":  [
+                                           {
+                                               "seq":  21,
+                                               "attempts":  1,
+                                               "rtt_ms":  4.654,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  22,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.008,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  23,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.012,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  24,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.009,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  25,
+                                               "attempts":  1,
+                                               "rtt_ms":  6.008,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  26,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.007,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  27,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.007,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  28,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.008,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  29,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.011,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  30,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.01,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  31,
+                                               "attempts":  1,
+                                               "rtt_ms":  4.026,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  32,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.008,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  33,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.012,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  34,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.01,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  35,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.011,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  36,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.01,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  37,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.009,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  38,
+                                               "attempts":  1,
+                                               "rtt_ms":  6.013,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  39,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.009,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           },
+                                           {
+                                               "seq":  40,
+                                               "attempts":  1,
+                                               "rtt_ms":  5.013,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           }
+                                       ]
+                  },
+                  {
+                      "initiator":  "CAM",
+                      "responder":  "S3",
+                      "deliberate_drop_ack":  false,
+                      "pass":  true,
+                      "requested":  20,
+                      "acked":  20,
+                      "failed":  0,
+                      "retries":  0,
+                      "remote_duplicate_rx":  0,
+                      "deliberate_drops":  0,
+                      "first_seq":  1,
+                      "last_seq":  20,
+                      "rtt_min_ms":  3.994,
+                      "rtt_mean_ms":  4.0752000000000006,
+                      "rtt_max_ms":  4.994,
+                      "transactions":  [
+                                           {
+                                               "seq":  1,
+                                               "attempts":  1,
+                                               "rtt_ms":  4.594,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  2,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  3,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  4,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  5,
+                                               "attempts":  1,
+                                               "rtt_ms":  4,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  6,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  7,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  8,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  9,
+                                               "attempts":  1,
+                                               "rtt_ms":  4.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  10,
+                                               "attempts":  1,
+                                               "rtt_ms":  4,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  11,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  12,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  13,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  14,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  15,
+                                               "attempts":  1,
+                                               "rtt_ms":  4,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  16,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  17,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  18,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  19,
+                                               "attempts":  1,
+                                               "rtt_ms":  3.994,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           },
+                                           {
+                                               "seq":  20,
+                                               "attempts":  1,
+                                               "rtt_ms":  4,
+                                               "matching_remote_rx":  1,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           }
+                                       ]
+                  },
+                  {
+                      "initiator":  "S3",
+                      "responder":  "CAM",
+                      "deliberate_drop_ack":  true,
+                      "pass":  true,
+                      "requested":  1,
+                      "acked":  1,
+                      "failed":  0,
+                      "retries":  1,
+                      "remote_duplicate_rx":  1,
+                      "deliberate_drops":  1,
+                      "first_seq":  41,
+                      "last_seq":  41,
+                      "rtt_min_ms":  1005.624,
+                      "rtt_mean_ms":  1005.624,
+                      "rtt_max_ms":  1005.624,
+                      "transactions":  [
+                                           {
+                                               "seq":  41,
+                                               "attempts":  2,
+                                               "rtt_ms":  1005.624,
+                                               "matching_remote_rx":  2,
+                                               "reply":  "RECEIVED_BY_CAM"
+                                           }
+                                       ]
+                  },
+                  {
+                      "initiator":  "CAM",
+                      "responder":  "S3",
+                      "deliberate_drop_ack":  true,
+                      "pass":  true,
+                      "requested":  1,
+                      "acked":  1,
+                      "failed":  0,
+                      "retries":  1,
+                      "remote_duplicate_rx":  1,
+                      "deliberate_drops":  1,
+                      "first_seq":  21,
+                      "last_seq":  21,
+                      "rtt_min_ms":  1004.714,
+                      "rtt_mean_ms":  1004.714,
+                      "rtt_max_ms":  1004.714,
+                      "transactions":  [
+                                           {
+                                               "seq":  21,
+                                               "attempts":  2,
+                                               "rtt_ms":  1004.714,
+                                               "matching_remote_rx":  2,
+                                               "reply":  "RECEIVED_BY_S3"
+                                           }
+                                       ]
+                  }
+              ],
+    "device_info":  {
+                        "S3":  {
+                                   "boot":  "1048792636",
+                                   "peer_role":  "CAM",
+                                   "acquisition":  "OFF",
+                                   "peer_boot":  "4036166495",
+                                   "fw":  "DualESP_Text_Check_v1",
+                                   "usb_cdc":  "0",
+                                   "role":  "S3",
+                                   "channel":  "1",
+                                   "chip":  "ESP32-S3",
+                                   "packet_bytes":  "48",
+                                   "paired":  "1"
+                               },
+                        "CAM":  {
+                                    "boot":  "4036166495",
+                                    "peer_role":  "S3",
+                                    "acquisition":  "OFF",
+                                    "peer_boot":  "1048792636",
+                                    "fw":  "DualESP_Text_Check_v1",
+                                    "usb_cdc":  "0",
+                                    "role":  "CAM",
+                                    "channel":  "1",
+                                    "chip":  "ESP32-D0WD-V3",
+                                    "packet_bytes":  "48",
+                                    "paired":  "1"
+                                }
+                    },
+    "initial_state":  {
+                          "S3":  {
+                                     "tx_api_errors":  "0",
+                                     "paired":  "1",
+                                     "tx_queue_drop":  "0",
+                                     "peer_boot":  "4036166495",
+                                     "invalid":  "0",
+                                     "rx_duplicate":  "0",
+                                     "boot":  "1048792636",
+                                     "rx_queue_drop":  "0",
+                                     "bad_crc":  "0",
+                                     "ack_queued":  "0",
+                                     "tx_radio_fail":  "0",
+                                     "role":  "S3",
+                                     "rx_unique":  "0"
+                                 },
+                          "CAM":  {
+                                      "tx_api_errors":  "0",
+                                      "paired":  "1",
+                                      "tx_queue_drop":  "0",
+                                      "peer_boot":  "1048792636",
+                                      "invalid":  "0",
+                                      "rx_duplicate":  "0",
+                                      "boot":  "4036166495",
+                                      "rx_queue_drop":  "0",
+                                      "bad_crc":  "0",
+                                      "ack_queued":  "20",
+                                      "tx_radio_fail":  "0",
+                                      "role":  "CAM",
+                                      "rx_unique":  "20"
+                                  }
+                      },
+    "final_state":  {
+                        "S3":  {
+                                   "tx_api_errors":  "0",
+                                   "paired":  "1",
+                                   "tx_queue_drop":  "0",
+                                   "peer_boot":  "4036166495",
+                                   "invalid":  "0",
+                                   "rx_duplicate":  "1",
+                                   "boot":  "1048792636",
+                                   "rx_queue_drop":  "0",
+                                   "bad_crc":  "0",
+                                   "ack_queued":  "21",
+                                   "tx_radio_fail":  "0",
+                                   "role":  "S3",
+                                   "rx_unique":  "21"
+                               },
+                        "CAM":  {
+                                    "tx_api_errors":  "0",
+                                    "paired":  "1",
+                                    "tx_queue_drop":  "0",
+                                    "peer_boot":  "1048792636",
+                                    "invalid":  "0",
+                                    "rx_duplicate":  "1",
+                                    "boot":  "4036166495",
+                                    "rx_queue_drop":  "0",
+                                    "bad_crc":  "0",
+                                    "ack_queued":  "41",
+                                    "tx_radio_fail":  "0",
+                                    "role":  "CAM",
+                                    "rx_unique":  "41"
+                                }
+                    },
+    "finished_utc":  "2026-11-03T14:20:28.3587235Z",
+    "elapsed_s":  11.4301295
+}

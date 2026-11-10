@@ -1,174 +1,55 @@
-# ESP32-CAM：USB 串口离线拍照演示
+> **当前集成说明（2026-11-10）：** 本目录合入 Yuankun 的历史摄像头、IMU 和 ESP-NOW 验证源码。以下历史分工、端口与故障结论保留为交接记录，不能替代当前实物状态。最新架构见 [根 README](../../README.md)，统一由 Yancheng 维护。S3 当前 BMI160 自动地址探测修正与报警模块均保留；历史 IMU 文档中的固定地址／固件版本须以实际源码为准。
 
-负责人：**Dong Yuankun** · 工作分支：**`Feat-Esp-Yuankun`**。
+# 双 ESP32、IMU 与网络传输（Prototype）
 
-**2026-10-23 已取得两张可读取的 JPEG 照片。** 本演示使用 AI Thinker ESP32-CAM 的摄像头引脚配置，通过 ESP32-CAM-MB 的 USB 串口把图片传给 Windows 电脑；运行时无需校园 Wi-Fi、互联网、Python 或服务器。Arduino 草图来自当天在 Arduino IDE 中保存的 `ESP32CAM_USB_Capture`。
+负责人：**Dong Yuankun**；专属分支：**`Feat-Esp-Yuankun`**。
 
-项目最初规划使用 ESP32-S3；本次实际演示按 **AI Thinker ESP32-CAM** 配置完成。这里的引脚和开发板选项只对应本次配置。改用 ESP32-S3 或其他板卡时，需要重新核实硬件及引脚。
+**本次交接入口：[HANDOFF.md](HANDOFF.md)。** 已有成果與 IMU 故障分開列明；Yuankun 確認沒有萬用表，已請組長接手後續硬件排查，尚待實際接手。
 
-## 文件入口
+开始前阅读根目录 [AGENTS.md](../../AGENTS.md)，确认身份和本人分支后再修改；只通过本人分支和 PR 交付工作。
 
-```text
-firmware/esp32-camera/
-├── README.md
-├── ESP32CAM_USB_Capture/
-│   └── ESP32CAM_USB_Capture.ino   # 用 Arduino IDE 打开并上传
-├── receive_esp32cam.ps1          # Windows 单张拍照、接收和保存脚本
-├── evidence/2026-10-23/          # 本次指定归档的两张原始 JPG
-│   ├── photo_20261023_135856_568.jpg
-│   └── photo_20261023_140024_458.jpg
-└── captures/                    # 之后运行脚本生成的照片，Git 忽略
-```
+## 最新任务（2026-10-30 consultation 后）
 
-## 演示如何工作
+本阶段**不再以在 ESP32-S3 上运行 AI 模型为主要目标**。改为让两块 ESP32 采集传感器数据、完成通信，通过**主 ESP32**把信息传至团队电脑。AI 训练、推理和姿势判断由 **Zhang Haoyu** 在电脑端负责。
 
-```text
-Windows PowerShell -- CAPTURE + 换行 --> USB / MB 串口桥 --> ESP32-CAM
-Windows JPG 文件   <-- 图片长度 + JPEG 原始字节 ----------- 摄像头
-```
-
-电脑将 USB 接口识别为 COM 串口。固件收到拍照命令后，调用 `esp_camera_fb_get()` 取得 JPEG，通过串口传给接收脚本。脚本按声明的字节数接收，并检查 JPEG 起止标记，再写入 `.jpg`。
-
-USB 在这里承担供电及串口传输；系统不会把它识别为可直接在 Windows 相机软件中选择的 USB 摄像头。本阶段完成单张图像采集；AI 姿势分析、联网服务以及 Arduino Uno 的 LED／蜂鸣器联动仍由后续集成实现。
-
-## 本次环境与已知配置
-
-| 项目 | 本次记录 |
-| --- | --- |
-| 开发板选择 | `AI Thinker ESP32-CAM`，原聊天的 Arduino IDE 截图可见 |
-| 摄像头传感器、模组批次 | 尚未独立确认具体型号；不把常见的 OV2640 当作已核实信息 |
-| USB 连接 | ESP32-CAM-MB 底板连接电脑；串口桥具体芯片型号待核实 |
-| IDE | 本机安装的 Arduino IDE `2.3.10.0` |
-| ESP32 板卡包 | 本机安装的 Espressif `esp32` 核心 `3.3.12`；未另行归档完整编译／上传日志 |
-| 摄像头库 | 板卡包自带的 `esp_camera.h`，无需另外安装摄像头库 |
-| 电脑接收端 | Windows PowerShell，使用 .NET `System.IO.Ports.SerialPort` |
-| 串口 | 本次为 `COM9`；其他电脑及更换 USB 接口后应重新确认 |
-| 串口参数 | `115200` baud、8 数据位、无校验、1 停止位、无流控 |
-| 图像配置 | JPEG、VGA `640×480`、`jpeg_quality = 12`、`fb_count = 1` |
-| 摄像头时钟 | XCLK `20 MHz` |
-| PSRAM 及其他 IDE 菜单 | 未独立记录具体容量和全部菜单设置；有 PSRAM 选项时按实物配置启用 |
-| 供电／连接范围 | 使用已接好的摄像头和 MB 底板，由 USB 连接电脑；未另外测量供电电压或增加 Uno 接线 |
-
-IDE 与核心版本来自整理时读取的本机安装信息，不等同于已保存的构建配置锁定文件。首次安装 IDE、板卡包或 USB 串口驱动可能需要网络，应在课堂演示前完成；已安装完成后的拍照与传输不需要联网。
-
-### 草图使用的摄像头引脚
-
-下表逐项对应草图的 AI Thinker 配置；摄像头排线使用板上既有接口。本表用于复现软件配置，不表示已逐根实测 PCB 接线。
-
-| 信号 | GPIO | 信号 | GPIO |
-| --- | --- | --- | --- |
-| PWDN | 32 | RESET | -1（未指定独立复位脚） |
-| XCLK | 0 | PCLK | 22 |
-| SCCB SDA / SIOD | 26 | SCCB SCL / SIOC | 27 |
-| VSYNC | 25 | HREF | 23 |
-| D0 / Y2 | 5 | D1 / Y3 | 18 |
-| D2 / Y4 | 19 | D3 / Y5 | 21 |
-| D4 / Y6 | 36 | D5 / Y7 | 39 |
-| D6 / Y8 | 34 | D7 / Y9 | 35 |
-
-可对照 [Espressif CameraWebServer 的 AI Thinker 引脚配置](https://github.com/espressif/arduino-esp32/blob/master/libraries/ESP32/examples/Camera/CameraWebServer/camera_pins.h)。其他板卡不得直接套用本表。
-
-## 运行步骤
-
-### 1. 上传固件（已上传且正常运行时可跳过）
-
-1. USB 连接 MB 底板和电脑，保持现有摄像头排线连接。
-2. 在 Arduino IDE 打开 [`ESP32CAM_USB_Capture.ino`](ESP32CAM_USB_Capture/ESP32CAM_USB_Capture.ino)。保持目录名与草图名相同。
-3. 安装／选择 **esp32 by Espressif Systems** 板卡包，开发板选 **AI Thinker ESP32-CAM**，端口选实际设备；本机演示使用 `COM9`。
-4. 编译并上传草图。若无法上传，按这块底板的实际 BOOT／RESET 流程排查，不要替换为其他板卡的引脚配置。
-5. 串口监视器选择 **115200 baud**。初始化成功时输出 `CAMERA_OK`，之后约每秒输出 `READY`。若监视器打开较晚，可能只看到 `READY`。
-6. **关闭串口监视器和串口绘图器**，USB 保持连接，接收脚本需要独占该 COM 口。
-
-此前使用 CameraWebServer 时出现过 `Camera probe failed with error 0x106`，当时选用了 `CAMERA_MODEL_ESP_EYE` 引脚配置。当前独立草图直接写明 AI Thinker 引脚；当日后续截图已出现 `READY`，并取得下方两张照片。Arduino IDE 的开发板菜单与 CameraWebServer 中的摄像头型号宏是两处配置，必须与实物相符。
-
-### 2. 在 Windows 接收一张照片
-
-在**仓库根目录**打开 Windows PowerShell，复制运行：
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\firmware\esp32-camera\receive_esp32cam.ps1 -Port COM9 -OpenImage
-```
-
-`COM9` 替换为本机实际端口。可以在 Arduino IDE 的端口菜单或设备管理器查看，也可以运行以下命令列出串口，再结合 USB 插拔确认设备：
-
-```powershell
-powershell.exe -NoProfile -Command "[System.IO.Ports.SerialPort]::GetPortNames()"
-```
-
-脚本每运行一次，请求并保存一张照片。正常输出类似下面这样，字节数和文件名以当次结果为准：
-
-```text
-Waiting for READY on COM9 ...
-Capture requested. Receiving JPEG ...
-Saved <字节数> bytes to:
-<仓库目录>\firmware\esp32-camera\captures\photo_<时间戳>.jpg
-```
-
-`-OpenImage` 会在接收完成后调用 Windows 默认图片查看器。要再拍一张，在 PowerShell 按 **↑** 再按 **Enter**。照片使用时间戳命名。
-
-### 3. 指定照片保存位置
-
-默认保存在脚本旁边的 `captures/`，已由仓库 `.gitignore` 忽略。也可以指定本地目录：
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\firmware\esp32-camera\receive_esp32cam.ps1 -Port COM9 -OutputDirectory "$PWD\captures\esp32-demo" -OpenImage
-```
-
-接收端沿用原聊天的 PowerShell 脚本，本次仅将默认输出目录从 `photos/` 调整为 `captures/`，便于与仓库的本地照片目录约定一致。以下两张历史演示照片按本次明确要求单独归档在 `evidence/`。
-
-## 2026-10-23 照片记录
-
-两张照片从原演示的输出目录复制，保留原始 JPG 字节和文件名；整理时均可正常解码显示。下面时间来自文件名，按当时 Windows 本地时间（UTC+8）记录。
-
-| 文件 | 文件名时间 | 分辨率 | 文件大小 | 观察 |
-| --- | --- | --- | --- | --- |
-| [photo_20261023_135856_568.jpg](evidence/2026-10-23/photo_20261023_135856_568.jpg) | 13:58:56.568 | 640×480 | 13,212 字节 | 对着室内顶部拍摄，可见灯光，画面偏暗且倾斜 |
-| [photo_20261023_140024_458.jpg](evidence/2026-10-23/photo_20261023_140024_458.jpg) | 14:00:24.458 | 640×480 | 21,738 字节 | 室内人物及电脑场景，画面存在明显偏绿色现象 |
-
-### 第一张照片
-
-![第一次 USB 串口拍照结果：室内顶部](evidence/2026-10-23/photo_20261023_135856_568.jpg)
-
-### 第二张照片
-
-![第二次 USB 串口拍照结果：室内演示场景](evidence/2026-10-23/photo_20261023_140024_458.jpg)
-
-这些结果记录了本次图像采集的阶段成果。整理过程中核对了原代码与照片文件，未重新编译、烧录或发起新的硬件拍照；未保存每次接收的完整终端日志，也未进行长时间运行、断线恢复、色彩校准或不同电脑兼容性测试。
-
-## 串口调用协议
-
-以 LF（`\n`）分隔文本行；串口允许 CRLF，接收脚本会去掉 CR。图片部分必须按长度读取二进制，不能按文本行读取，也不能扫描 `DONE` 来切割 JPEG。
-
-| 方向 | 内容 | 含义 |
+| 硬件 | 责任 | 验证边界 |
 | --- | --- | --- |
-| 设备 → 电脑 | `CAMERA_OK` + 换行 | 摄像头初始化成功 |
-| 设备 → 电脑 | `READY` + 换行 | 等待命令，约每秒重复 |
-| 电脑 → 设备 | `CAPTURE\n` | 请求拍摄一张 JPEG |
-| 设备 → 电脑 | `IMG <N>\n` | 接下来恰好有 N 字节的图片数据 |
-| 设备 → 电脑 | N 字节原始 JPEG | 图片内容，传输中不插入状态文本 |
-| 设备 → 电脑 | `\nDONE\r\n` | 草图发出的结束提示；脚本在收齐 N 字节后即可保存，不依赖此提示 |
-| 设备 → 电脑 | `ERR_INIT 0x...` / `ERR_CAPTURE` / `ERR_NOT_JPEG` | 初始化失败／取帧失败／帧格式不符 |
+| **ESP32-CAM / Camera Node** | 采集图像或帧，并与 Arduino Uno 建立硬件连接 | 具体相机型号、接线／供电、采集格式、帧率和与主 ESP 的传输方式须实测 |
+| **ESP32-S3 N16R8 / Main ESP（暂按现有目标板规划）** | 接入 IMU；作为双板系统的主节点，负责联网和与电脑交换数据 | 实物规格／GPIO、Wi-Fi 数据通路、打包与可靠性、异常处理待验证 |
+| **Bosch BMI-series IMU** | 测量运动相关信息，例如三轴加速度和角速度 | **基礎採集驗收通過**：身份、約 49.73 Hz 六軸、照片參考加速度方向、順時針負 Z 及電腦端獨立零偏驗證；精密校準等後續項目另列 |
+| **Arduino Uno** | 与 ESP32-CAM 硬件相连，完成 LED／蜂鸣器等本地控制 | 与其他模块的通信协议及 AI 判断结果回传路径由 Yancheng 统筹确认 |
 
-接收脚本等待 `READY` 和 `IMG` 各最多约 30 秒，接收图片最多约 120 秒；长度限制为 4 字节至 2 MiB。图片开头必须是 `FF D8`、结尾必须是 `FF D9`，接收不完整或标记不符时不写入 JPG。这个检查不等同于完整 JPEG 解码或校验和校验。
+## 建议工作顺序与交付
 
-## 常见问题与演示限制
+1. **确认硬件**：记录两块 ESP32 的准确型号、摄像头模块、BMI IMU 型号、引脚、电源与逻辑电平，不按其他板的默认接线猜测。
+2. **相机侧最小演示**：ESP32-CAM 成功初始化并采集图像／帧，记录格式、大小、有效帧率和失败情况；确认与 Arduino Uno 的安全连接方式。
+3. **IMU 侧最小演示**：主 ESP32 读取加速度／角速度原始数据，记录轴定义、单位、采样频率、时间戳与校准方案。
+4. **双板通信**：探索 Camera Node 到 Main ESP 的图像数据通路；根据实际帧大小、带宽和丢包／延迟表现选协议。**不要默认 ESP-NOW 能直接稳定传输连续图像帧**。
+5. **联网到电脑**：由主 ESP 上传图像和 IMU 数据，让电脑端接收并解析；与 Haoyu 明确数据格式、时间戳、网络消息样例和错误处理。
+6. **结果回传／Arduino 对接**：与 Yancheng 验证电脑端 AI 输出如何传回 Uno，控制 LED／蜂鸣器；保留该链路尚未确定的部分。
+7. **记录测试**：在 README／实验记录中写明固件版本、IDE／SDK、接线图、复现步骤、实测延迟／帧率、供电与网络异常行为；未测试明确写“待验证”。
 
-| 现象 | 排查方法 |
-| --- | --- |
-| `Access is denied`／端口被占用 | 关闭 Arduino 串口监视器、串口绘图器，以及其他占用同一 COM 口的程序，再运行脚本 |
-| 找不到 `COM9` | 按实际端口修改 `-Port`；检查 USB 数据线、设备管理器及底板所需串口驱动 |
-| 等不到 `READY` | 核实草图已上传、端口正确、115200 波特率和供电稳定；打开接收脚本后可按一次板上 RESET 重试 |
-| `ERR_INIT`／`0x106` | 核实实际板型、AI Thinker 引脚、排线方向与接触、供电；串口监视器查看启动日志后关闭，再运行脚本 |
-| `pin_sccb_sda`／`pin_sccb_scl` 编译错误 | 核对 ESP32 核心版本；本机当前安装版本为 `3.3.12`，旧版 API 可能不同 |
-| 图片传输不完整或 JPEG 标记错误 | 检查 USB 数据线和供电，确认没有其他程序读串口；重置开发板后重新运行脚本 |
-| 照片偏暗、偏绿或角度不合适 | 本次样张已观察到这些现象；先改善光线、镜头方向，再单独检查相机的曝光／白平衡等配置，原因尚未确定 |
+## 协作与边界
 
-115200 baud 的 8N1 串口，理论载荷约 11,520 字节／秒，实际耗时还包括拍照、等待和 USB／串口开销。这套演示适合逐张拍照，尚未实现实时视频、重传、校验和或连续采集。
+- **Haoyu** 负责模型和电脑侧 AI 服务；你负责硬件数据采集与传输协议，不以模型量化和板上推理作为本阶段工作目标。
+- **Yancheng** 负责硬件架构、Arduino 协同、最终数据接口及集成。
+- 早先 RDK X5 NPU 和 ESP32-S3 板上 AI 模型部署已不再是本阶段主线；未来的云端 HPC 也不是当前交付要求。
 
-后续工作可依次补齐具体摄像头型号和完整 IDE 菜单记录、改善样张画质，再由项目集成分支接入服务器 AI 与 Uno 的反馈控制。开始改动前仍需遵守根目录 [AGENTS.md](../../AGENTS.md)，只在自己的分支工作。
+## Yuankun 本地進度（2026-11-04）
 
-## 参考资料
+- 標示 **ESP32-S3-N16R8** 的主板已於 COM9 完成基本自檢：Flash 16MB、PSRAM 8MB、寫入校驗通過，程式連續輸出兩次報告，見 [實測結果](S3_TEST_RESULT.md)。
+- 本人已確認：仍有舊 ESP32-CAM，現有 **藍色 GY-801 三塊、紫色 BMI160 標示模組一塊**；第一版使用紫色 BMI160，已讀到預期晶片 ID 及六軸資料，見 [選型理由](IMU_SELECTION.md)。
+- 第一個實作入口是 [S3 主板自檢與逐步操作](S3_BRINGUP.md)，配套 [S3_Board_Check 草圖](S3_Board_Check/S3_Board_Check.ino)；已在本機 esp32 3.3.12 編譯及完成基本上板驗證。雙板單張圖片、反向訊息及合併版 Normal 並發檢查已有實測；IMU 精密校準、長期並發和網絡功能仍待驗證。
+- 10-23 舊 AI Thinker ESP32-CAM 的 USB 拍照成果保留在 [歷史離線演示](USB_CAMERA_DEMO.md)，不等同於新 S3 主節點已完成聯網或 IMU 采集。
+- 統一任務清單和每一步驗收條件見 [PROGRESS.md](PROGRESS.md)。第 1–4 步基礎驗收已通過；第 5 步合併版 Normal 並發檢查也已通過，目前待固定鏡頭方向、建立網絡通路；每輪更新「已完成／目前／下一步」。
+- 第 2 步入口：[BMI160 逐針接線與身份讀取](BMI160_WIRING.md)。GPIO4／GPIO5 作 SDA／SCL；COM9 連續兩次讀到 0x68／0xD1，見 [BMI160 身份結果](BMI160_TEST_RESULT.md)。
+- 第 3 步入口：[六軸程式及解讀指南](BMI160_SIX_AXIS.md)。BMI160_SixAxis_v2 曾完成靜止及自由轉動各 747 組，約 49.73 Hz，無格式／診斷錯誤或 >30 ms 讀取空檔；原始 CSV 及統計見 [六軸結果](BMI160_SIX_AXIS_RESULT.md)。獨立基線未套用校準；目前 S3 已換成下列第 5 步合併版。
+- 第 3 步續記：[固定方向與零偏驗證](BMI160_AXES_CALIBRATION.md)。照片參考下兩個水平加速度方向已區分；90 秒 4479 組的順時針記錄主要負向 gz。電腦端獨立零偏驗證 RMS 0.468 → 0.058 °/s；S3 仍輸出原始數據，完整精密校準及 X／Y 角速度的各自定向標定列為後續工作。
+- 第 4 步相機入口：[重連與新畫面自檢](CAM_RECHECK.md)。COM11 實測讀回 ESP32-D0WD-V3、4MB Flash、2MB PSRAM、OV2640；相機自檢 3 次 640×480 JPEG 均通過時間門檻、長度／序號和解碼，包含桌面物件樣張，見 [CAM 重測結果](CAM_RECHECK_RESULT.md)。
+- 第 4 步文字入口：[雙板無線教學](DUAL_ESP_TEXT.md)／[實測結果](DUAL_ESP_TEXT_RESULT.md)。S3 COM9 和 CAM COM11 正常雙向各 20／20 次，平均往返約 5.043／4.075 ms；兩個漏 ACK 案例各重試一次後通過。
+- 第 4 步圖片入口：[圖像分片與驗證](DUAL_ESP_IMAGE.md)／[實測記錄](DUAL_ESP_IMAGE_RESULT.md)。當時兩板運行 DualESP_Image_Check_v1，240-byte 包、200-byte 資料區；11-04 三個圖片案例均通過三端 SHA256、640×480 解碼及反向 TEST_ONLY。正常 74 片、零重試；兩個受控故障各重試一次恢復。該獨立圖片版未讀 IMU；本輪 S3 已換下列合併版。未測持續視頻或網絡。
 
-- [Espressif 摄像头驱动与取帧示例](https://github.com/espressif/esp32-camera)：`esp_camera_init()`、`esp_camera_fb_get()`、`esp_camera_fb_return()`。
-- [Espressif AI Thinker 摄像头引脚](https://github.com/espressif/arduino-esp32/blob/master/libraries/ESP32/examples/Camera/CameraWebServer/camera_pins.h)：对应 `CAMERA_MODEL_AI_THINKER`。
-- [Microsoft SerialPort.Read(byte[], int, int)](https://learn.microsoft.com/en-us/dotnet/api/system.io.ports.serialport.read?view=netframework-4.8.1)：读取串口二进制字节；一次读取可能少于请求长度。
+- 第 5 步前半：[並發教學](IMAGE_IMU_CONCURRENCY.md)／[實測結果](IMAGE_IMU_RESULT.md)。S3 COM9 現運行 S3_Image_IMU_Check_v1、CAM COM11 保留圖片版；Normal 一張 10,031-byte JPEG 的三端指紋、解碼、反向回覆通過，同時取得 496 筆 IMU、49.7338 Hz、最大間隔 21.946 ms。實拍仍朝天花板，固定取景待改善；網絡／AI／Uno 尚未整合。
+
+本目录已有 S3 及 IMU 基礎採集證據，**双板联网、精密校准及完整项目仍待验证**。不得提交 Wi-Fi 密码、其他密钥、可辨识人像或未经授权的数据。参见 [根 README](../../README.md)。
+最新狀態（2026-11-05）：[Wi-Fi 控制／TCP 重連](WIFI_GATEWAY_RESULT.md) 的歷史成功保留；目前先恢復 IMU。用戶已依正面位置核對六線全部吻合、VIN 留空；16:09 獨立 BMI160_Bus_Check_v1 上板及版本讀回通過，但 0x68／0x69 各三次未應答，停在 INITIAL_ID，沒有六軸數據，詳見 [分段診斷](BMI160_BUS_DIAG.md)。目前板上是獨立診斷程式，未啟動網關或 ESP-NOW；原成功映像及網關來源保留。下一步視有無萬用表，量實際供電／接點或用現有 GY-801 做通訊對照，見 [IMU 排查](BMI160_RECOVERY.md)。不再要求重複整套接線或拆線拍照；本頁其餘 11-04 成果屬歷史基線，當前統一狀態見 [PROGRESS.md](PROGRESS.md)。

@@ -1,0 +1,49 @@
+Recorded UTC: 2026-11-05T08:09:38.9873334Z
+User confirmed VIN empty and all six wire endpoints by front-side positions. This is not voltage/continuity measurement.
+
+HOST_COMMAND INFO UTC=2026-11-05T08:09:42.0892688Z
+INFO fw=BMI160_Bus_Check_v1 bus_ready=1 initialized=0 sda=4 scl=5 hz=100000 timeout_ms=100 wifi=OFF
+
+HOST_PROBE_ROUND=1
+
+HOST_COMMAND PROBE UTC=2026-11-05T08:09:43.1066474Z
+PINS stage=PROBE sda=1 scl=1 measurement=DIGITAL_ONLY
+PROBE address=0x68 stop_code=2 elapsed_us=180
+READ stage=IDENTITY address=0x68 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=230
+IDENTITY address=0x68 read_ok=0 expected_id_match=0
+PROBE address=0x69 stop_code=2 elapsed_us=170
+READ stage=IDENTITY address=0x69 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=211
+IDENTITY address=0x69 read_ok=0 expected_id_match=0
+PROBE_DONE configuration_written=NO
+
+HOST_PROBE_ROUND=2
+
+HOST_COMMAND PROBE UTC=2026-11-05T08:09:45.1328286Z
+PINS stage=PROBE sda=1 scl=1 measurement=DIGITAL_ONLY
+PROBE address=0x68 stop_code=2 elapsed_us=176
+READ stage=IDENTITY address=0x68 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=228
+IDENTITY address=0x68 read_ok=0 expected_id_match=0
+PROBE address=0x69 stop_code=2 elapsed_us=168
+READ stage=IDENTITY address=0x69 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=210
+IDENTITY address=0x69 read_ok=0 expected_id_match=0
+PROBE_DONE configuration_written=NO
+
+HOST_PROBE_ROUND=3
+
+HOST_COMMAND PROBE UTC=2026-11-05T08:09:47.1590668Z
+PINS stage=PROBE sda=1 scl=1 measurement=DIGITAL_ONLY
+PROBE address=0x68 stop_code=2 elapsed_us=180
+READ stage=IDENTITY address=0x68 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=225
+IDENTITY address=0x68 read_ok=0 expected_id_match=0
+PROBE address=0x69 stop_code=2 elapsed_us=169
+READ stage=IDENTITY address=0x69 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=209
+IDENTITY address=0x69 read_ok=0 expected_id_match=0
+PROBE_DONE configuration_written=NO
+
+HOST_COMMAND RUN_INIT UTC=2026-11-05T08:09:49.1758353Z
+INIT_BEGIN address=0x68 settings=VOLATILE_ONLY
+READ stage=INITIAL_ID address=0x68 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=205
+INIT_RESULT pass=0 stage=INITIAL_ID
+
+HOST_COMMAND INFO UTC=2026-11-05T08:09:54.2072055Z
+INFO fw=BMI160_Bus_Check_v1 bus_ready=1 initialized=0 sda=4 scl=5 hz=100000 timeout_ms=100 wifi=OFF

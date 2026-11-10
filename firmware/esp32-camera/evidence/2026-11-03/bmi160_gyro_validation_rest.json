@@ -1,0 +1,70 @@
+{
+  "label": "gyro_validation_rest",
+  "port_open_utc": "2026-11-03T08:50:28.2742147Z",
+  "capture_start_utc": "2026-11-03T08:50:28.3111299Z",
+  "port": "COM9",
+  "requested_seconds": 10,
+  "valid_rows": 500,
+  "config_reports": 2,
+  "malformed_rows": 0,
+  "diagnostic_errors": 0,
+  "sequence_discontinuities": 0,
+  "nonmonotonic_read_times": 0,
+  "read_span_seconds": 10.034,
+  "measured_read_rate_hz": 49.73091488937612,
+  "read_interval_us": {
+    "mean": 20108.21643286573,
+    "stddev": 336.458387078467,
+    "min": 17974.0,
+    "max": 22026.0
+  },
+  "read_intervals_over_30ms": 0,
+  "clipping_rows": 0,
+  "accel_norm_g": {
+    "mean": 1.0045435232264528,
+    "stddev": 0.0009396153149569963,
+    "min": 1.0019021518092472,
+    "max": 1.0078441743146607
+  },
+  "axes": {
+    "ax_g": {
+      "mean": -0.031227239999999996,
+      "stddev": 0.001183233902208127,
+      "min": -0.03638,
+      "max": -0.02637
+    },
+    "ay_g": {
+      "mean": -0.09612049999999993,
+      "stddev": 0.0009434101947674629,
+      "min": -0.1001,
+      "max": -0.09363
+    },
+    "az_g": {
+      "mean": 0.9994453999999987,
+      "stddev": 0.0009427833903087584,
+      "min": 0.99683,
+      "max": 1.00293
+    },
+    "gx_dps": {
+      "mean": -0.06872100000000005,
+      "stddev": 0.034026935855693136,
+      "min": -0.1677,
+      "max": 0.0305
+    },
+    "gy_dps": {
+      "mean": -0.36378700000000014,
+      "stddev": 0.028400699471332117,
+      "min": -0.4421,
+      "max": -0.2744
+    },
+    "gz_dps": {
+      "mean": 0.28118099999999946,
+      "stddev": 0.030591041214793727,
+      "min": 0.1982,
+      "max": 0.3659
+    }
+  },
+  "transport_check_passed": true,
+  "calibrated": false,
+  "note": "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+}

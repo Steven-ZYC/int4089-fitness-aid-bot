@@ -1,0 +1,11 @@
+PAIRED role=S3 peer_boot=895870479
+IMU_BUS_CASE timeout_ms=20
+IMU_BUS_WRITE timeout_ms=20 value=0xB6 code=0 elapsed_us=529
+IMU_BUS_WRITE timeout_ms=20 value=0x11 code=0 elapsed_us=359
+IMU_BUS_WRITE timeout_ms=20 value=0x15 code=4 elapsed_us=6987
+IMU_BUS_STATE timeout_ms=20 id_read=0 id=0x00 pmu_read=0 pmu=0x00 err_read=0 err=0x00
+IMU_BUS_CASE timeout_ms=100
+IMU_BUS_WRITE timeout_ms=100 value=0xB6 code=4 elapsed_us=99722
+IMU_BUS_STATE timeout_ms=100 id_read=0 id=0x00 pmu_read=0 pmu=0x00 err_read=0 err=0x00
+IMU_BUS_DONE acquisition=OFF settings=VOLATILE_ONLY
+STATE role=S3 boot=2130483092 paired=1 peer_boot=895870479 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0

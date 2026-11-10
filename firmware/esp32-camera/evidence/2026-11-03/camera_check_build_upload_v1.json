@@ -1,0 +1,15 @@
+{
+  "firmware": "ESP32CAM_USB_Check_v1",
+  "fqbn": "esp32:esp32:esp32cam:CPUFreq=240,FlashMode=dio,FlashFreq=40,PartitionScheme=huge_app,DebugLevel=none,EraseFlash=none",
+  "upload_baud": 115200,
+  "port": "COM11",
+  "arduino_cli": "1.5.1",
+  "esp32_core": "3.3.12",
+  "compiled_program_bytes": 373153,
+  "compiled_global_bytes": 34140,
+  "sketch_sha256": "1A5366BFC2C0393D8AB48BDAD5D6C8516DF7FCA685333A66A19F7E9C6FADEBAF",
+  "bin_sha256": "A966B1D7301D697C20CF8918FE9AC8AC196C837C90FDCCA9F807D0E9E2BE0EE1",
+  "bin_bytes": 373296,
+  "upload_exit": 0,
+  "uploaded_utc": "2026-11-03T13:17:29.7682741Z"
+}

@@ -1,0 +1,71 @@
+{
+  "label": "photo_frame_flat_synced",
+  "port_open_utc": "2026-11-03T10:02:30.8870297Z",
+  "capture_start_utc": "2026-11-03T10:02:30.9371573Z",
+  "port": "COM9",
+  "requested_seconds": 10,
+  "valid_rows": 500,
+  "config_reports": 2,
+  "malformed_rows": 0,
+  "startup_fragments": 0,
+  "diagnostic_errors": 0,
+  "sequence_discontinuities": 0,
+  "nonmonotonic_read_times": 0,
+  "read_span_seconds": 10.034,
+  "measured_read_rate_hz": 49.73091488937612,
+  "read_interval_us": {
+    "mean": 20108.21643286573,
+    "stddev": 336.42839581782084,
+    "min": 17974.0,
+    "max": 22026.0
+  },
+  "read_intervals_over_30ms": 0,
+  "clipping_rows": 0,
+  "accel_norm_g": {
+    "mean": 1.0044653335794738,
+    "stddev": 0.0009069085088540722,
+    "min": 1.001519407899817,
+    "max": 1.007140537611311
+  },
+  "axes": {
+    "ax_g": {
+      "mean": -0.030544240000000007,
+      "stddev": 0.001084430172947986,
+      "min": -0.0343,
+      "max": -0.02771
+    },
+    "ay_g": {
+      "mean": -0.09449523999999995,
+      "stddev": 0.0012351838327152773,
+      "min": -0.099,
+      "max": -0.09009
+    },
+    "az_g": {
+      "mean": 0.999542699999998,
+      "stddev": 0.0009069058752335125,
+      "min": 0.9967,
+      "max": 1.00208
+    },
+    "gx_dps": {
+      "mean": -0.08003519999999993,
+      "stddev": 0.03387979045629897,
+      "min": -0.1829,
+      "max": 0.0152
+    },
+    "gy_dps": {
+      "mean": -0.35717300000000024,
+      "stddev": 0.027872414929963632,
+      "min": -0.4573,
+      "max": -0.2591
+    },
+    "gz_dps": {
+      "mean": 0.28233979999999986,
+      "stddev": 0.03099980793721611,
+      "min": 0.1829,
+      "max": 0.3659
+    }
+  },
+  "transport_check_passed": true,
+  "calibrated": false,
+  "note": "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+}

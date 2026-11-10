@@ -1,0 +1,259 @@
+﻿{
+    "schema":  "s3-image-imu-v1",
+    "started_utc":  "2026-11-03T17:04:12.4659809Z",
+    "case":  "Normal",
+    "pass":  true,
+    "ports":  {
+                  "S3":  "COM9",
+                  "CAM":  "COM11"
+              },
+    "serial_baud":  115200,
+    "transport":  "ESP-NOW",
+    "packet_bytes":  240,
+    "payload_bytes":  200,
+    "channel":  1,
+    "imu_acquisition":  true,
+    "image_route":  "CAM capture -\u003e ESP-NOW -\u003e S3 reassembly -\u003e USB UART -\u003e Windows",
+    "control_scope":  "TEST_ONLY message and nonce, no AI or Uno command",
+    "time_scope":  "CAM frame times share CAM boot clock; gateway duration uses S3 clock; no inter-device subtraction",
+    "source_sha256":  "05A928E8B655C41E19680FE43B4F85EB523BBFD0F6776A47A38556C2D79008F0",
+    "tool_sha256":  "590CF95174AA9EDCA0E27DD9AFD87390E253582C9733D7B9847EA06F714D28BA",
+    "gateway_source_sha256":  "145437674FE1FA3D76460F71A5C9038528FA7D93517D4FC6ADDBB4E9F1AD3834",
+    "imu_module_sha256":  "4500E9EEE05D451732A841997DCC19127A6A865048E07FBA80115DBCBD2A3502",
+    "device_info":  {
+                        "S3":  {
+                                   "boot":  "4151786758",
+                                   "psram_bytes":  "8388608",
+                                   "imu":  "ON",
+                                   "packet_bytes":  "240",
+                                   "fw":  "S3_Image_IMU_Check_v1",
+                                   "max_image":  "262144",
+                                   "role":  "S3",
+                                   "peer_boot":  "1015978044",
+                                   "channel":  "1",
+                                   "payload_bytes":  "200",
+                                   "chip":  "ESP32-S3",
+                                   "paired":  "1"
+                               },
+                        "CAM":  {
+                                    "boot":  "1015978044",
+                                    "psram_bytes":  "2097152",
+                                    "imu":  "OFF",
+                                    "packet_bytes":  "240",
+                                    "fw":  "DualESP_Image_Check_v1",
+                                    "max_image":  "262144",
+                                    "role":  "CAM",
+                                    "peer_boot":  "4151786758",
+                                    "channel":  "1",
+                                    "payload_bytes":  "200",
+                                    "chip":  "ESP32-D0WD-V3",
+                                    "paired":  "1"
+                                }
+                    },
+    "initial_state":  {
+                          "S3":  {
+                                     "boot":  "4151786758",
+                                     "tx_queue_drop":  "0",
+                                     "queue_drop":  "0",
+                                     "bad_packets":  "0",
+                                     "radio_fail":  "0",
+                                     "role":  "S3",
+                                     "peer_boot":  "1015978044",
+                                     "tx_errors":  "0",
+                                     "paired":  "1",
+                                     "image_state":  "0"
+                                 },
+                          "CAM":  {
+                                      "boot":  "1015978044",
+                                      "tx_queue_drop":  "0",
+                                      "queue_drop":  "0",
+                                      "bad_packets":  "0",
+                                      "radio_fail":  "0",
+                                      "role":  "CAM",
+                                      "peer_boot":  "4151786758",
+                                      "tx_errors":  "0",
+                                      "paired":  "1",
+                                      "image_state":  "0"
+                                  }
+                      },
+    "imu_config":  {
+                       "gyr_conf":  "0x27",
+                       "capacity":  "4096",
+                       "pmu":  "0x14",
+                       "acc_range":  "0x05",
+                       "gyro_lsb_per_dps":  "65.6",
+                       "chip_id":  "0xD1",
+                       "accel_lsb_per_g":  "8192",
+                       "calibrated":  "NO",
+                       "address":  "0x68",
+                       "task_core":  "1",
+                       "gyr_range":  "0x02",
+                       "odr_hz":  "50",
+                       "task_priority":  "3",
+                       "err":  "0x00",
+                       "acc_conf":  "0x27"
+                   },
+    "cam_source":  {
+                       "req":  "1",
+                       "request_us":  "7464418524",
+                       "chunks":  "51",
+                       "acquired_us":  "7464462570",
+                       "frame":  "4",
+                       "discarded":  "1",
+                       "sha256":  "5686D2A6D20D8F673207735EA9AAFBC1A14D8484699E7965816987F58794E82B",
+                       "bytes":  "10031",
+                       "crc32":  "5F2C9C12",
+                       "frame_us":  "7464422497"
+                   },
+    "cam_complete":  {
+                         "req":  "1",
+                         "chunks":  "51",
+                         "radio_elapsed_us":  "450390",
+                         "retries":  "0",
+                         "frame":  "4",
+                         "bytes":  "10031",
+                         "corruptions":  "0"
+                     },
+    "gateway_ready":  {
+                          "req":  "1",
+                          "duplicate_chunks":  "0",
+                          "chunks":  "51",
+                          "crc_rejects":  "0",
+                          "frame":  "4",
+                          "sha256":  "5686D2A6D20D8F673207735EA9AAFBC1A14D8484699E7965816987F58794E82B",
+                          "dropped_ack":  "0",
+                          "bytes":  "10031",
+                          "crc32":  "5F2C9C12",
+                          "gateway_elapsed_us":  "497037"
+                      },
+    "host_command_to_ready_ms":  530.38590000000022,
+    "usb_meta":  {
+                     "width":  "640",
+                     "req":  "1",
+                     "crc_rejects":  "0",
+                     "chunks":  "51",
+                     "bytes":  "10031",
+                     "gateway_elapsed_us":  "497037",
+                     "crc32":  "5F2C9C12",
+                     "discarded":  "1",
+                     "cam_request_us":  "7464418524",
+                     "cam_acquired_us":  "7464462570",
+                     "dropped_ack":  "0",
+                     "frame":  "4",
+                     "height":  "480",
+                     "sha256":  "5686D2A6D20D8F673207735EA9AAFBC1A14D8484699E7965816987F58794E82B",
+                     "cam_frame_us":  "7464422497",
+                     "duplicate_chunks":  "0"
+                 },
+    "usb_done":  {
+                     "uart_elapsed_us":  "899289",
+                     "bytes":  "10031",
+                     "req":  "1",
+                     "frame":  "4"
+                 },
+    "pc_sha256":  "5686D2A6D20D8F673207735EA9AAFBC1A14D8484699E7965816987F58794E82B",
+    "pc_crc32":  "5F2C9C12",
+    "bytes":  10031,
+    "width":  640,
+    "height":  480,
+    "bitmap_decode_pass":  true,
+    "host_usb_payload_read_ms":  851.71829999999954,
+    "reverse_control":  {
+                            "nonce":  "1478797411",
+                            "attempts":  "1",
+                            "rtt_us":  "7542",
+                            "test_only":  "YES",
+                            "req":  "2"
+                        },
+    "reverse_control_pass":  true,
+    "final_state":  {
+                        "S3":  {
+                                   "boot":  "4151786758",
+                                   "tx_queue_drop":  "0",
+                                   "queue_drop":  "0",
+                                   "bad_packets":  "0",
+                                   "radio_fail":  "0",
+                                   "role":  "S3",
+                                   "peer_boot":  "1015978044",
+                                   "tx_errors":  "0",
+                                   "paired":  "1",
+                                   "image_state":  "3"
+                               },
+                        "CAM":  {
+                                    "boot":  "1015978044",
+                                    "tx_queue_drop":  "0",
+                                    "queue_drop":  "0",
+                                    "bad_packets":  "0",
+                                    "radio_fail":  "0",
+                                    "role":  "CAM",
+                                    "peer_boot":  "4151786758",
+                                    "tx_errors":  "0",
+                                    "paired":  "1",
+                                    "image_state":  "0"
+                                }
+                    },
+    "imu_before":  {
+                       "started_us":  "0",
+                       "total_samples":  "1056",
+                       "fault":  "0",
+                       "max_gap_us":  "0",
+                       "last_us":  "0",
+                       "count":  "0",
+                       "stopped_us":  "0",
+                       "overflow":  "0",
+                       "config_errors":  "0",
+                       "trace":  "0",
+                       "read_errors":  "0",
+                       "recording":  "0",
+                       "first_us":  "0"
+                   },
+    "imu_after":  {
+                      "started_us":  "22792321",
+                      "total_samples":  "1558",
+                      "fault":  "0",
+                      "max_gap_us":  "21946",
+                      "last_us":  "32745519",
+                      "count":  "496",
+                      "stopped_us":  "32751311",
+                      "overflow":  "0",
+                      "config_errors":  "0",
+                      "trace":  "1",
+                      "read_errors":  "0",
+                      "recording":  "0",
+                      "first_us":  "22792529"
+                  },
+    "imu_csv":  "imageimu_20261104_010412_465_normal_imu.csv",
+    "imu_csv_sha256":  "B2618813929B0D11E8092C141EBAF38212A8E1A934029FF35BD2EED23B3ADFFC",
+    "imu_stats":  {
+                      "max_gap_us":  21946,
+                      "max_sensor_ticks_gap":  555,
+                      "samples":  496,
+                      "after_samples":  171,
+                      "phases":  {
+                                     "0":  {
+                                               "count":  426,
+                                               "description":  "idle"
+                                           },
+                                     "1":  {
+                                               "count":  25,
+                                               "description":  "wireless receive"
+                                           },
+                                     "2":  {
+                                               "count":  45,
+                                               "description":  "USB JPEG export"
+                                           }
+                                 },
+                      "thresholds":  {
+                                         "max_hz":  52,
+                                         "max_tick_gap":  768,
+                                         "min_hz":  48,
+                                         "max_gap_us":  30000
+                                     },
+                      "hz":  49.733798587158233,
+                      "before_samples":  251
+                  },
+    "imu_continuity_pass":  true,
+    "photo":  "imageimu_20261104_010412_465_normal.jpg",
+    "finished_utc":  "2026-11-03T17:04:25.4302769Z",
+    "elapsed_s":  12.899055299999999
+}

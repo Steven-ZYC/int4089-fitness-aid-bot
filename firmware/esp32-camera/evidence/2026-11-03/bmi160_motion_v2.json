@@ -1,0 +1,69 @@
+{
+  "label": "motion_v2",
+  "capture_start_utc": "2026-11-03T05:28:25.1228754Z",
+  "port": "COM9",
+  "requested_seconds": 15,
+  "valid_rows": 747,
+  "config_reports": 3,
+  "malformed_rows": 0,
+  "diagnostic_errors": 0,
+  "sequence_discontinuities": 0,
+  "nonmonotonic_read_times": 0,
+  "read_span_seconds": 15.0,
+  "measured_read_rate_hz": 49.733333333333334,
+  "read_interval_us": {
+    "mean": 20107.238605898125,
+    "stddev": 309.62395795512856,
+    "min": 20000.0,
+    "max": 21000.0
+  },
+  "read_intervals_over_30ms": 0,
+  "clipping_rows": 0,
+  "accel_norm_g": {
+    "mean": 0.9997225417874179,
+    "stddev": 0.013370053005234774,
+    "min": 0.9265211579883107,
+    "max": 1.0911458986771658
+  },
+  "axes": {
+    "ax_g": {
+      "mean": -0.0943126238286479,
+      "stddev": 0.0599141643421382,
+      "min": -0.19019,
+      "max": 0.15405
+    },
+    "ay_g": {
+      "mean": -0.08712437751004014,
+      "stddev": 0.025536716792459113,
+      "min": -0.21924,
+      "max": 0.03748
+    },
+    "az_g": {
+      "mean": 0.989302824631862,
+      "stddev": 0.013496812032485695,
+      "min": 0.92188,
+      "max": 1.08008
+    },
+    "gx_dps": {
+      "mean": -0.32601793842034793,
+      "stddev": 2.836193706975023,
+      "min": -22.1951,
+      "max": 20.061
+    },
+    "gy_dps": {
+      "mean": 0.16521405622489968,
+      "stddev": 7.732009477232199,
+      "min": -74.4055,
+      "max": 69.2073
+    },
+    "gz_dps": {
+      "mean": 0.05758808567603746,
+      "stddev": 2.2261801242446024,
+      "min": -16.6159,
+      "max": 11.9512
+    }
+  },
+  "transport_check_passed": true,
+  "calibrated": false,
+  "note": "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+}

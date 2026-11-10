@@ -1,0 +1,8 @@
+{
+  "schema": "wifi-postcheck-v1",
+  "recorded_utc": "2026-11-05T05:36:19.3782507Z",
+  "internet_restored": true,
+  "original_profile_identity_verified": false,
+  "scope": "Independent post-check, preserves original switch_summary=false",
+  "ap_stop_confirmed_in_switch_summary": true
+}

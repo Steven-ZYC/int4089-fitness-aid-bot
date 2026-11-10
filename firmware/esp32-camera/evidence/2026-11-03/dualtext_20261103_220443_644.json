@@ -1,0 +1,25 @@
+﻿{
+    "schema":  "dual-esp-text-v1",
+    "started_utc":  "2026-11-03T14:04:43.6446520Z",
+    "pass":  false,
+    "transport":  "ESP-NOW",
+    "channel":  1,
+    "packet_bytes":  48,
+    "ports":  {
+                  "S3":  "COM10",
+                  "CAM":  "COM11"
+              },
+    "serial_baud":  115200,
+    "acquisition_running":  false,
+    "latency_scope":  "Initiator local clock from first radio send to matching application ACK; includes retries, no inter-device clock synchronization",
+    "pairing_scope":  "Bench discovery by project magic/version/opposite role; no authentication or encrypted payload in this diagnostic",
+    "host_role":  "Only sends serial test commands and records both boards; does not relay radio messages",
+    "tool_sha256":  "98CE64FDB295898DAA61F3DE676DBB09AF615603531990494C7B6C0511F519C2",
+    "sketch_sha256":  "E8A3EAAB4F3824C8A4BB57C112CC76AEF6CDDF3778DF64A03482778BDD07F607",
+    "cases":  [
+
+              ],
+    "error":  "Both expected boards did not pair on channel 1.",
+    "finished_utc":  "2026-11-03T14:05:04.0320543Z",
+    "elapsed_s":  20.279389899999998
+}
