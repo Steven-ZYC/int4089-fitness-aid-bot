@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="400" viewBox="0 0 1440 400" role="img" aria-label="FitCoach AI — Move better. Train smarter.">
+ <defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbfcfc"/><stop offset=".54" stop-color="#fffaf3"/><stop offset="1" stop-color="#e8f2f8"/></linearGradient><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eb9861"/><stop offset="1" stop-color="#d98154"/></linearGradient><filter id="soft"><feGaussianBlur stdDeviation="20"/></filter></defs>
+ <rect x="1" y="1" width="1438" height="398" rx="34" fill="url(#bg)" stroke="#ebece9" stroke-width="2"/>
+ <ellipse cx="1204" cy="33" rx="330" ry="260" fill="#bdd6e8" opacity=".32"/>
+ <ellipse cx="1430" cy="346" rx="320" ry="180" fill="#f9eedb" opacity=".7"/>
+ <circle cx="1302" cy="183" r="174" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
+ <circle cx="1302" cy="183" r="124" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+ <path d="M900 370C1075 215 1177 324 1418 147" fill="none" stroke="#eb9861" opacity=".16" stroke-width="65" stroke-linecap="round"/>
+ <path d="M1040 367C1194 220 1260 292 1455 146" fill="none" stroke="#bdd6e8" opacity=".5" stroke-width="30" stroke-linecap="round"/>
+ <g transform="translate(95 81) scale(2.45)"><circle cx="38" cy="10" r="6" fill="#eb9861"/><path d="M9 24C22 11 28 17 36 23C41 27 47 25 52 22C48 35 35 30 29 34L9 52C6 54 5 51 7 48L26 26C20 23 16 22 9 24Z" fill="#eb9861"/><path d="M23 43C39 31 49 35 48 49C39 41 34 42 23 43Z" fill="#bdd6e8"/></g>
+ <text x="255" y="173" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="83" font-style="italic" font-weight="750" letter-spacing="-4" fill="#303a40">FitCoach <tspan fill="#eb9861">AI</tspan></text>
+ <text x="265" y="213" font-family="Inter,Segoe UI,Arial,sans-serif" letter-spacing="4.4" font-size="16" font-weight="600" fill="#7b9099">YOUR FITNESS COMPANION</text>
+ <rect x="265" y="244" width="476" height="2" rx="1" fill="#dfded7"/>
+ <text x="265" y="293" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="30" font-weight="500" fill="#45545b">Move better. Train smarter.</text>
+ <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="600" text-anchor="middle">
+  <rect x="265" y="327" width="152" height="40" rx="20" fill="#f9eedb"/><text x="341" y="352" fill="#af734d">VISION AI</text>
+  <rect x="431" y="327" width="172" height="40" rx="20" fill="#e9f3f7"/><text x="517" y="352" fill="#608095">IMU SENSING</text>
+  <rect x="617" y="327" width="203" height="40" rx="20" fill="#f7e7dc"/><text x="718" y="352" fill="#ad704a">HARDWARE FEEDBACK</text>
+ </g>
+ <g transform="translate(1053 92)"><rect width="280" height="201" rx="28" fill="#ffffff" opacity=".66" stroke="#ffffff" stroke-width="2"/>
+ <text x="28" y="50" font-family="Arial,sans-serif" font-size="14" fill="#9a9f9e" letter-spacing="2">DESIGNED FOR MOVEMENT</text>
+ <path d="M52 146L105 123L139 153L187 74L228 103" stroke="url(#p)" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+ <circle cx="52" cy="146" r="9" fill="#fbfcfc" stroke="#eb9861" stroke-width="6"/><circle cx="105" cy="123" r="9" fill="#fbfcfc" stroke="#eb9861" stroke-width="6"/><circle cx="139" cy="153" r="9" fill="#fbfcfc" stroke="#eb9861" stroke-width="6"/><circle cx="187" cy="74" r="9" fill="#fbfcfc" stroke="#eb9861" stroke-width="6"/><circle cx="228" cy="103" r="9" fill="#fbfcfc" stroke="#eb9861" stroke-width="6"/>
+ <rect x="28" y="174" width="228" height="3" rx="2" fill="#dce6e8"/></g>
+ </svg>
