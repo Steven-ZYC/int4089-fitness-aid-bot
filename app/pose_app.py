@@ -204,6 +204,7 @@ class Pipeline(threading.Thread):
                 STATE["stats"].update(fps=round(fps, 1), persons=int(kpts is not None),
                                       alarm=bool(valid_pose and time.monotonic()<alarm_until),
                                       radio=getattr(src,"radio",{}),
+                                      transport=getattr(src,"metrics",{}),
                                       frames=STATE["stats"]["frames"] + 1)
         src.release()
 

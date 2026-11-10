@@ -1,165 +1,66 @@
-# Current USB + ESP-NOW integration (2026-11-10)
+# 电脑端视觉 AI
 
-Active path: CAM USB JPEG -> PC pose inference -> CAM USB command -> ESP-NOW state -> S3 UART -> Mega.
-See [bridge setup and protocol](../firmware/usb-ai-bridge/README.md).
-Run from this directory:
+当前入口是 [pose_app.py](pose_app.py)：CAM USB 图像 → YOLOv8n-pose → 深蹲／俯卧撑几何规则 → 网页结果 → CAM USB 报警状态。图像不经过 ESP-NOW。
+
+## 启动
+
+本机已有 `app/.venv`。在仓库根目录运行：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File app/run_pose.ps1 -CamPort COM3 -Action squat
+```
+
+或在本目录直接运行：
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 pose_app.py --source serial://COM3 --action squat --no-browser
 ```
 
-Open http://127.0.0.1:8010 . Images stay on USB; ESP-NOW carries only state/ACK.
-The following original MJPEG documentation is retained as a historical alternative.
-Its old team assignments, routing and performance are not this machine's acceptance results.
-
----
-
-# 电脑端实时姿势检测服务（ESP32-CAM 图像 → 电脑 AI → 网页 UI）
-
-本目录对应 **Phase 1 Prototype**：ESP32-CAM 只负责采集推流，**AI 推理在电脑上完成**，
-浏览器查看实时结果。这是「电脑端 AI 推理／分析流程」的第一版实现。
-
-> ⚠️ 本阶段的 ESP32-CAM 推流固件（`firmware/esp32_cam_stream/`）只是为了打通链路写的
-> **临时最小件**。按最新分工，ESP32-CAM 的图像采集固件由 **Dong Yuankun** 负责
-> （见 `firmware/esp32-camera/`），联调时应以他那边的实现为准，本目录的固件随时可被替换。
-
-```
-ESP32-CAM ──WiFi / MJPEG──> 电脑（本程序）──> 本地网页 UI
-   (采集推流)                YOLOv8n 推理 7ms      127.0.0.1:8000
-```
-
-## 目录
-
-| 文件 | 说明 |
-| --- | --- |
-| `app.py` | HTTP 服务（页面 / MJPEG 推流 / 状态接口）+ 推理管线 |
-| `sources.py` | 视频源抽象：本地摄像头、ESP32 的 MJPEG 流 |
-| `detector.py` | 检测器：YOLOv8n（默认）／OpenCV HOG |
-| `find_camera.py` | 扫描局域网，找出 ESP32-CAM 的流地址 |
-| `pose_app.py` | 动作规范判定入口（姿态估计 + 规则判决，见 `POSE.md`） |
-| `pose_engine.py` | YOLOv8n-pose 封装，输出 17 个 COCO 关键点 |
-| `form_rules.py` | 关节角度、深蹲/俯卧撑规则、计次状态机 |
-| `test_rules.py` | 规则引擎单元测试（合成关键点，不依赖摄像头） |
-| `firmware/esp32_cam_stream/` | 临时推流固件 + `secrets.example.h` |
-
-两个入口共用 `sources.py`：
-`app.py` 只判断「画面里有没有人」，`pose_app.py` 判断「动作做得规不规范」。
+打开 [检测页面](http://127.0.0.1:8010)。俯卧撑使用 `pushup`；其他命令行参数见 `pose_app.py --help`。一个串口同时只允许一个检测／测试／烧录进程访问。USB 断开后需检查端口并重新启动，当前没有自动重连。
 
 ## 环境
 
-```bash
-python -m venv .venv && .venv/Scripts/activate
-pip install -r requirements.txt
+当前本机环境基于已有 AI 包建立项目虚拟环境，隔离 pyserial 与全局同名 `serial` 包冲突：
 
-# GPU 为 NVIDIA Blackwell（如 RTX 50 系，sm_120）时必须用 cu128 轮子，
-# 用 cu121/cu124 会报 "no kernel image is available for execution on the device"
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+```powershell
+python -m venv --system-site-packages .venv
+.\.venv\Scripts\python.exe -m pip install --ignore-installed pyserial==3.5
 ```
 
-> **OpenCV 必须固定在 4.x**：5.0 移除了 `HOGDescriptor` 和 `CascadeClassifier` 的 Python 绑定，
-> `--detector hog` 会直接 `AttributeError`。
+新电脑可创建独立虚拟环境并安装 `requirements.txt`。它是新安装依赖范围，不是当前旧环境的精确锁文件。当前实测 torch 1.12.1+cu116、ultralytics 8.3.141、RTX 4060 Laptop，模型加载／真实 USB 图像推理已通过。首次运行需要官方 `yolov8n-pose.pt` 权重；权重、虚拟环境、运行日志、抓帧均被 Git 忽略。
 
-## 运行
+## 代码分工
 
-```bash
-# 接 ESP32-CAM
-python app.py --source http://<ESP32_IP>/stream --rotate 270
-
-# 没有硬件时先用本机摄像头验证
-python app.py
-```
-
-浏览器自动打开 `http://127.0.0.1:8000`，显示实时画面、检测框、人数和帧率。
-
-**不知道 ESP32 的 IP？**
-
-```bash
-python find_camera.py            # 扫描当前网段，直接给出可用的 --source 参数
-```
-
-### 参数
-
-| 参数 | 默认 | 说明 |
-| --- | --- | --- |
-| `--source` | `0` | `0`=本机摄像头；或 `http://<ip>/stream` |
-| `--rotate` | `0` | 顺时针旋转 `0/90/180/270`，摄像头装歪时用 |
-| `--detector` | `yolo` | `yolo`=YOLOv8n；`hog`=OpenCV 内置，快但漏检多 |
-| `--port` | `8000` | 网页端口 |
-| `--no-browser` | 关 | 不自动打开浏览器 |
-| `--self-test N` | - | 不开 UI，跑 N 帧存图并打印统计，用于排查链路 |
-
-`--rotate` 不是可选优化：实测摄像头装歪 90° 时，画面里明明有人，YOLO 仍判 **0 人**；
-旋转后立即变为 `1 person / conf 0.94`。模型只见过直立人体，躺倒的头部特征对不上。
-
-## 烧录推流固件（临时工具）
-
-```bash
-cp firmware/esp32_cam_stream/secrets.example.h firmware/esp32_cam_stream/secrets.h
-# 编辑 secrets.h，填 2.4 GHz 的 SSID 和密码（不要带 _5G 后缀）
-
-arduino-cli compile --fqbn "esp32:esp32:esp32cam" \
-  --build-path /tmp/esp32cam-build --output-dir /tmp/esp32cam-out firmware/esp32_cam_stream
-arduino-cli upload -p <COM口> --fqbn "esp32:esp32:esp32cam" \
-  --input-dir /tmp/esp32cam-out firmware/esp32_cam_stream
-```
-
-需要 `esp32:esp32` core（`arduino-cli core install esp32:esp32 --additional-urls https://espressif.github.io/arduino-esp32/package_esp32_index.json`）。
-
-固件对外接口：`/`（状态文本）、`/stream`（MJPEG）、`/jpg`（单张快照）。
-
-## 实测记录
-
-2026-11-06，Windows 11 26100 / RTX 5080 Laptop（sm_120）/ YOLOv8n / ESP32-CAM(VGA) / RSSI −43 dBm：
-
-| 指标 | 结果 |
+| 文件 | 用途 |
 | --- | --- |
-| 端到端帧率（采集 + 推理 + JPEG 编码） | **11 – 21 FPS** |
-| YOLOv8n 单帧推理 | ~7 ms（预热后） |
-| 检测效果 | 半身／头部稳定检出，置信度 0.94 |
-| ESP32 单独推流能力 | ~16 FPS @ 640×480 |
+| `pose_app.py` | 当前网页和推理主程序 |
+| `pose_engine.py` | 17 点姿态估计 |
+| `form_rules.py` | 角度、动作状态机、计次和规则扣分 |
+| `sources.py` | 视频源选择；当前使用 `serial://COM3` |
+| `serial_camera.py` | 串口独占读写、二进制图像校验、最新帧缓存、报警回传和性能指标 |
+| `run_pose.ps1` | 本机启动脚本 |
+| `app.py` / `detector.py` | 旧人体检测入口，保留为基线 |
+| `find_camera.py` / `firmware/esp32_cam_stream/` | 旧 Wi-Fi MJPEG 路线；当前不使用 |
 
-瓶颈在 ESP32 推流带宽，不在推理。**尚未验证**：全身远距离场景、多人场景、动作判定准确率。
+## 当前配置与反馈
 
-## 排查记录
+- VGA 640×480、JPEG18、双缓冲 LATEST、USB 921600。保持当前约 9 FPS 的实测效果。
+- 相机帧在采集时最多 200ms 旧；电脑仅处理新鲜最新帧。这个边界不是完整显示延迟。
+- 动作手动选择，全身需入画。完成一次不合格动作时产生两秒报警事件；关键点不足时清除报警，持续丢失时清除未完成动作状态，累计完成次数保留。
+- 原模型输出关键点，规则产生违规项和分数；分数不是模型置信度。真实动作准确率尚未验收。
+- `/stats` 提供姿态结果、帧率、无线 ACK 和 `transport` 图像分阶段指标。
 
-| 现象 | 根因 | 处理 |
-| --- | --- | --- |
-| 扫不到板子、串口无输出 | 板子里跑的是本地自检固件，没有联网代码 | 重烧推流固件 |
-| Wi-Fi 连一次就掉，`status=6` | RSSI −80 dBm，信号在临界线 | 板子靠近路由器（−43 dBm 后秒连） |
-| pyserial 读不到任何字节 | 打开端口时 DTR 默认拉高，板子被顶进下载模式 | 显式 `setDTR(False)` + RTS 脉冲复位 |
-| UI 显示 129 FPS 但画面卡 | 循环在反复推理**同一帧** | 用帧序号去重，只在新帧时推理 |
-| 画面侧躺、检测 0 人 | 摄像头物理装歪 90° | `--rotate 270` |
-| 局域网地址连不上 | 系统代理把 `192.168.x.x` 也转发了 | `urllib` 用 `ProxyHandler({})` 强制直连 |
-| OpenCV 报 `no attribute HOGDescriptor` | 5.0 移除了 HOG 的 Python 绑定 | 固定 `opencv-python<5` |
-| arduino 编译报 `cannot find -lcxx` | 工具链装在含中文的路径下 | 工具链与构建目录都放纯 ASCII 路径 |
+## 测试与测速
 
-## 已知限制
+从本目录使用 `.venv/Scripts/python.exe`：
 
-- **只判断「画面里有没有人」**，不能判断动作是否标准
-- 弱光下噪点大，检测框会抖动
-- ESP32 IP 由 DHCP 分配，路由器重启后可能变化
-- 帧率受 ESP32 推流能力限制
-
-## 动作规范判定
-
-上面的 `app.py` 只回答「画面里有没有人」。项目真正需要的是「**动作做得规不规范**」，
-这部分由 `pose_app.py` 实现：
-
-```bash
-python pose_app.py --source http://<ESP32_IP>/stream --rotate 270 --action squat
-python test_rules.py            # 规则引擎自测，不需要硬件
+```powershell
+.\.venv\Scripts\python.exe -X utf8 test_rules.py
+.\.venv\Scripts\python.exe -X utf8 test_serial_camera.py
+.\.venv\Scripts\python.exe -X utf8 check_usb_bridge.py --cam COM3 --s3 COM4
+.\.venv\Scripts\python.exe -X utf8 benchmark_usb.py --baud 921600 --seconds 30 --out ../firmware/usb-ai-bridge/captures/speed.json
 ```
 
-链路：`YOLOv8n-pose → 17 关键点 → 关节角度 → 阈值规则 → 判决 + 计次`。
-支持深蹲、俯卧撑，输出 `{action, phase, reps, angles, violations, score}`。
+先停止正在运行的检测页面，再执行硬件脚本。`check_usb_bridge.py` 会短暂开启报警，并分开报告通信与 IMU；当前 IMU 无应答，所以整体并发验收失败，即使无线部分通过。测速不保存图像。
 
-**完整方案、规则阈值表、测试结果和拍摄要求见 [`POSE.md`](POSE.md)。**
-
-⚠️ 姿态判定对取景比人体检测苛刻得多：**必须全身入画**，只拍上半身时踝关节没有关键点，
-膝角恒为空值、无法判定。距离 2–3 米、侧面或正前 45°、避免逆光。
-
-## 下一步
-
-1. 换 **YOLOv8n-pose**，输出 17 个关键点 → 计算膝角、躯干倾角 → 判定深蹲等动作姿势
-2. 定义分析结果的数据结构，回传给 Main ESP → ESP32-CAM → Arduino Uno 驱动 LED／蜂鸣器
-3. 与 IMU 数据融合（ESP32-S3 侧采集），需要与 Dong Yuankun 对齐通信格式
+详细资料：[系统架构](../docs/architecture/README.md)、[动作规则说明](POSE.md)、[USB 协议](../docs/protocols/usb-camera.md)、[固件与编译](../firmware/usb-ai-bridge/README.md)。

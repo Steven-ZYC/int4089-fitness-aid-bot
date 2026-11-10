@@ -1,0 +1,21 @@
+{
+  "baud": 460800,
+  "frames": 53,
+  "elapsed_seconds": 15.109,
+  "fps": 3.53,
+  "crc_decode_errors": 0,
+  "mean": {
+    "jpeg_bytes": 10029.38,
+    "capture_ms": 47.25,
+    "sensor_frame_age_ms": 40.11,
+    "uart_send_ms": 218.59,
+    "cycle_ms": 279.49
+  },
+  "scope": "Real camera frames, no image saves; no AI accuracy comparison.",
+  "resolution": [
+    640,
+    480
+  ],
+  "jpeg_quality": 12,
+  "frame_buffers": 1
+}

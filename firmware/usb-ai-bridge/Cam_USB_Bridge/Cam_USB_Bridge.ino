@@ -25,7 +25,7 @@ static void printInfo() {
   Serial.printf(
       "INFO fw=%s chip=%s cpu_mhz=%u flash_bytes=%u psram_bytes=%u "
       "sensor_pid=0x%04X sensor_ver=0x%02X sensor_name=%s "
-      "width=640 height=480 format=JPEG fb_count=1 grab=WHEN_EMPTY\n",
+      "width=640 height=480 format=JPEG fb_count=2 grab=LATEST baud=921600 jpeg_quality=18\n",
       kFirmware, ESP.getChipModel(), ESP.getCpuFreqMHz(),
       ESP.getFlashChipSize(), ESP.getPsramSize(), sensor->id.PID,
       sensor->id.VER, name);
@@ -37,8 +37,8 @@ static void sendFreshPhoto() {
   int64_t frameUs = 0;
   unsigned discarded = 0;
 
-  // WHEN_EMPTY can hold a frame captured before the command. Return those
-  // buffers and accept only a first-DMA timestamp after this request.
+  // Double-buffer latest mode overlaps capture and USB transfer. Accept only
+  // frames whose first-DMA timestamp is at most 200 ms old, never future-dated.
   for (unsigned attempt = 0; attempt < 4; ++attempt) {
     if (esp_timer_get_time() - requestUs > 2000000) break;
     fb = esp_camera_fb_get();  // The driver's own wait can extend the 2 s budget.
@@ -48,7 +48,8 @@ static void sendFreshPhoto() {
     }
     frameUs = static_cast<int64_t>(fb->timestamp.tv_sec) * 1000000LL +
               fb->timestamp.tv_usec;
-    if (frameUs >= requestUs && frameUs <= esp_timer_get_time()) break;
+    const int64_t nowUs = esp_timer_get_time();
+    if (frameUs >= nowUs - 200000 && frameUs <= nowUs) break;
     esp_camera_fb_return(fb);
     fb = nullptr;
     ++discarded;
@@ -93,7 +94,7 @@ static void sendFreshPhoto() {
 }
 
 void setup() {
-  Serial.begin(460800);
+  Serial.begin(921600);
   delay(1200);
   if (!psramFound()) {
     Serial.println("ERR_PSRAM");
@@ -122,10 +123,10 @@ void setup() {
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG;
   config.frame_size = FRAMESIZE_VGA;
-  config.jpeg_quality = 12;
-  config.fb_count = 1;
+  config.jpeg_quality = 18;
+  config.fb_count = 2;
   config.fb_location = CAMERA_FB_IN_PSRAM;
-  config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
+  config.grab_mode = CAMERA_GRAB_LATEST;
 
   const esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {

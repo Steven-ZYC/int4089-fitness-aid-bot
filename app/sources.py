@@ -111,7 +111,10 @@ def open_source(src: str):
     """src: '0' 表示本地摄像头，'http://...' 表示 ESP32 流。"""
     if src.startswith("serial://"):
         from serial_camera import SerialCameraSource
-        return SerialCameraSource(src[len("serial://"):])
+        from urllib.parse import urlsplit, parse_qs
+        parsed = urlsplit(src)
+        baud = int(parse_qs(parsed.query).get("baud", ["921600"])[0])
+        return SerialCameraSource(parsed.netloc, baud=baud)
     if src.isdigit():
         return WebcamSource(int(src))
     if src.startswith("http://") or src.startswith("https://"):

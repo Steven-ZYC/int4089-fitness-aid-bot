@@ -12,7 +12,7 @@ import serial
 class SerialCameraSource:
     kind = "serial"
 
-    def __init__(self, port, baud=460800, timeout=12):
+    def __init__(self, port, baud=921600, timeout=12):
         self.desc = f"USB camera {port} @ {baud}"
         self.seq = 0
         self._frame = None
@@ -21,6 +21,7 @@ class SerialCameraSource:
         self._decision_at = 0.0
         self._error = None
         self.radio = {}
+        self.metrics = {}
         self._lock = threading.Lock()
         self._stop = threading.Event()
         self.port = serial.Serial()
@@ -79,19 +80,19 @@ class SerialCameraSource:
             if 'fw=Cam_USB_Bridge_v1 ' not in info:
                 raise RuntimeError('Wrong camera firmware; expected Cam_USB_Bridge_v1')
             while not self._stop.is_set():
+                cycle_start = time.monotonic()
                 with self._lock:
                     on = self._alarm and time.monotonic()-self._decision_at < 1.0
-                self.port.write(b'ALARM 1\n' if on else b'ALARM 0\n')
+                self.port.write((b'ALARM 1\n' if on else b'ALARM 0\n') + b'STATUS\nCAPTURE\n')
                 self._until('CMD_OK ')
-                self.port.write(b'STATUS\n')
                 radio = self._until('BRIDGE ')
                 fields = dict(token.split('=',1) for token in radio.split()[1:] if '=' in token)
-                self.port.write(b'CAPTURE\n')
                 meta = self._until('META ')
                 match = re.search(r'\bseq=(\d+)\b',meta)
                 if not match:
                     raise ValueError('Missing image sequence')
                 image_seq = int(match[1])
+                metadata = dict(x.split("=",1) for x in meta.split()[1:])
                 header = self._until('IMG ')
                 match = re.fullmatch(r'IMG (\d+) crc=([0-9a-fA-F]{8})', header)
                 if not match or not 4 <= int(match[1]) <= 2_097_152:
@@ -106,6 +107,13 @@ class SerialCameraSource:
                 if frame is None or frame.shape[:2] != (480,640):
                     raise ValueError('JPEG decode/dimensions failed')
                 with self._lock:
+                    self.metrics = {
+                        "jpeg_bytes":len(jpeg),
+                        "capture_ms":(int(metadata.get("acquired_us",0))-int(metadata.get("request_us",0)))/1000,
+                        "sensor_frame_age_ms":(int(metadata.get("acquired_us",0))-int(metadata.get("frame_us",0)))/1000,
+                        "uart_send_ms":int(re.search(r"send_us=(\d+)",done)[1])/1000,
+                        "cycle_ms":(time.monotonic()-cycle_start)*1000,
+                    }
                     self.radio = fields
                     self._frame, self._frame_at = frame,time.monotonic()
                     self.seq += 1
