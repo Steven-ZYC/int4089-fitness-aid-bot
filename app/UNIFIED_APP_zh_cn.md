@@ -16,16 +16,18 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File app/run_pose.ps1 -CamPor
 .\.venv\Scripts\python.exe -X utf8 main.py --source serial://COM3 --imu-port COM4 --action squat --no-browser
 ```
 
-打开 http://127.0.0.1:8010 。`-Action pushup` 选择俯卧撑，`-ImuPort ''` 跳过自动连接 IMU。USB 重插后确认端口身份；每个串口只能由一个进程占用，使用统一应用前先停止独立工具。
+打开 http://127.0.0.1:8010 。统一应用目前只支持 `-Action squat`，`-ImuPort ''` 跳过自动连接 IMU。USB 重插后确认端口身份；每个串口只能由一个进程占用，使用统一应用前先停止独立工具。
 
-## 四个页面
+## 六个页面
 
-- **总览**：真实摄像头画面、姿态／规则反馈、计次、报警状态、IMU 概况与无线 ACK。
+- **训练控制台**：前 4 个动作预览、独立硬件开关、实时训练及 IMU／校准预览。
+- **动作库**：6 个动作的视频、示意及要点，卡片箭头进入实时监测。
+- **实时动作监测**：完整动作选择器及共用的摄像头／训练控制。目前只有深蹲支持 AI。
 - **3D 姿态与位置**：机体坐标轴、重力、速度、积分位置轨迹、视角／缩放、姿态参考与位置归零。
 - **IMU 数据曲线**：去偏角速度、相对静止 Profile 的加速度、加速度模长和静止区间。
 - **连接、回放与校准**：S3 连接／断开、可选复位、本地或历史 CSV 回放、暂停／继续、Profile JSON 导入／导出／编辑、静止 CSV 校准。
 
-IMU 数据明确标记为实时或回放。回放只影响 IMU 视图，真实视觉检测仍独立运行，仍可能按正常逻辑触发报警。CSV 回放本身不驱动报警，也不证明 IMU 硬件正常。
+IMU 数据明确标记为实时或回放。回放只影响 IMU 视图，真实视觉检测仍独立运行，仅在训练进行中且 Arduino 报警启用时可能触发视觉报警。CSV 回放本身不驱动报警，也不证明 IMU 硬件正常。
 
 ## 实现边界
 
@@ -54,7 +56,7 @@ Profile 编辑与校准仅在应用会话内生效，需导出 JSON 保存，不
 .\.venv\Scripts\python.exe -X utf8 test_rules.py
 ```
 
-参见 [架构](../docs/architecture/README_zh_cn.md)、[USB 协议](../docs/protocols/usb-camera_zh_cn.md)、[原 IMU 应用](../tools/imu-position/README_zh_cn.md)。此前语言迁移的 `_zh_cn` 原文快照保持不变，新的统一入口以本文为准。
+参见 [架构](../docs/architecture/README_zh_cn.md)、[USB 协议](../docs/protocols/usb-camera_zh_cn.md)、[原 IMU 应用](../tools/imu-position/README_zh_cn.md)。维护中文档的迁移哈希保存在本地化清单中，排除的历史记录保持不变；统一入口以本文为准。
 
 ## 当前验证范围
 
@@ -77,8 +79,12 @@ Profile 编辑与校准仅在应用会话内生效，需导出 JSON 保存，不
 
 `web/locales.json` 是共享词典；`web/i18n.js` 翻译静态标签、动态状态、图表提示及反馈，不改变协议值。`localization.py` 使用同一词典翻译视频叠字。原始固件诊断和 Profile JSON 保持原样。摄像头视频流为共享资源，因此最后一次语言选择也会改变其他本地查看者的视频叠字。
 
-`docs/assets/` 中的三张 1920 × 1080 截图展示实际设备未连接状态，并分别嵌入对应语言的根 README。
+`docs/assets/` 中三张 1920 × 1080 截图已于 2026-11-11 更新，并嵌入对应语言的根 README，展示摄像头未就绪、IMU 无实时数据的实际状态，没有填入模拟实时测量。
 
-## 动作库
+## 动作库与实时训练
 
-总览展示深蹲（AI 已开放）、俯卧撑与前弓步（AI 即将开放）。三者均可查看教学，但只有深蹲能启用统一应用的 AI 识别；旧独立动作规则保留。每个预览包含已核实的官方 YouTube 封面与播放器、原创三阶段姿势示意、三个动作要点及来源链接。视频来自 CrossFit 与 ACEfitness，要点参考 ACE 动作指南。外部视频与封面需要联网，点击后才播放，离开动作库即停止播放。教学预览不改变 AI 动作选择或报警状态。
+六个动作：深蹲、俯卧撑、前弓步、平板支撑、臀桥和鸟狗式，均提供视频、要点和三阶段示意。目前仅深蹲支持 AI 识别，其余为教学预览。新增视频来自 ScottHermanFitness（臀桥）和 Point Performance（鸟狗式）。
+
+侧栏“动作库”下方新增“实时动作监测”。点击卡片主体查看教学，点击箭头进入实时页面；控制台和实时页面沿用同一视频流和训练会话。未支持的动作不能启动 AI 识别。
+
+控制台支持 Arduino 报警、ESP Camera 和 ESP IMU 独立开关，分别显示启用意图与连接状态。开关控制采集及报警发送，不切断供电；Mega 实际声光执行仍需现场确认。开始／暂停／继续／结束控制计次与视觉报警，暂停冻结计时、保留已完成次数，视频仍可预览。接口为 `/api/modules`、`/api/training`，生命周期测试为 `test_workspace.py`。

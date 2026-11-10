@@ -109,6 +109,13 @@ class Pipeline(threading.Thread):
         self.analyzer = make_analyzer(action)
         self.running = True
         self.language = "en"
+        self.alarm_enabled=True
+        self.training_active=True
+        self.training_status="running"
+        self.requested_reset=0
+        self._reset_applied=0
+        self.requested_partial_reset=0
+        self._partial_applied=0
         self.requested_action = action
         self.last_frame_at = 0.0
         self._source = None
@@ -174,6 +181,20 @@ class Pipeline(threading.Thread):
         missing_since = None
         orientation_stamp=None
         while self.running:
+            if self.requested_reset!=self._reset_applied:
+                self.analyzer=make_analyzer(self.action)
+                self._reset_applied=self.requested_reset
+                alarm_until=0.0
+                last_rep=0
+                missing_since=None
+            if self.requested_partial_reset!=self._partial_applied:
+                count=self.analyzer.reps
+                self.analyzer=make_analyzer(self.action)
+                self.analyzer.reps=count
+                self._partial_applied=self.requested_partial_reset
+                alarm_until=0.0
+                last_rep=count
+                missing_since=None
             if self.requested_action != self.action:
                 self.action = self.requested_action
                 self.analyzer = make_analyzer(self.action)
@@ -228,8 +249,13 @@ class Pipeline(threading.Thread):
                 valid_pose = all(kpts[i, 2] >= 0.35 for i in (5, 6, 11, 12))
             if valid_pose:
                 missing_since = None
-                res = self.analyzer.update(kpts)
-                if res["reps"] > last_rep:
+                if self.training_active:
+                    res=self.analyzer.update(kpts)
+                else:
+                    alarm_until=0.0
+                    res=self.analyzer._snapshot()
+                    res['phase']='训练暂停' if self.training_status=='paused' else '训练未开始'
+                if self.training_active and res["reps"] > last_rep:
                     last_rep = res["reps"]
                     alarm_until = time.monotonic()+2.0 if res.get("last") and not res["last"]["ok"] else 0.0
                 frame = draw_pose(frame, kpts, res, self.action, self.language)
@@ -248,7 +274,7 @@ class Pipeline(threading.Thread):
                                          (10, 9), 17, (180, 180, 180))])
 
             if hasattr(src,"set_alarm"):
-                src.set_alarm(valid_pose and time.monotonic()<alarm_until)
+                src.set_alarm(valid_pose and self.training_active and self.alarm_enabled and time.monotonic()<alarm_until)
             self._times.append(time.time())
             fps = 0.0
             if len(self._times) >= 2:
@@ -264,7 +290,7 @@ class Pipeline(threading.Thread):
                 STATE["fid"] += 1
                 STATE["pose"] = json.loads(json.dumps(res, default=str))
                 STATE["stats"].update(fps=round(fps, 1), persons=int(kpts is not None),
-                                      alarm=bool(valid_pose and time.monotonic()<alarm_until),
+                                      alarm=bool(valid_pose and self.training_active and self.alarm_enabled and time.monotonic()<alarm_until),
                                       radio=getattr(src,"radio",{}),
                                       transport=getattr(src,"metrics",{}),
                                       orientation=self.orientation.state(),

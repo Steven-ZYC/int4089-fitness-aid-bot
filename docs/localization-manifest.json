@@ -11,9 +11,9 @@
       "english": "README.md",
       "zh_cn": "README_zh_cn.md",
       "zh_hk": "README_zh_hk.md",
-      "original_sha256": "f30d96469e795386b471af67e7cfd5a6db92bd27743e684a98ac903771212da4",
+      "original_sha256": "fb3a757b7bf9e9a9084943d6608b4efed689bcf876e54f6ea00e9ecc389d5642",
       "migration_snapshot_sha256": "504660a7222c6408148f060bfc22ba6bd97e7cad1935a002f2ed25798336a39e",
-      "content_updated": "2026-11-11: user-requested UI screenshot and i18n documentation; migration hash retained separately"
+      "content_updated": "2026-11-11: current dashboard screenshots, first-four overview, six-movement library, live monitoring and module/session controls; migration hash retained separately"
     },
     {
       "english": "app/POSE.md",
@@ -103,10 +103,10 @@
       "english": "app/UNIFIED_APP.md",
       "zh_cn": "app/UNIFIED_APP_zh_cn.md",
       "zh_hk": "app/UNIFIED_APP_zh_hk.md",
-      "original_sha256": "20d3eb7887160cb6a7071d9944e4f3a5cc28dfcbe0b56af1b325445b682824ee",
+      "original_sha256": "4a0abe3bbbb126152df6e0d0238909a0cfe2df8b4939ff3e0baadcb313a82e54",
       "introduced": "2026-11-11 unified PC application",
       "migration_snapshot_sha256": "d51841582025994e9e13fcdad55f5bd60359a3d5a20e314f4d5e25e058ca79ab",
-      "content_updated": "2026-11-11: UI, i18n and movement-library updates requested by user; migration hash retained separately"
+      "content_updated": "2026-11-11: current dashboard screenshots, first-four overview, six-movement library, live monitoring and module/session controls; migration hash retained separately"
     }
   ],
   "excluded_historical_documents": [

@@ -7,7 +7,8 @@ from urllib.error import HTTPError
 from urllib.request import Request, build_opener, ProxyHandler
 
 from imu_service import ImuService
-from main import UnifiedHandler
+from main import UnifiedHandler, vision
+from workspace import Workspace
 
 
 class ApiTests(unittest.TestCase):
@@ -16,6 +17,15 @@ class ApiTests(unittest.TestCase):
         self.server=ThreadingHTTPServer(('127.0.0.1',0),UnifiedHandler)
         self.server.imu=self.imu
         self.server.pipeline=None
+        self.server.vision_module=vision
+        self.server.vision_control=threading.Lock()
+        self.server.vision_source='serial://COM3'
+        self.server.vision_action='squat'
+        self.server.vision_rotate='auto'
+        self.server.vision_mirror=True
+        self.server.orientation_revision=0
+        self.server.vision_language='en'
+        self.server.workspace=Workspace(self.server,imu=False)
         self.thread=threading.Thread(target=self.server.serve_forever,daemon=True)
         self.thread.start()
         self.base='http://127.0.0.1:'+str(self.server.server_port)
@@ -48,6 +58,18 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(code,200)
         self.assertEqual(set(json.loads(body)),{'zh-CN','en','zh-HK'})
 
+    def test_module_switches_are_independent_and_validate_requests(self):
+        self.assertEqual(self.call('/api/modules',{'module':'arduino','enabled':False})[0],200)
+        state=json.loads(self.call('/api/state')[1])
+        self.assertFalse(state['modules']['arduino']['enabled'])
+        self.assertTrue(state['modules']['camera']['enabled'])
+        self.assertFalse(state['modules']['arduino']['connected'])
+        self.assertEqual(self.call('/api/modules',{'module':'unknown','enabled':True})[0],400)
+        self.assertEqual(self.call('/api/modules',{'module':'camera','enabled':'false'})[0],400)
+        self.assertEqual(self.call('/api/training',{'action':'start','exercise':'squat'})[0],400)
+        self.assertEqual(self.call('/api/training',{'action':'start','exercise':'plank'})[0],400)
+        self.assertEqual(json.loads(self.call('/api/state')[1])['training']['status'],'idle')
+
     def test_video_language_accepts_supported_locales_only(self):
         self.assertEqual(self.call('/api/vision/language',{'language':'en'})[0],200)
         self.assertEqual(self.server.vision_language,'en')
@@ -59,7 +81,7 @@ class ApiTests(unittest.TestCase):
         code,body=self.call('/exercises.json')
         self.assertEqual(code,200)
         exercises=json.loads(body)
-        self.assertEqual({e['id'] for e in exercises},{'squat','pushup','lunge'})
+        self.assertEqual({e['id'] for e in exercises},{'squat','pushup','lunge','plank','bridge','birddog'})
         self.assertEqual([e['id'] for e in exercises if e['available']],['squat'])
         self.assertEqual(self.call('/exercises.js')[0],200)
         for item in exercises:

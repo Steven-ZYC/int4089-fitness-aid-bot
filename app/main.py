@@ -10,9 +10,10 @@ import webbrowser
 
 from imu_service import ImuService, list_serial_ports
 import pose_app as vision
+from workspace import Workspace
 
 WEB = Path(__file__).resolve().parent / 'web'
-STATIC = {'/':'index.html','/dashboard.js':'dashboard.js','/styles.css':'styles.css','/i18n.js':'i18n.js','/locales.json':'locales.json','/exercises.js':'exercises.js','/exercises.json':'exercises.json'}
+STATIC = {'/':'index.html','/dashboard.js':'dashboard.js','/styles.css':'styles.css','/i18n.js':'i18n.js','/locales.json':'locales.json','/exercises.js':'exercises.js','/exercises.json':'exercises.json','/workspace.js':'workspace.js'}
 
 
 class UnifiedHandler(vision.Handler):
@@ -45,6 +46,7 @@ class UnifiedHandler(vision.Handler):
             state['service_id']=getattr(self.server,'service_id','')
             state['camera_port']=self.server.imu.protected_port
             state['imu']=self.server.imu.snapshot(after)
+            if hasattr(self.server,'workspace'):state.update(self.server.workspace.snapshot(state['stats'],state['imu']))
             self._json(state);return
         if parsed.path=='/api/ports':
             self._json({'ports':list_serial_ports(),'camera_port':self.server.imu.protected_port});return
@@ -69,7 +71,11 @@ class UnifiedHandler(vision.Handler):
             if not isinstance(payload,dict):raise ValueError('Expected a JSON object')
             action=urlsplit(self.path).path
             imu=self.server.imu
-            if action=='/api/vision/language':
+            if action=='/api/modules':
+                self.server.workspace.module(payload.get('module'),payload.get('enabled'),payload.get('port'))
+            elif action=='/api/training':
+                self.server.workspace.training(payload.get('action'),payload.get('exercise','squat'))
+            elif action=='/api/vision/language':
                 language=payload.get('language')
                 if language not in ('zh-CN','en','zh-HK'):raise ValueError('Unsupported language')
                 self.server.vision_language=language
@@ -87,29 +93,21 @@ class UnifiedHandler(vision.Handler):
                     if self.server.pipeline:
                         self.server.pipeline.requested_orientation=(mode,mirror,self.server.orientation_revision)
             elif action=='/api/vision/reconnect':
-                with self.server.vision_control:
-                    old=self.server.pipeline
-                    if old and old.is_alive():
-                        old.running=False
-                        old.join(timeout=5)
-                        if old.is_alive():raise ValueError('Camera is still stopping; retry shortly')
-                    pipeline=vision.Pipeline(self.server.vision_source,self.server.vision_action,
-                        self.server.vision_rotate,engine=getattr(old,'engine',None),mirror=self.server.vision_mirror)
-                    with vision._LOCK:
-                        vision.STATE.update(jpeg=None,fid=0)
-                        vision.STATE['stats'].update(frames=0,fps=0,persons=0,alarm=False,state='Connecting')
-                    pipeline.requested_orientation=(self.server.vision_rotate,self.server.vision_mirror,self.server.orientation_revision)
-                    pipeline.language=getattr(self.server,"vision_language","zh-CN")
-                    self.server.pipeline=pipeline
-                    pipeline.start()
+                self.server.workspace.camera(True,reconnect=True)
             elif action=='/api/vision/action':
                 selected=payload.get('action')
                 if selected != 'squat':raise ValueError('Exercise AI is not available yet')
                 if not self.server.pipeline:raise ValueError('Vision pipeline is not running')
                 self.server.vision_action=selected
                 self.server.pipeline.requested_action=selected
-            elif action=='/api/imu/connect':imu.connect(payload.get('port',''),payload.get('reset',False))
-            elif action=='/api/imu/disconnect':imu.disconnect()
+            elif action=='/api/imu/connect':
+                imu.connect(payload.get('port',''),payload.get('reset',False))
+                if hasattr(self.server,'workspace'):
+                    self.server.workspace.enabled['imu']=True
+                    self.server.workspace.imu_port=payload['port']
+            elif action=='/api/imu/disconnect':
+                imu.disconnect()
+                if hasattr(self.server,'workspace'):self.server.workspace.enabled['imu']=False
             elif action=='/api/imu/example':imu.replay_example()
             elif action=='/api/imu/replay':imu.replay_csv(payload.get('csv'),payload.get('name','uploaded.csv'))
             elif action=='/api/imu/pause':imu.pause(payload.get('paused'))
@@ -155,6 +153,8 @@ def main():
     server.vision_language="en"
     import uuid
     server.service_id=uuid.uuid4().hex
+    server.vision_module=vision
+    server.workspace=Workspace(server,camera=not args.no_vision,imu=bool(args.imu_port),imu_port=args.imu_port or "COM4")
     try:
         if args.imu_port:
             try:imu.connect(args.imu_port,reset=False)
@@ -163,6 +163,7 @@ def main():
             try:
                 pipeline=vision.Pipeline(args.source,args.action,args.rotate,mirror=not args.no_mirror)
                 pipeline.language=server.vision_language
+                server.workspace.configure_pipeline(pipeline)
                 pipeline.start()
                 server.pipeline=pipeline
             except Exception as exc:

@@ -1,21 +1,31 @@
-> Current unified PC application: [vision + IMU dashboard](app/UNIFIED_APP.md). The launcher now starts app/main.py; original localized snapshots below retain the pre-integration text.
-
-[English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
+[English](README.md) | [简体中文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
 # FitCoach AI
 
-## FitCoach AI dashboard
-
-Switch between English, Simplified Chinese and Traditional Chinese (Hong Kong) in the top-right language selector. Your preference is saved locally. Navigation, device states, exercise feedback, charts and video text follow the selected language.
-
-![FitCoach AI dashboard](docs/assets/fitcoach-ui-en-16x9.png)
-
-Actual 1920 × 1080 (16:9) UI capture. Camera not ready and IMU disconnected at capture time; no simulated live data.
-
-
 The prototype consists of an **IMU module, a vision AI module and a physical alarm module**, maintained centrally by Zhang Yancheng. Development uses `Feat-Integration-Yancheng`; main retains the stable integrated version.
 
-<a id="当前数据流"></a>
+## Dashboard and training workflow
+
+`app/main.py` is the unified entry point for vision AI, IMU data, training sessions and calibration in one local web application. The cream, sky-blue and terracotta interface supports English, Simplified Chinese and Traditional Chinese (Hong Kong). Language preferences are saved locally and apply to device states, feedback, charts and video overlays.
+
+![FitCoach AI training dashboard](docs/assets/fitcoach-ui-en-16x9.png)
+
+Actual 1920 × 1080 (16:9) capture, updated on 2026-11-11. The camera was not ready, the IMU had no live samples and Arduino actuation was unconfirmed. The timer retains an earlier test session; no simulated live measurements were added.
+
+- **Training dashboard:** preview movements, then configure hardware. The top cards and the dashboard's movement list show only the first four movements, followed by live monitoring and previews of 3D attitude, position, IMU data and calibration.
+- **Movement library:** all six movements remain available: Squat, Push-up, Forward lunge, Plank, Glute bridge and Bird dog. Each includes a video cover/player, a three-stage posture diagram and technique cues. Click the card body for teaching or its arrow to open live monitoring.
+- **Live movement:** directly below Movement library in the sidebar. Select a movement and view video, repetitions, feedback and timing. It shares the dashboard's video stream and session. Only Squat currently supports AI; the other movements are teaching previews and cannot start AI recognition.
+- **3D attitude and position, IMU signal charts, and Devices and calibration:** full IMU inspection, explicitly labelled historical CSV replay, connections, position reset and stationary-CSV calibration. Integrated position drifts; replay does not establish live hardware health.
+
+### Hardware combinations and session controls
+
+Arduino alerts, ESP Camera and ESP IMU can be enabled or disabled independently. Switches control host acquisition or alarm delivery, not electrical power. Enabled and connected are separate states. The one-way Arduino UART cannot confirm physical light/sound; the UI reports only measurable relay state.
+
+Camera-based squat recognition works without an IMU connection, and IMU data can be viewed on its own. Vision alarms require enabled Arduino alerts and the complete CAM → S3 → Mega route. Disabling IMU USB acquisition does not disable the S3 radio relay. A live camera feed is required to start vision training.
+
+Start training enables repetition counting and vision alarms. Pause freezes the timer, retains completed repetitions and stops counting and vision alarms while video preview continues. End the session to start again. Navigating between pages retains the same acquisition pipeline.
+
+See the [unified application guide](app/UNIFIED_APP.md).
 
 ## Current data flow
 
@@ -45,10 +55,10 @@ flowchart LR
 | ESP-NOW | Channel 1, fixed peer MACs, 20-byte state/ACK packets every 200ms |
 | S3 → Mega | UART 9600, 8N1; GPIO17 TX → D19 RX1; common GND; Mega D18 TX disconnected |
 | Alarm outputs | Mega D8 LED and D9 passive buzzer switch on/off together |
-| Vision AI | YOLOv8n-pose + geometric rules; manually select squat or pushup |
+| Vision AI | YOLOv8n-pose + geometric rules; unified AI supports Squat only; other movements are teaching previews |
 | Performance | 8.93 FPS measured for USB alone; about 9 FPS observed on the AI page, varying with framing and lighting |
 | Verified | Image CRC/decoding, real-frame inference, wireless ON/OFF/ACK/command expiry, existing Mega USB/UART protocol |
-| Pending | BMI160 does not respond at either address; inspect wiring with power off. Verify Mega reception and physical light/sound in the new loop, real exercise accuracy and threshold calibration |
+| Pending | BMI160 has no stable valid live samples; inspect wiring and reads. Confirm integrated S3 firmware/radio state after diagnostics. Verify Mega reception, physical light/sound, real exercise accuracy and thresholds |
 
 Keep the current effect: do not increase baud rate or compression or change resolution further. Current source is authoritative for camera parameters. See [before optimization](docs/validation/2026-11-10-camera-speed-before.json), [after optimization](docs/validation/2026-11-10-camera-speed-after.json) and [control regression](docs/validation/2026-11-10-camera-speed-control-check.json).
 
@@ -59,10 +69,12 @@ Keep the current effect: do not increase baud rate or compression or change reso
 Run from the repository root using the project virtual environment already configured on this PC:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File app/run_pose.ps1 -CamPort COM3 -Action squat
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File app/run_pose.ps1 -CamPort COM3 -ImuPort COM4 -Action squat
 ```
 
-Open the [exercise detection page](http://127.0.0.1:8010). Use `-Action pushup` for pushups. The entire body must be visible. An invalid completed repetition produces a two-second alarm event. The model does not select the action automatically, and the rule score is not model confidence.
+Open the [FitCoach AI dashboard](http://127.0.0.1:8010), check ports and module states, select Squat in the library and click Start training. Keep your entire body visible and complete orientation alignment. While training is running and Arduino alerts are enabled, an invalid completed squat produces a two-second vision alarm event; physical output still depends on the hardware route. The model does not select the movement automatically, and the rule score is not model confidence.
+
+Use `-ImuPort ''` to skip automatic IMU connection, or disable ESP IMU in the UI. The unified app currently accepts only `-Action squat`; retained standalone rules do not mean other movements are enabled in the unified UI.
 
 Only one process may use a CAM serial port at a time. Stop detection before hardware tests or uploads. See [PC application instructions](app/README.md) for setup and direct commands.
 
@@ -71,7 +83,7 @@ Only one process may use a CAM serial port at a time. Stop detection before hard
 ## Repository layout
 
 ```text
-app/                              # PC vision AI, USB image source, web page and tests
+app/                              # main.py entry point, workspace.py sessions, web/ UI, IMU service and tests
 firmware/
   usb-ai-bridge/                  # Active CAM/S3 firmware and shared ESP-NOW implementation
   alarm-mega/                     # Active Mega alarm firmware

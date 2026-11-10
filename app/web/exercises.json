@@ -100,5 +100,107 @@
       "迈步下沉",
       "推回站姿"
     ]
+  },
+  {
+    "id": "plank",
+    "name": "平板支撑",
+    "group": "核心 · 稳定性",
+    "available": false,
+    "video": {
+      "id": "ASdvN_XEl_c",
+      "title": "Planks for Beginners | Bowflex®",
+      "author": "BowFlex",
+      "watch_url": "https://www.youtube.com/watch?v=ASdvN_XEl_c",
+      "poster": "https://i.ytimg.com/vi/ASdvN_XEl_c/hqdefault.jpg",
+      "verified_on": "2026-11-11"
+    },
+    "source": "https://www.acefitness.org/resources/everyone/exercise-library/32/front-plank/",
+    "cues": [
+      [
+        "前臂支撑",
+        "手肘位于肩膀下方，前臂贴地，稳定支撑上半身。"
+      ],
+      [
+        "保持身体一线",
+        "收紧腹部与臀部，头部、躯干和腿部保持自然对齐。"
+      ],
+      [
+        "稳定呼吸",
+        "避免塌腰或抬高臀部，在可控的姿势下保持自然呼吸。"
+      ]
+    ],
+    "stages": [
+      "前臂支撑",
+      "保持身体一线",
+      "稳定呼吸"
+    ]
+  },
+  {
+    "id": "bridge",
+    "name": "臀桥",
+    "group": "下肢 · 臀部",
+    "available": false,
+    "video": {
+      "id": "8bbE64NuDTU",
+      "title": "How To: Glute Bridge",
+      "author": "ScottHermanFitness",
+      "watch_url": "https://www.youtube.com/watch?v=8bbE64NuDTU",
+      "poster": "https://i.ytimg.com/vi/8bbE64NuDTU/hqdefault.jpg",
+      "verified_on": "2026-11-11"
+    },
+    "source": "https://www.acefitness.org/resources/everyone/exercise-library/49/glute-bridge/",
+    "cues": [
+      [
+        "仰卧准备",
+        "屈膝仰卧，双脚平放并与髋同宽，双臂置于身体两侧。"
+      ],
+      [
+        "抬髋收臀",
+        "收紧核心并用双脚推地，抬起髋部，避免腰部过度后仰。"
+      ],
+      [
+        "缓慢落下",
+        "肩部保持着地，控制髋部缓慢下降，再重复动作。"
+      ]
+    ],
+    "stages": [
+      "仰卧准备",
+      "抬髋收臀",
+      "缓慢落下"
+    ]
+  },
+  {
+    "id": "birddog",
+    "name": "鸟狗式",
+    "group": "核心 · 平衡",
+    "available": false,
+    "video": {
+      "id": "zZSq51UIwcM",
+      "title": "Bird Dog Exercise",
+      "author": "Point Performance",
+      "watch_url": "https://www.youtube.com/watch?v=zZSq51UIwcM",
+      "poster": "https://i.ytimg.com/vi/zZSq51UIwcM/hqdefault.jpg",
+      "verified_on": "2026-11-11"
+    },
+    "source": "https://www.acefitness.org/resources/everyone/exercise-library/14/bird-dog/",
+    "cues": [
+      [
+        "四点支撑",
+        "双手位于肩下，双膝位于髋下，保持脊柱自然中立。"
+      ],
+      [
+        "对侧伸展",
+        "缓慢伸出一侧手臂和对侧腿，保持骨盆稳定，避免扭转。"
+      ],
+      [
+        "控制收回",
+        "在背部保持稳定的范围内伸展，再缓慢收回并换侧。"
+      ]
+    ],
+    "stages": [
+      "四点支撑",
+      "对侧伸展",
+      "控制收回"
+    ]
   }
 ]

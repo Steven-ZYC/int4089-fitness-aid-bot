@@ -25,19 +25,44 @@ const caption=el('span','poster-caption');caption.append(el('small','',item.vide
 button.append(caption);button.addEventListener('click',()=>{playing=true;renderVideo();});host.append(button);
 }
 function renderCards(){
+for(const container of document.querySelectorAll('[data-exercise-picker]')){
+ container.replaceChildren();
+ for(const item of (document.body.dataset.view==='overview'?exercises.slice(0,4):exercises)){
+  const row=el('div','training-exercise-row'+(item.id===selected?' active':''));
+  const select=el('button','training-exercise-select');select.setAttribute('aria-label',tr(item.name)+' · '+tr('实时动作监测'));
+  const image=el('img');image.src=item.video.poster;image.alt='';image.loading='lazy';
+  const copy=el('span');copy.append(el('strong','',item.name),el('small','',item.group));
+  select.append(image,copy,el('span','picker-status',item.available?'AI 已开放':item.id==='pushup'?'AI 即将开放':'教学可用'),el('span','selection-dot'));
+  select.addEventListener('click',()=>{selected=item.id;playing=false;render();window.FitCoachWorkspace.selectExercise(item);controls.showView('realtime');});
+  const learn=el('button','picker-learn','查看动作教学');learn.addEventListener('click',()=>{selected=item.id;playing=false;render();controls.showView('exercises');});
+  row.append(select,learn);container.append(row);
+ }
+}
+
 for(const container of document.querySelectorAll('[data-exercise-options]')){
  container.replaceChildren();
- for(const item of exercises){
- const button=el('button','exercise-option'+(item.id===selected?' selected':''));button.dataset.exercise=item.id;button.setAttribute('aria-pressed',String(item.id===selected));
+ for(const item of (container.classList.contains('dashboard-exercise-options')?exercises.slice(0,4):exercises)){
+ const card=el('div','exercise-option'+(item.id===selected?' selected':''));card.dataset.exercise=item.id;
+ const button=el('button','exercise-details');button.setAttribute('aria-label',tr(item.name)+' · '+tr('查看动作教学'));button.setAttribute('aria-pressed',String(item.id===selected));
  const image=el('img','exercise-thumb');image.src=item.video.poster;image.alt='';image.loading='lazy';image.referrerPolicy='no-referrer';image.addEventListener('error',()=>image.hidden=true);
  const copy=el('span','exercise-copy');copy.append(el('strong','',item.name),el('small','',item.group));
- const status=el('span','exercise-availability'+(item.available?' available':''),item.available?'AI 已开放':'AI 即将开放');
- button.append(image,copy,status,el('span','exercise-arrow','↗'));
- button.addEventListener('click',()=>{selected=item.id;playing=false;render();controls.showView('exercises');});container.append(button);
+ const status=el('span','exercise-availability'+(item.available?' available':''),item.available?'AI 已开放':item.id==='pushup'?'AI 即将开放':'教学可用');
+ button.append(image,copy,status);button.addEventListener('click',()=>{selected=item.id;playing=false;render();controls.showView('exercises');});
+ const arrow=el('button','exercise-arrow','↗');arrow.setAttribute('aria-label',tr(item.name)+' · '+tr('实时动作监测'));arrow.addEventListener('click',()=>{selected=item.id;playing=false;render();window.FitCoachWorkspace.selectExercise(item);controls.showView('realtime');});
+ card.append(button,arrow);container.append(card);
  }
 }
 }
 const poses={
+ bridge:[{head:[28,163],shoulder:[49,173],hip:[106,173],knee:[143,126],foot:[175,179],elbow:[65,178],hand:[94,178]},
+ {head:[28,163],shoulder:[49,173],hip:[105,132],knee:[143,126],foot:[175,179],elbow:[65,178],hand:[94,178]},
+ {head:[28,163],shoulder:[49,173],hip:[106,173],knee:[143,126],foot:[175,179],elbow:[65,178],hand:[94,178]}],
+ birddog:[{head:[36,93],shoulder:[61,108],hip:[135,108],knee:[137,150],foot:[173,179],elbow:[60,145],hand:[60,179]},
+ {head:[36,93],shoulder:[61,108],hip:[135,108],knee:[164,108],foot:[199,108],elbow:[40,108],hand:[12,108],backKnee:[137,150],backFoot:[173,179]},
+ {head:[36,93],shoulder:[61,108],hip:[135,108],knee:[137,150],foot:[173,179],elbow:[60,145],hand:[60,179]}],
+ plank:[{head:[26,99],shoulder:[54,107],hip:[108,117],knee:[145,126],foot:[177,136],elbow:[57,154],hand:[28,173]},
+ {head:[26,99],shoulder:[54,107],hip:[108,117],knee:[145,126],foot:[177,136],elbow:[57,164],hand:[28,173]},
+ {head:[26,99],shoulder:[54,107],hip:[108,117],knee:[145,126],foot:[177,136],elbow:[57,164],hand:[28,173]}],
  squat:[{head:[86,27],shoulder:[86,52],hip:[85,105],knee:[85,145],foot:[85,179],elbow:[110,77],hand:[115,107]},
  {head:[119,57],shoulder:[111,81],hip:[73,119],knee:[119,136],foot:[106,179],elbow:[143,84],hand:[164,87]},
  {head:[86,27],shoulder:[86,52],hip:[85,105],knee:[85,145],foot:[85,179],elbow:[110,77],hand:[115,107]}],
@@ -81,7 +106,7 @@ renderVideo();drawDiagram(item);
 }
 async function init(options){
  controls=options;const response=await fetch('/exercises.json');if(!response.ok)throw Error('Unable to load exercise library');exercises=await response.json();
- document.getElementById('startExercise').addEventListener('click',async()=>{const item=current();if(!item?.available)return;try{await controls.request('/api/vision/action',{action:item.id});controls.showView('overview');}catch(_) {}});render();
+ document.getElementById('startExercise').addEventListener('click',async()=>{const item=current();if(!item?.available)return;try{await window.FitCoachWorkspace.start(item.id);}catch(_) {}});render();
 }
 return{init,render,stopVideo};
 })();

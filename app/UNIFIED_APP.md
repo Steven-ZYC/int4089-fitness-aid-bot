@@ -18,16 +18,18 @@ Or from `app/`:
 .\.venv\Scripts\python.exe -X utf8 main.py --source serial://COM3 --imu-port COM4 --action squat --no-browser
 ```
 
-Open http://127.0.0.1:8010 . `-Action pushup` selects pushups. An empty `-ImuPort ''` skips automatic IMU connection. Confirm port identities after reconnecting USB. Only one process can own each serial port; stop standalone tools before using the unified app.
+Open http://127.0.0.1:8010 . The unified app currently supports only `-Action squat`. An empty `-ImuPort ''` skips automatic IMU connection. Confirm port identities after reconnecting USB. Only one process can own each serial port; stop standalone tools before using the unified app.
 
-## Four views
+## Six views
 
-- **Overview:** real camera images, pose/rule feedback, repetition count, alarm state, IMU summary and wireless ACK.
+- **Training dashboard:** the first four movements, independent hardware switches, live session and IMU/calibration previews.
+- **Movement library:** six movements with teaching videos, diagrams and cues; card arrows open live monitoring.
+- **Live movement:** the full movement picker and shared camera/session controls. Only Squat supports AI.
 - **3D attitude and position:** body axes, gravity, velocity, integrated position trail, view angle/zoom, reference orientation and position reset.
 - **IMU signal charts:** corrected gyro, acceleration relative to the stationary profile, acceleration magnitude and stationary intervals.
 - **Connections, replay and calibration:** S3 connect/disconnect, optional reset, uploaded or historical CSV replay, pause/resume, profile JSON import/export/editing and stationary-CSV calibration.
 
-The IMU source is explicitly labelled live or replay. Replay affects only IMU visualization; live vision continues independently and may still trigger its normal alarm. Replaying CSV does not generate alarms or establish live IMU hardware health.
+The IMU source is explicitly labelled live or replay. Replay affects only IMU visualization; live vision continues independently and may trigger vision alarms only while training is running and Arduino alerts are enabled. Replaying CSV does not generate alarms or establish live IMU hardware health.
 
 ## Implementation boundaries
 
@@ -56,7 +58,7 @@ From `app/`, run these with `.venv/Scripts/python.exe`:
 .\.venv\Scripts\python.exe -X utf8 test_rules.py
 ```
 
-See [architecture](../docs/architecture/README.md), [USB protocol](../docs/protocols/usb-camera.md) and [original IMU application](../tools/imu-position/README.md). Original `_zh_cn` documentation snapshots from the language migration remain unchanged; this guide describes the new unified entry point.
+See [architecture](../docs/architecture/README.md), [USB protocol](../docs/protocols/usb-camera.md) and [original IMU application](../tools/imu-position/README.md). The localization manifest retains migration hashes for maintained guides; excluded historical records remain unchanged.
 
 ## Current validation scope
 
@@ -79,8 +81,12 @@ Use the header language selector for English (`en`), Simplified Chinese (`zh-CN`
 
 `web/locales.json` is the shared catalog; `web/i18n.js` translates static labels, dynamic states, chart messages and feedback without changing protocol values. `localization.py` uses the same catalog for video overlays. Raw firmware diagnostics and profile JSON stay intact. The camera stream is shared, so the latest language selection also applies to its overlays for all local viewers.
 
-The three 1920 × 1080 screenshots in `docs/assets/` show the real disconnected-device state and are embedded in the matching root README editions.
+The three 1920 × 1080 screenshots in `docs/assets/` were refreshed on 2026-11-11 and are embedded in the corresponding root READMEs. They show the actual camera-not-ready/IMU-no-live-data state; no simulated live measurements were added.
 
-## Movement library
+## Movement library and live session
 
-The overview shows Squat (AI available), Push-up and Forward lunge (AI coming soon). All three open teaching previews; only Squat can activate the unified AI pipeline. Legacy standalone exercise rules are retained. Each preview includes a verified official YouTube cover/player, a three-stage original posture diagram, three technique cues and a source link. Videos are from CrossFit and ACEfitness; technique sources are ACE exercise guides. External videos and covers need internet access. Playback starts only on click and stops when leaving the library. Teaching previews do not change AI exercise selection or alarm state.
+Six movements are listed: Squat, Push-up, Forward lunge, Plank, Glute bridge and Bird dog. Each has video, cues and a three-stage diagram. Only Squat supports AI recognition; all others are teaching previews. Added videos are by ScottHermanFitness (Glute Bridge) and Point Performance (Bird Dog Exercise).
+
+Live movement appears below Movement library in the sidebar. Click a card body for teaching, or its arrow for the live page. Both dashboard and live page share one video stream and session. Unsupported movements cannot start AI recognition.
+
+The dashboard offers independent Arduino alarm, ESP Camera and ESP IMU switches. Enabled and connected are distinct; switches control acquisition and alarm delivery, not hardware power. Mega physical actuation remains unconfirmed. Start/Pause/Resume/End gate counting and vision alarms; pause freezes time and retains completed reps while preview continues. APIs: `/api/modules`, `/api/training`. Lifecycle tests: `test_workspace.py`.
