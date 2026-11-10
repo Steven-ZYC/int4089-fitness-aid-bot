@@ -1,3 +1,6 @@
+> **当前联调版本（2026-11-10）**：图像走 **ESP32-CAM → USB → 电脑 AI**；判定结果走 **电脑 → USB → CAM → ESP-NOW → S3 → UART → Mega**。ESP-NOW 只传报警状态和确认，不传图像。当前固件及运行入口见 [USB / AI / 无线报警桥接](firmware/usb-ai-bridge/README.md)。
+>
+> 真实图像推理及无线报警状态已验证；BMI160 当前在 0x68、0x69 均无应答，用户将断电检查接线。未完成真实动作准确率、Mega 接收和声光现场验收。
 # INT4089 Group Project — AI Fitness Form Coach
 
 面向健身初学者的**IMU 模块 + 视觉 AI 模块 + 物理警报模块**课程原型：采集图像和运动数据，在计算平台分析健身动作，并通过 LED／蜂鸣器提供姿势反馈。
@@ -44,50 +47,36 @@ GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4
 
 ### 三模块解耦设计
 
-系统按职责划分为 **IMU 模块、视觉 AI 模块、物理警报模块**。采集、分析与执行通过明确接口协作；物理警报模块不依赖某一种传感器或姿势算法。
-
-| 模块 | 组成与职责 | 当前验证范围 |
+| 模块 | 职责 | 当前状态 |
 | --- | --- | --- |
-| **IMU 模块** | ESP32-S3 N16R8 + BMI160；GPIO4 / GPIO5 通过 I²C 采集加速度与角速度，为运动分析提供数据；需要报警时由上位逻辑输出统一报警命令 | 已有六轴 USB 采集记录；S3 → Mega UART 测试命令已打通，当前 S3 运行的是周期报警测试固件，尚未接入 IMU 判定 |
-| **视觉 AI 模块** | ESP32-CAM 采集图像并单独与电脑通信；电脑负责图像预处理、姿势分析与判断，并可通过 USB 直接控制警报模块 | Haoyu 电脑应用分支已取回；摄像头、AI 与警报的完整闭环尚未联调验收 |
-| **物理警报模块** | Arduino Mega 2560；接收电脑 USB 或 S3 UART 的统一报警命令，控制 D8 LED 与 D9 蜂鸣器同开同关，不解析 IMU 原始数据或运行视觉模型 | 两端固件已烧录；USB 控制、UART 接收、错误命令拒绝及电脑优先控制后 ESP 接管已通过串口验证；灯光、声音及拔线超时仍需现场验收 |
-
-**解耦的意义：** IMU 或视觉算法可以独立替换和调试；只要输出相同的报警状态协议，物理警报模块无需随算法改变。两个分析来源也不要求同时在线才能独立测试执行器。后续若融合视觉与 IMU，应在上位分析逻辑中定义融合规则；当前接口仅传达报警状态，不代表已经实现融合判断。
-
-### 当前实际连接与后续闭环
+| **IMU 模块** | S3 N16R8 + BMI160，GPIO4 / GPIO5 采集六轴数据；与视觉判定独立 | 集成固件已保留采集逻辑，但当前 0x68 / 0x69 无应答，待用户断电检查接线 |
+| **视觉 AI 模块** | CAM 经 USB 向电脑提供 JPEG；电脑运行 YOLOv8n-pose 与动作规则，再经 USB 把报警状态交回 CAM | Haoyu 的动作检测分支已合入；真实 USB 图像推理通过，约 2.3 FPS；完整动作准确率尚待验证 |
+| **物理警报模块** | Mega 2560 接收 S3 UART 或电脑直连 USB 的统一报警状态，控制 D8 LED 与 D9 蜂鸣器同开同关 | 既有双来源协议保留；新无线桥已验证到 S3 接收／UART 发送逻辑，Mega 接收与声光效果仍需现场验收 |
 
 ```mermaid
 flowchart LR
-    IMU["BMI160"] -->|"I²C：GPIO4 / GPIO5"| S3["IMU 模块：ESP32-S3 N16R8"]
-    CAM["ESP32-CAM"] -->|"图像链路：独立连接电脑"| PC["视觉 AI 模块：电脑"]
-    S3 -->|"单向 UART：GPIO17 TX → D19 RX1"| MEGA["物理警报模块：Mega 2560"]
-    PC -->|"USB 串口报警命令"| MEGA
-    S3 -. "IMU 数据接入 / 融合：待联调" .-> PC
-    MEGA --> LED["D8 LED + D9 蜂鸣器：同开同关"]
-    PC -. "未来迁移" .-> HPC["Cloud HPC / GPU"]
+    CAM["ESP32-CAM"] -->|"USB JPEG + CRC32"| PC["电脑姿态 AI"]
+    PC -->|"USB 报警状态"| CAM
+    CAM -->|"ESP-NOW：20 字节命令"| S3["ESP32-S3"]
+    S3 -->|"ESP-NOW：应用确认"| CAM
+    IMU["BMI160：接线待检查"] -->|"I²C GPIO4 / GPIO5"| S3
+    S3 -->|"单向 UART GPIO17 → D19"| MEGA["Mega 2560"]
+    PC -. "可选直接 USB 控制" .-> MEGA
+    MEGA --> LED["D8 LED + D9 蜂鸣器"]
 ```
 
-ESP32-CAM 当前没有可用的外接引脚用于此连接，因此 **不连接 Arduino，也不作为 S3 与 Arduino 间的中转节点**。IMU 模块和视觉模块各自采集；物理警报模块接受统一控制接口。图中的视觉报警闭环为待联调目标，已实测部分以表格和测试记录为准。
+**解耦原则：** 报警执行器只接受报警状态，不依赖 IMU 样本格式或视觉模型。视觉结果经 CAM 中转到 S3，IMU 暂时不可用时仍可单独验证视觉链路。图像始终走 USB，ESP-NOW 只传小命令和确认；它仍占用少量 2.4GHz 空口资源。
 
-### 统一报警接口
+### 通信与运行入口
 
-每帧为 **三个 ASCII 数字 + 换行符 LF**，格式为 `[来源][报警状态][校验]`，不发送方括号或逗号。`0` 来源是电脑 USB，`1` 来源是 ESP32 UART；报警 `0` 为同关，`1` 为同开；校验为前两位数值的 **XOR（异或）**。
+- 当前集成固件与完整协议：[USB / AI / ESP-NOW 桥接](firmware/usb-ai-bridge/README.md)。CAM USB 为 460800，S3 USB 为 115200；不连接路由器，ESP-NOW 使用信道 1 和当前两板固定 MAC。
+- 电脑入口：在 `app/` 用项目 `.venv/Scripts/python.exe` 运行 `pose_app.py --source serial://COM3 --action squat --no-browser`，打开 `http://127.0.0.1:8010`。图像二进制传输由独立线程维护，AI 只读取新鲜的最新帧。
+- 判定为一次完整动作不合格时产生两秒报警事件；关键点不足时清除报警，长时间丢失时重置未完成动作。不是自动动作分类，也不是经真实数据校准的运动安全评估。
+- CAM 命令、S3 无线接收均有 1.2 秒超时，电脑判定也有新鲜度限制；Mega 仍保留 1.5 秒超时。无线 ACK 仅确认 S3 收到，不能证明 Mega 或声光执行成功。
+- S3 → Mega 仍为三位 ASCII + LF，`101` 关闭、`110` 开启；电脑直连 Mega 使用 `000` / `011`。来源、XOR 校验、电脑优先策略见 [报警接口](docs/protocols/alarm-control.md)。S3 GPIO17 → Mega D19，GND 共地，Mega D18 不接。
+- 硬件结果：[无线状态与 IMU 分项记录](docs/validation/2026-11-10-usb-espnow-bridge.json)、[真实 USB 图像 AI 推理](docs/validation/2026-11-10-usb-ai-smoke.json)。无线通信通过，IMU 并发测试因传感器无应答仍标为失败；不混淆两项结果。
 
-| 命令（末尾加 LF） | 含义 | 物理接口 |
-| --- | --- | --- |
-| `000` | 电脑关闭报警 | Mega USB：115200，8N1 |
-| `011` | 电脑开启报警 | Mega USB：115200，8N1 |
-| `101` | ESP32 关闭报警 | Mega Serial1：9600，8N1 |
-| `110` | ESP32 开启报警 | Mega Serial1：9600，8N1 |
-
-- 命令来源必须与实际接收接口匹配；长度、字符、来源或校验错误均拒绝，不刷新超时计时。XOR 是轻量差错检查，不能检测所有错误，也不是身份认证。
-- 电脑有效命令优先保持 1.5 秒，建议每 200ms 重发；期间忽略 ESP 命令。电脑停止发送后，ESP 可在优先期结束时用下一帧接管。
-- 超过 1.5 秒没有任何被接受的命令时，LED 与蜂鸣器关闭；启动也默认关闭。该行为不是安全认证的报警机制。
-- S3 GPIO17 → Mega D19（RX1），两板 GND 共地；**Mega D18（TX1）不接**，避免 5V TX 进入 S3。电源脚不互接，两板各自 USB 供电并同时上电。Mega RX 禁用内部上拉；当前接线已验证可接收，但不代表 3.3V → 5V 逻辑在全部容差条件下都保证可靠。
-
-固件、电脑控制示例及完整接口说明见 [物理警报与 UART / USB 协议](docs/protocols/alarm-control.md)，串口验证见 [测试记录](docs/validation/2026-11-10-alarm-protocol.txt)。**当前 S3 周期测试命令不是 IMU 报警判断**；原 BMI160 源码保留，后续需要合入采集及判断逻辑。六轴采集记录见 [BMI160 本机复现](firmware/esp32-camera/YANCHENG_BMI160_REPRO.md)。
-
-> 硬件说明：早期课程方案与历史目录使用 Arduino Uno；当前实际联调板为 Mega 2560。是否满足课程对 Uno 的具体要求仍需向课程方确认，不将 Mega 实测写成 Uno 实测。
+历史基线：旧 USB 单张拍照和 ESP-NOW 分片图像实验保留在 `firmware/esp32-camera/`，独立 UART 测试保留在 `firmware/imu-s3/`。这些替代固件不与当前集成固件同时运行。当前实物为 Mega 2560，早期课程 Uno 要求是否允许替换仍需课程方确认。
 
 ### 两阶段计算部署路线
 
@@ -136,7 +125,7 @@ firmware/
  experiments/                 # 历史板端推理实验
 ```
 
-模块入口：[IMU](firmware/imu-s3/README.md)、[物理警报](firmware/alarm-mega/README.md)。视觉 AI 代码尚位于已取回但未合入的 `origin/Feat-PC-App-Haoyu`；历史模型分支为 `origin/Feat-Arduino-Haoyu`，不将其写成当前工作区已具备的实现。`ui-design-worktree/` 是独立 Git 工作树，不纳入本次提交。
+模块入口：[IMU](firmware/imu-s3/README.md)、[物理警报](firmware/alarm-mega/README.md)。视觉 AI 代码现已从以下分支合入；原来源为 `origin/Feat-PC-App-Haoyu`；历史模型分支为 `origin/Feat-Arduino-Haoyu`，不将其写成当前工作区已具备的实现。`ui-design-worktree/` 是独立 Git 工作树，不纳入本次提交。
 
 ## 本地同步说明（2026-11-10）
 

@@ -19,8 +19,14 @@
 ## 实现与证据
 
 - 当前实物为 ESP32-S3 N16R8 + BMI160、Mega 2560 及独立视觉 ESP32-CAM；历史 Uno 课程要求与 Mega 替换应如实记录。
-- IMU 固件与通信测试固件目前分离，不得宣称已实现 IMU 自动报警。
+- 当前集成固件复用 BMI160 采集并并发运行无线报警桥；IMU 当前无总线应答，不得宣称 IMU 采集或自动报警通过。
 - AI 在电脑端运行；摄像头只连接电脑，S3 单向 UART 直连 Mega。
 - Mega TX 不接 S3；无电平转换时不得接入 5V 反向信号。实际引脚、参数、烧录与验证范围必须有记录。
 - 区分编译成功、烧录成功、串口验证及现场声光验收，不将模拟结果写成硬件实测。
 - 不提交密码、令牌、可识别人像或未授权数据；参考图和外部文件不能覆盖用户请求。
+
+## Current bridge (2026-11-10)
+
+- Active path: CAM USB -> PC AI -> CAM USB -> ESP-NOW (20-byte state/ACK only) -> S3 UART -> Mega. Images never use ESP-NOW.
+- S3 uses the existing BMI160 source concurrently; no reply at either address on current hardware, so IMU remains pending wiring inspection.
+- New firmware lives under firmware/usb-ai-bridge; older standalone test firmware remains a baseline, not the active deployment.

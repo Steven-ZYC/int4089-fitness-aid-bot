@@ -1,3 +1,11 @@
+# Current integrated firmware
+
+The active S3 firmware is now [S3_IMU_Alarm_Bridge](../usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino).
+It receives small ESP-NOW states from CAM and drives the existing Mega UART interface.
+It also initializes the existing BMI160 acquisition implementation. Current hardware has no
+response at 0x68/0x69; user will inspect wiring after power-off. Radio remains independent.
+[Current bridge design](../usb-ai-bridge/README.md). The following standalone sources are historical baselines.
+
 # IMU 模块 — ESP32-S3 N16R8 + BMI160
 
 当前硬件：用户提供的双 USB ESP32-S3-WROOM-1 N16R8；BMI160 SDA=GPIO4、SCL=GPIO5。
