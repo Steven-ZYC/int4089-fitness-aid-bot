@@ -1,6 +1,17 @@
+> Current unified PC application: [vision + IMU dashboard](app/UNIFIED_APP.md). The launcher now starts app/main.py; original localized snapshots below retain the pre-integration text.
+
 [English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-# INT4089 — AI Fitness Form Coach
+# FitCoach AI
+
+## FitCoach AI dashboard
+
+Switch between English, Simplified Chinese and Traditional Chinese (Hong Kong) in the top-right language selector. Your preference is saved locally. Navigation, device states, exercise feedback, charts and video text follow the selected language.
+
+![FitCoach AI dashboard](docs/assets/fitcoach-ui-en-16x9.png)
+
+Actual 1920 × 1080 (16:9) UI capture. Camera not ready and IMU disconnected at capture time; no simulated live data.
+
 
 The prototype consists of an **IMU module, a vision AI module and a physical alarm module**, maintained centrally by Zhang Yancheng. Development uses `Feat-Integration-Yancheng`; main retains the stable integrated version.
 

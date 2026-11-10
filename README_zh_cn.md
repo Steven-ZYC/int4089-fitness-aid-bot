@@ -1,4 +1,13 @@
-# INT4089 — AI Fitness Form Coach
+# FitCoach AI
+
+## FitCoach AI 界面
+
+右上角可切换简体中文、英语和香港繁体中文，语言偏好保存在本机。导航、设备状态、动作反馈、图表与视频叠字随语言切换。
+
+![FitCoach AI dashboard](docs/assets/fitcoach-ui-zh-cn-16x9.png)
+
+1920 × 1080（16:9）实际界面截图。截图时摄像头未就绪、IMU 未连接；未模拟实时数据。
+
 
 当前原型由 **IMU 模块、视觉 AI 模块、物理警报模块**组成，由 Zhang Yancheng 统一维护。当前开发分支为 `Feat-Integration-Yancheng`，main 保留稳定集成版本。
 

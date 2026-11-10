@@ -23,6 +23,8 @@ from PIL import Image, ImageDraw, ImageFont
 from form_rules import make_analyzer
 from pose_engine import L_KNE, R_KNE, SKELETON, PoseEngine
 from sources import open_source
+from orientation import OrientationController
+from localization import translate
 
 STATE = {"jpeg": None, "fid": 0,
          "pose": {"action": "", "phase": "启动中", "reps": 0, "angles": {},
@@ -59,7 +61,7 @@ def draw_cn(frame, items):
     return cv2.cvtColor(np.array(pil), cv2.COLOR_RGB2BGR)
 
 
-def draw_pose(frame, kpts, res, action):
+def draw_pose(frame, kpts, res, action, language="zh-CN"):
     h, w = frame.shape[:2]
 
     for a, b in SKELETON:
@@ -90,25 +92,45 @@ def draw_pose(frame, kpts, res, action):
 
     if res.get("last"):
         last = res["last"]
-        msg = "姿势标准" if last["ok"] else "；".join(last["violations"])
+        msg = translate("姿势标准",language) if last["ok"] else "; ".join(translate(v,language) for v in last["violations"])
         texts.append((msg[:52], (10, h - 32), 16, GREEN if last["ok"] else RED))
     else:
         texts.append(("做一个完整动作开始计次…", (10, h - 32), 16, (170, 170, 170)))
 
-    return draw_cn(frame, texts)
+    return draw_cn(frame, [(translate(text,language),pos,size,color) for text,pos,size,color in texts])
 
 
 class Pipeline(threading.Thread):
-    def __init__(self, src, action, rotate=0, max_width=800, jpeg_quality=75):
+    def __init__(self, src, action, rotate=0, max_width=800, jpeg_quality=75, engine=None, mirror=False):
         super().__init__(daemon=True)
         self.src_arg, self.action, self.rotate = src, action, rotate
         self.max_width, self.jpeg_quality = max_width, jpeg_quality
-        self.engine = PoseEngine()
+        self.engine = engine if engine is not None else PoseEngine()
         self.analyzer = make_analyzer(action)
         self.running = True
+        self.language = "zh-CN"
+        self.requested_action = action
+        self.last_frame_at = 0.0
+        self._source = None
+        self.orientation=OrientationController(mode=rotate,mirror=mirror)
+        self.requested_orientation=(str(rotate),mirror,0)
+        self._orientation_command=self.requested_orientation
         self._times = deque(maxlen=20)
 
     def run(self):
+        try:
+            self._run_pipeline()
+        except Exception as exc:
+            with _LOCK:
+                STATE['stats'].update(state='Vision pipeline error: '+str(exc), alarm=False, persons=0, fps=0)
+            print('Vision pipeline stopped:',exc)
+        finally:
+            if self._source is not None:
+                if hasattr(self._source,'set_alarm'):
+                    self._source.set_alarm(False)
+                self._source.release()
+
+    def _run_pipeline(self):
         try:
             src = open_source(self.src_arg)
         except Exception as e:                       # noqa: BLE001
@@ -117,6 +139,7 @@ class Pipeline(threading.Thread):
             print(f"[错误] {e}")
             return
 
+        self._source = src
         with _LOCK:
             STATE["stats"].update(state="运行中", source=src.desc)
         print(f"[信息] 视频源：{src.desc} | 模型：{self.engine.name} | 动作：{self.analyzer.name}")
@@ -132,7 +155,16 @@ class Pipeline(threading.Thread):
         alarm_until = 0.0
         last_rep = 0
         missing_since = None
+        orientation_stamp=None
         while self.running:
+            if self.requested_action != self.action:
+                self.action = self.requested_action
+                self.analyzer = make_analyzer(self.action)
+                last_rep = 0
+                alarm_until = 0.0
+                missing_since = None
+                if hasattr(src, "set_alarm"):
+                    src.set_alarm(False)
             try:
                 frame = src.read()
             except Exception as exc:
@@ -140,7 +172,6 @@ class Pipeline(threading.Thread):
                     STATE["stats"].update(state=f"USB/source error: {exc}", alarm=False, persons=0)
                 if hasattr(src,"set_alarm"):
                     src.set_alarm(False)
-                src.release()
                 return
             if frame is None:
                 time.sleep(0.01)
@@ -150,16 +181,29 @@ class Pipeline(threading.Thread):
                 continue
             last_seq = src.seq
 
-            if self.rotate:
-                code = (cv2.ROTATE_90_CLOCKWISE if self.rotate == 90 else
-                        cv2.ROTATE_180 if self.rotate == 180 else cv2.ROTATE_90_COUNTERCLOCKWISE)
-                frame = cv2.rotate(frame, code)
+            requested=self.requested_orientation
+            if requested!=self._orientation_command:
+                mode,mirror,revision=requested
+                self.orientation.configure(mode,mirror,recalibrate=revision!=self._orientation_command[2])
+                self._orientation_command=requested
+            self.orientation.update(frame,self.engine.infer,time.monotonic())
+            stamp=(self.orientation.mode,self.orientation.angle,self.orientation.mirror,self.orientation.locked)
+            if stamp!=orientation_stamp:
+                completed_reps=self.analyzer.reps
+                self.analyzer=make_analyzer(self.action)
+                self.analyzer.reps=completed_reps
+                last_rep=completed_reps
+                alarm_until=0.0
+                missing_since=None
+                orientation_stamp=stamp
+                if hasattr(src,'set_alarm'):src.set_alarm(False)
+            frame=self.orientation.transform(frame)
             if frame.shape[1] > self.max_width:
                 r = self.max_width / frame.shape[1]
                 frame = cv2.resize(frame, (self.max_width, int(frame.shape[0] * r)))
 
             kpts, _ = self.engine.infer(frame)
-            valid_pose = kpts is not None and any(
+            valid_pose = self.orientation.locked and kpts is not None and any(
                 all(kpts[i, 2] >= 0.35 for i in indices)
                 for indices in ([(11, 13, 15), (12, 14, 16)] if self.action == "squat"
                                 else [(5, 7, 9, 11, 15), (6, 8, 10, 12, 16)]))
@@ -171,7 +215,7 @@ class Pipeline(threading.Thread):
                 if res["reps"] > last_rep:
                     last_rep = res["reps"]
                     alarm_until = time.monotonic()+2.0 if res.get("last") and not res["last"]["ok"] else 0.0
-                frame = draw_pose(frame, kpts, res, self.action)
+                frame = draw_pose(frame, kpts, res, self.action, self.language)
             else:
                 alarm_until = 0.0
                 if missing_since is None:
@@ -183,7 +227,7 @@ class Pipeline(threading.Thread):
                     last_rep = completed_reps
                 res = self.analyzer._snapshot()
                 cv2.rectangle(frame, (0, 0), (frame.shape[1], 38), (28, 28, 32), -1)
-                frame = draw_cn(frame, [("未检测到人 — 请确保全身进入画面",
+                frame = draw_cn(frame, [(("自动校正中：请短暂站直，双手自然下垂" if not self.orientation.locked else "未检测到人 — 请确保全身进入画面"),
                                          (10, 9), 17, (180, 180, 180))])
 
             if hasattr(src,"set_alarm"):
@@ -197,6 +241,7 @@ class Pipeline(threading.Thread):
             ok, buf = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality])
             if not ok:
                 continue
+            self.last_frame_at = time.monotonic()
             with _LOCK:
                 STATE["jpeg"] = buf.tobytes()
                 STATE["fid"] += 1
@@ -205,8 +250,8 @@ class Pipeline(threading.Thread):
                                       alarm=bool(valid_pose and time.monotonic()<alarm_until),
                                       radio=getattr(src,"radio",{}),
                                       transport=getattr(src,"metrics",{}),
+                                      orientation=self.orientation.state(),
                                       frames=STATE["stats"]["frames"] + 1)
-        src.release()
 
 
 PAGE = """<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">

@@ -1,3 +1,5 @@
+> Current UI integration: [Unified PC application](../../app/UNIFIED_APP.md). app/main.py reuses the existing vision pipeline and IMU core in one service; original snapshot diagrams remain historical references.
+
 [English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
 <a id="系统架构与代码导航"></a>

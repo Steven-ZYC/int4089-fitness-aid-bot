@@ -11,7 +11,9 @@
       "english": "README.md",
       "zh_cn": "README_zh_cn.md",
       "zh_hk": "README_zh_hk.md",
-      "original_sha256": "504660a7222c6408148f060bfc22ba6bd97e7cad1935a002f2ed25798336a39e"
+      "original_sha256": "f30d96469e795386b471af67e7cfd5a6db92bd27743e684a98ac903771212da4",
+      "migration_snapshot_sha256": "504660a7222c6408148f060bfc22ba6bd97e7cad1935a002f2ed25798336a39e",
+      "content_updated": "2026-11-11: user-requested UI screenshot and i18n documentation; migration hash retained separately"
     },
     {
       "english": "app/POSE.md",
@@ -96,6 +98,15 @@
       "zh_cn": "tools/imu-position/README_zh_cn.md",
       "zh_hk": "tools/imu-position/README_zh_hk.md",
       "original_sha256": "60ff8f3bae7f2303a43a424bad5085348cc20ffa1bfbdc80a12e09bd8b70b30f"
+    },
+    {
+      "english": "app/UNIFIED_APP.md",
+      "zh_cn": "app/UNIFIED_APP_zh_cn.md",
+      "zh_hk": "app/UNIFIED_APP_zh_hk.md",
+      "original_sha256": "a578fc26b9237353f783bfb5fef04932352e6cbfa1f5c556b0d974af1fd19b06",
+      "introduced": "2026-11-11 unified PC application",
+      "migration_snapshot_sha256": "d51841582025994e9e13fcdad55f5bd60359a3d5a20e314f4d5e25e058ca79ab",
+      "content_updated": "2026-11-11: user-requested UI screenshot and i18n documentation; migration hash retained separately"
     }
   ],
   "excluded_historical_documents": [

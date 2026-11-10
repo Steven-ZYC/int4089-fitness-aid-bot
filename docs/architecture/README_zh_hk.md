@@ -1,3 +1,5 @@
+> 目前介面整合：[統一電腦應用](../../app/UNIFIED_APP_zh_hk.md)。app/main.py 在同一服務重用視覺流水線及 IMU 核心；原文快照圖保留為歷史參考。
+
 [English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
 <a id="系统架构与代码导航"></a>

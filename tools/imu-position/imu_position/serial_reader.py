@@ -151,6 +151,7 @@ class ImuSerialReader:
         on_status: Optional[Callable[[str], None]] = None,
         baudrate: int = 115200,
         reset_on_open: bool = True,
+        on_diagnostic: Optional[Callable[[str], None]] = None,
     ) -> None:
         self.port = port
         self.baudrate = baudrate
@@ -161,6 +162,7 @@ class ImuSerialReader:
             on_first_line=lambda line: self._status(f"收到串口输出（首行：{line[:60]}）"),
         )
         self.on_status = on_status
+        self.on_diagnostic = on_diagnostic
         self._thread: threading.Thread | None = None
         self._stop = threading.Event()
         self._serial = None
@@ -208,6 +210,8 @@ class ImuSerialReader:
             if not raw:
                 continue
             line = raw.decode("ascii", errors="replace")
+            if self.on_diagnostic is not None and is_diagnostic(line.strip()):
+                self.on_diagnostic(line.strip())
             self.parser.feed(line)
             if self.parser.stats.fatal_reason:
                 break

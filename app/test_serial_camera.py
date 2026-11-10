@@ -39,4 +39,18 @@ class TransportTests(unittest.TestCase):
         obj=self.run_fixture(done_seq=2);self.assertEqual(obj.seq,0)
         self.assertIn('trailer',obj._error)
 
+class HandshakeTests(unittest.TestCase):
+    def test_rom_noise_is_ignored_only_during_handshake(self):
+        obj=SerialCameraSource.__new__(SerialCameraSource)
+        obj.port=FakePort(b'\xffROM noise\nINFO fw=Cam_USB_Bridge_v1 chip=ESP32\n')
+        obj._stop=threading.Event()
+        obj._handshake()
+        self.assertEqual(obj.port.writes[0],b'INFO\n')
+
+    def test_wrong_firmware_is_rejected(self):
+        obj=SerialCameraSource.__new__(SerialCameraSource)
+        obj.port=FakePort(b'INFO fw=some_other_firmware chip=ESP32\n')
+        obj._stop=threading.Event()
+        with self.assertRaises(RuntimeError):obj._handshake()
+
 if __name__=='__main__':unittest.main()

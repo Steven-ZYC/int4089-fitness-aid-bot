@@ -1,3 +1,5 @@
+> 目前入口：[統一電腦應用](UNIFIED_APP_zh_hk.md)，將視覺與 IMU 整合到同一網頁；獨立 pose_app.py 仍保留。
+
 [English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
 <a id="电脑端视觉-ai"></a>

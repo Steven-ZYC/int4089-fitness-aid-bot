@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-11",
+  "source": "Installed Ultralytics bus.jpg test asset; no user camera image saved",
+  "results": [
+    {
+      "input_rotation": 0,
+      "expected_correction": 0,
+      "mode": "auto",
+      "degrees": 0,
+      "mirror": false,
+      "locked": true,
+      "votes": 3,
+      "required_votes": 3,
+      "confidence": 0.987
+    },
+    {
+      "input_rotation": 90,
+      "expected_correction": 270,
+      "mode": "auto",
+      "degrees": 270,
+      "mirror": false,
+      "locked": true,
+      "votes": 3,
+      "required_votes": 3,
+      "confidence": 0.987
+    },
+    {
+      "input_rotation": 180,
+      "expected_correction": 180,
+      "mode": "auto",
+      "degrees": 180,
+      "mirror": false,
+      "locked": true,
+      "votes": 3,
+      "required_votes": 3,
+      "confidence": 0.987
+    },
+    {
+      "input_rotation": 270,
+      "expected_correction": 90,
+      "mode": "auto",
+      "degrees": 90,
+      "mirror": false,
+      "locked": true,
+      "votes": 3,
+      "required_votes": 3,
+      "confidence": 0.987
+    }
+  ],
+  "all_correct": true,
+  "live_camera": {
+    "after_user_stood_for_calibration": true,
+    "orientation": {
+      "mode": "auto",
+      "degrees": 270,
+      "mirror": true,
+      "locked": true,
+      "votes": 3,
+      "required_votes": 3,
+      "confidence": 0.946
+    },
+    "vision_alive": true,
+    "fps_observed": 6.6,
+    "alarm": false,
+    "frames_observed": 390
+  },
+  "unit_tests": 6,
+  "limits": "Quarter-turn calibration only; lock is retained during exercise, with explicit recalibration after remounting. Mirroring is a user-selected selfie convention, not inferred front/back identity."
+}

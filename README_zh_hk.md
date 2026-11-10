@@ -1,6 +1,17 @@
+> 目前統一電腦應用：[視覺 + IMU 控制台](app/UNIFIED_APP_zh_hk.md)。啟動腳本已改為執行 app/main.py；原文快照保留合併前內容。
+
 [English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-# INT4089 — AI Fitness Form Coach
+# FitCoach AI
+
+## FitCoach AI 界面
+
+可於右上角切換英文、簡體中文及繁體中文（香港），語言偏好會儲存在本機。導覽、設備狀態、動作回饋、圖表及影片疊字均會跟隨所選語言。
+
+![FitCoach AI dashboard](docs/assets/fitcoach-ui-zh-hk-16x9.png)
+
+1920 × 1080（16:9）實際界面截圖。截圖時攝影機未就緒、IMU 未連接；沒有模擬即時數據。
+
 
 目前原型由 **IMU 模組、視覺 AI 模組、物理警報模組**組成，由 Zhang Yancheng 統一維護。目前開發分支為 `Feat-Integration-Yancheng`，main 保留穩定集成版本。
 

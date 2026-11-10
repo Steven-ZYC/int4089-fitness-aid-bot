@@ -30,6 +30,9 @@ class SerialCameraSource:
         self.port.dtr = False
         self.port.rts = False
         self.port.open()
+        if hasattr(self.port, 'set_buffer_size'):
+            # CH340 at 921600 can outrun the Windows default buffer during inference stalls.
+            self.port.set_buffer_size(rx_size=262144, tx_size=4096)
         self._thread = threading.Thread(target=self._loop, daemon=True)
         self._thread.start()
         deadline = time.monotonic() + timeout
@@ -73,12 +76,41 @@ class SerialCameraSource:
             raise TimeoutError('Truncated JPEG')
         return bytes(data)
 
+    def _handshake(self):
+        """Retry startup probes and recover a CAM left in reset after USB reconnect."""
+        deadline = time.monotonic() + 8
+        started = time.monotonic()
+        next_probe = 0.0
+        reset_once = False
+        while time.monotonic() < deadline and not self._stop.is_set():
+            now = time.monotonic()
+            if now - started > 2 and not reset_once:
+                # CAM only: no image/control result has been accepted yet.
+                self.port.rts = True
+                self._stop.wait(0.12)
+                self.port.rts = False
+                self._stop.wait(1.3)
+                reset_once = True
+                next_probe = 0.0
+            if time.monotonic() >= next_probe:
+                self.port.write(b'INFO\n')
+                next_probe = time.monotonic() + 0.7
+            try:
+                line = self._line(min(deadline, time.monotonic()+0.4))
+            except (TimeoutError, UnicodeDecodeError):
+                # ROM banners use another baud rate. Only startup tolerates them.
+                continue
+            if line.startswith('ERR_'):
+                raise RuntimeError(line)
+            if line.startswith('INFO '):
+                if 'fw=Cam_USB_Bridge_v1 ' not in line:
+                    raise RuntimeError('Wrong camera firmware; expected Cam_USB_Bridge_v1')
+                return
+        raise TimeoutError('Camera INFO handshake timed out; check USB and board power')
+
     def _loop(self):
         try:
-            self.port.write(b'INFO\n')
-            info = self._until('INFO ', 8)
-            if 'fw=Cam_USB_Bridge_v1 ' not in info:
-                raise RuntimeError('Wrong camera firmware; expected Cam_USB_Bridge_v1')
+            self._handshake()
             while not self._stop.is_set():
                 cycle_start = time.monotonic()
                 with self._lock:

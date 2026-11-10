@@ -1,3 +1,5 @@
+> Current entry point: [Unified PC application](UNIFIED_APP.md), combining vision and IMU in one page. The standalone pose_app.py remains available.
+
 [English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
 <a id="电脑端视觉-ai"></a>
