@@ -1,0 +1,26 @@
+INFO fw=DualESP_Text_Check_v1 role=S3 chip=ESP32-S3 channel=1 packet_bytes=48 boot=1048792636 paired=1 peer_role=CAM peer_boot=4036166495 usb_cdc=0 acquisition=OFF
+STATE role=S3 boot=1048792636 paired=1 peer_boot=4036166495 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+RUN_START role=S3 run=1 count=20 first_seq=1 last_seq=20
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=1 attempts=1 rtt_us=5703 text=RECEIVED_BY_CAM
+STATE role=S3 boot=1048792636 paired=1 peer_boot=4036166495 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=2 attempts=1 rtt_us=4013 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=3 attempts=1 rtt_us=7008 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=4 attempts=1 rtt_us=18011 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=5 attempts=1 rtt_us=4012 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=6 attempts=1 rtt_us=4016 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=7 attempts=1 rtt_us=4008 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=8 attempts=1 rtt_us=4014 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=9 attempts=1 rtt_us=5012 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=10 attempts=1 rtt_us=4004 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=11 attempts=1 rtt_us=4015 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=12 attempts=1 rtt_us=4009 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=13 attempts=1 rtt_us=4018 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=14 attempts=1 rtt_us=4018 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=15 attempts=1 rtt_us=4010 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=16 attempts=1 rtt_us=14006 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=17 attempts=1 rtt_us=4013 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=18 attempts=1 rtt_us=4014 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=19 attempts=1 rtt_us=4013 text=RECEIVED_BY_CAM
+APP_ACK role=S3 from=CAM from_boot=4036166495 target_boot=1048792636 run=1 seq=20 attempts=1 rtt_us=4013 text=RECEIVED_BY_CAM
+RUN_DONE role=S3 run=1 count=20 acked=20 failed=0 retries=0 first_seq=1 last_seq=20 rtt_min_us=4004 rtt_mean_us=5496 rtt_max_us=18011
+STATE role=S3 boot=1048792636 paired=1 peer_boot=4036166495 rx_unique=0 rx_duplicate=0 ack_queued=0 tx_api_errors=0 tx_radio_fail=0 rx_queue_drop=0 tx_queue_drop=0 bad_crc=0 invalid=0

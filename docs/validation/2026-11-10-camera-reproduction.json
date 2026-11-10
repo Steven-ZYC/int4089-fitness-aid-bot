@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-10",
+  "merged_source": "origin/Feat-Esp-Yuankun @ 9d583fd",
+  "cam_port": "COM3",
+  "s3_port": "COM4",
+  "cam_firmware": "ESP32CAM_USB_Check_v1",
+  "camera_test_pass": true,
+  "jpeg_bytes": 10757,
+  "resolution": [
+    640,
+    480
+  ],
+  "device_request_to_acquired_ms": 58.324,
+  "host_payload_read_ms": 917.0942,
+  "evidence_scope": "JPEG markers, payload length, bitmap decoding, dimensions, fresh frame timestamp and DONE checked by receive_esp32cam_check.ps1. Raw photo retained only in ignored captures directory.",
+  "prior_cam_firmware": "MJPEG server booted but Wi-Fi status=6; network stream not verified",
+  "s3_firmware": "Existing three-digit alarm test sender retained; not reflashed",
+  "esp_now": "Historical text/image transport and tests merged, not exercised on current hardware in this run",
+  "merge_resolution": "Preserve current AGENTS, root README, evidence attributes, BMI160 automatic-address sketches and capture script; merge remaining source and historical evidence.",
+  "limitations": [
+    "Single USB snapshot is not realtime AI/video validation",
+    "No ESP-NOW hardware acceptance in this run",
+    "Historical evidence kept unchanged, including original log whitespace"
+  ]
+}

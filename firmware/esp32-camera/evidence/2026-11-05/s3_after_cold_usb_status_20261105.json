@@ -1,0 +1,14 @@
+{
+  "schema": "s3-usb-after-cold-v1",
+  "recorded_utc": "2026-11-05T05:40:36.4545698Z",
+  "user_report": "S3 USB fully removed for 10 seconds, then reconnected",
+  "observed_serial_ports": [
+    "COM3",
+    "COM4",
+    "COM11"
+  ],
+  "s3_com9_present": false,
+  "imu_after_cold_status": "UNKNOWN - cannot query S3",
+  "last_confirmed_imu_failure_before_cold": "GYRO_WAKE_WRITE",
+  "network_control_prior_pass": true
+}

@@ -1,0 +1,11 @@
+﻿{
+    "schema":  "wifi-switch-bench-v1",
+    "started_utc":  "2026-11-05T05:27:35.8032701Z",
+    "pass":  false,
+    "wifi_switched":  true,
+    "original_network_restored":  false,
+    "temporary_profile_removed":  true,
+    "ap_stopped":  true,
+    "error":  "Network control test did not pass; see local report",
+    "finished_utc":  "2026-11-05T05:28:06.5152699Z"
+}

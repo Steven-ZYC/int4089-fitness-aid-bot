@@ -1,0 +1,14 @@
+{
+  "schema": "imu-bus-comparison-v1",
+  "recorded_utc": "2026-11-05T05:54:38.1983544Z",
+  "program_bytes": 931602,
+  "global_bytes": 48740,
+  "bin_bytes": 931744,
+  "bin_sha256": "DCBF42CB45F0A27B07AE9111843A81BC284E74A2E09FA225BC2E2055B85B6984",
+  "source_sha256": "6DF54C87EDA90416996D48126B0943A6BEAEA975A6EB415FF140DBFB46754FBE",
+  "imu_module_sha256": "2301C1741873264D1D0EF5D5AA8A65452D42967C7EAFD9BF6847BB9D65D78B1A",
+  "scope": "20ms case followed by 100ms case on the same already-faulted bus; not independent cold-start comparison",
+  "pass": false,
+  "imu_ready": false,
+  "code4_is_wire_generic_error_not_explicit_timeout": true
+}

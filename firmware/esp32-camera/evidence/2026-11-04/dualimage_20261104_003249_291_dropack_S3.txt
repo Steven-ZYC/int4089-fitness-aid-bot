@@ -1,0 +1,15 @@
+INFO fw=DualESP_Image_Check_v1 role=S3 chip=ESP32-S3 boot=1382437599 peer_boot=1015978044 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=OFF
+STATE role=S3 boot=1382437599 paired=1 peer_boot=1015978044 image_state=3 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+FAULT_ARMED role=S3 kind=DROP_ACK idx=2
+CAPTURE_START req=4
+META_ACCEPT req=4 frame=2 bytes=12160 chunks=61
+FAULT_DROP_ACK req=4 frame=2 idx=2
+IMAGE_READY req=4 frame=2 bytes=12160 chunks=61 crc32=26A64DDC sha256=98D556C50ACDB9C929085E0C185CBF27890857F10E628173A8EE61B8074C3043 gateway_elapsed_us=859078 duplicate_chunks=1 crc_rejects=0 dropped_ack=1
+USB_META req=4 frame=2 bytes=12160 chunks=61 crc32=26A64DDC sha256=98D556C50ACDB9C929085E0C185CBF27890857F10E628173A8EE61B8074C3043 width=640 height=480 cam_request_us=5576184524 cam_frame_us=5576218081 cam_acquired_us=5576258148 discarded=1 gateway_elapsed_us=859078 duplicate_chunks=1 crc_rejects=0 dropped_ack=1
+IMG 12160
+<binary JPEG payload 12160 bytes omitted>
+
+USB_DONE req=4 frame=2 bytes=12160 uart_elapsed_us=1084038
+CONTROL_OK req=5 nonce=1334170293 attempts=1 rtt_us=7582 test_only=YES
+INFO fw=DualESP_Image_Check_v1 role=S3 chip=ESP32-S3 boot=1382437599 peer_boot=1015978044 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=8388608 imu=OFF
+STATE role=S3 boot=1382437599 paired=1 peer_boot=1015978044 image_state=3 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0

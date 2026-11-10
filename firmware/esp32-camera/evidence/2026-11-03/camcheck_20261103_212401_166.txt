@@ -1,0 +1,6 @@
+﻿READY
+INFO fw=ESP32CAM_USB_Check_v1 chip=ESP32-D0WD-V3 cpu_mhz=240 flash_bytes=4194304 psram_bytes=2097152 sensor_pid=0x0026 sensor_ver=0x42 sensor_name=OV2640 width=640 height=480 format=JPEG fb_count=1 grab=WHEN_EMPTY
+META seq=3 request_us=393250424 frame_us=393251970 acquired_us=393292161 discarded=1 width=640 height=480 len=9522
+IMG 9522
+
+DONE seq=3 written=9522 send_us=831925

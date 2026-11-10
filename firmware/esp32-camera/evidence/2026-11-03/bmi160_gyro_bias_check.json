@@ -1,0 +1,33 @@
+{
+  "method": "Host-side per-axis subtraction of the mean from a separate stationary reference",
+  "unit": "deg/s",
+  "reference_label": "axes_flat_full",
+  "validation_label": "gyro_validation_rest",
+  "reference_sha256": "28B1F0BDFCBFFE4C098A122F75DFDCC8D7D01F9A5B260740EF10C54332947448",
+  "validation_sha256": "1181F1DA00494D33D836F4678DAD4669BCC4B1F573557D8E343EAEDBE733D8E2",
+  "reference_rows": 500,
+  "validation_rows": 500,
+  "axes": {
+    "gx_dps": {
+      "reference_bias": -0.0911052,
+      "validation_raw_mean": -0.06872100000000005,
+      "validation_corrected_mean": 0.02238419999999996
+    },
+    "gy_dps": {
+      "reference_bias": -0.3671734000000005,
+      "validation_raw_mean": -0.36378700000000014,
+      "validation_corrected_mean": 0.00338640000000048
+    },
+    "gz_dps": {
+      "reference_bias": 0.2810284000000001,
+      "validation_raw_mean": 0.28118099999999946,
+      "validation_corrected_mean": 0.00015259999999987688
+    }
+  },
+  "validation_vector_rms_before_dps": 0.4679965335128027,
+  "validation_vector_rms_after_dps": 0.05836939960595803,
+  "prototype_check_passed": true,
+  "corrected_mean_limit_dps": 0.1,
+  "applied_to_s3_or_sensor_registers": false,
+  "note": "Requires user-confirmed stillness. Statistical gates are prototype checks, not proof of no motion or a factory accuracy test. Only gyroscope zero-rate bias is checked; accelerometer calibration, scale factors, axis alignment and temperature stability remain separate tasks. Raw inputs remain unchanged."
+}

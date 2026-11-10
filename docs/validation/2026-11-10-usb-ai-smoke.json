@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-10",
+  "pass": true,
+  "source": "CAM USB JPEG/CRC at 460800",
+  "model": "yolov8n-pose.pt",
+  "frames": [
+    {
+      "frame": 1,
+      "person": false,
+      "infer_ms": 4079.45,
+      "phase": null
+    },
+    {
+      "frame": 8,
+      "person": true,
+      "infer_ms": 33.66,
+      "phase": "未开始"
+    },
+    {
+      "frame": 9,
+      "person": true,
+      "infer_ms": 14.52,
+      "phase": "未开始"
+    },
+    {
+      "frame": 10,
+      "person": true,
+      "infer_ms": 18.34,
+      "phase": "未开始"
+    },
+    {
+      "frame": 11,
+      "person": true,
+      "infer_ms": 19.14,
+      "phase": "未开始"
+    },
+    {
+      "frame": 12,
+      "person": true,
+      "infer_ms": 15.41,
+      "phase": "未开始"
+    },
+    {
+      "frame": 13,
+      "person": true,
+      "infer_ms": 18.27,
+      "phase": "未开始"
+    },
+    {
+      "frame": 14,
+      "person": true,
+      "infer_ms": 31.15,
+      "phase": "未开始"
+    }
+  ],
+  "scope": "Real USB frame inference only; no raw frames saved and no exercise accuracy acceptance. Alarm forced OFF for this smoke test."
+}

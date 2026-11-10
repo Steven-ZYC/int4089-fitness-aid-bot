@@ -1,0 +1,71 @@
+{
+  "label": "photo_frame_wire_edge_up",
+  "port_open_utc": "2026-11-03T10:12:43.6853850Z",
+  "capture_start_utc": "2026-11-03T10:12:43.7453355Z",
+  "port": "COM9",
+  "requested_seconds": 10,
+  "valid_rows": 501,
+  "config_reports": 2,
+  "malformed_rows": 0,
+  "startup_fragments": 0,
+  "diagnostic_errors": 0,
+  "sequence_discontinuities": 0,
+  "nonmonotonic_read_times": 0,
+  "read_span_seconds": 10.054,
+  "measured_read_rate_hz": 49.73145016908693,
+  "read_interval_us": {
+    "mean": 20108.0,
+    "stddev": 310.6912585127436,
+    "min": 20000.0,
+    "max": 21000.0
+  },
+  "read_intervals_over_30ms": 0,
+  "clipping_rows": 0,
+  "accel_norm_g": {
+    "mean": 1.0049153469505594,
+    "stddev": 0.017648081860749426,
+    "min": 0.951241347871296,
+    "max": 1.0617576634053554
+  },
+  "axes": {
+    "ax_g": {
+      "mean": 0.6613952694610775,
+      "stddev": 0.014523768663031147,
+      "min": 0.59619,
+      "max": 0.71729
+    },
+    "ay_g": {
+      "mean": -0.10899311377245505,
+      "stddev": 0.010352667650660381,
+      "min": -0.13831,
+      "max": -0.07861
+    },
+    "az_g": {
+      "mean": 0.7484788423153698,
+      "stddev": 0.017465256627289677,
+      "min": 0.70044,
+      "max": 0.79443
+    },
+    "gx_dps": {
+      "mean": -0.0378500998003992,
+      "stddev": 2.1291631261753965,
+      "min": -6.1433,
+      "max": 5.9909
+    },
+    "gy_dps": {
+      "mean": -0.359948702594811,
+      "stddev": 0.9396110050565153,
+      "min": -3.5671,
+      "max": 3.75
+    },
+    "gz_dps": {
+      "mean": 0.37233333333333335,
+      "stddev": 1.0546693531655629,
+      "min": -2.7439,
+      "max": 4.2073
+    }
+  },
+  "transport_check_passed": true,
+  "calibrated": false,
+  "note": "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+}

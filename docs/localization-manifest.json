@@ -1,0 +1,147 @@
+{
+  "source_commit": "e7407d3a445b7def982385bd3ca27bf40d27f258",
+  "documents": [
+    {
+      "english": "AGENTS.md",
+      "zh_cn": "AGENTS_zh_cn.md",
+      "zh_hk": "AGENTS_zh_hk.md",
+      "original_sha256": "851d94a1f55dc3f50e7dafc712473415a926a1e924665ba3fb4cfd6af9e6315f"
+    },
+    {
+      "english": "README.md",
+      "zh_cn": "README_zh_cn.md",
+      "zh_hk": "README_zh_hk.md",
+      "original_sha256": "996ee60e299c4768d2ff4c3005066c914f00f0af2070e90421a7d46fd7b19da7",
+      "migration_snapshot_sha256": "504660a7222c6408148f060bfc22ba6bd97e7cad1935a002f2ed25798336a39e",
+      "content_updated": "2026-11-11: current workspace/screenshots and merged assembly guide links; migration hash retained separately"
+    },
+    {
+      "english": "app/POSE.md",
+      "zh_cn": "app/POSE_zh_cn.md",
+      "zh_hk": "app/POSE_zh_hk.md",
+      "original_sha256": "ca8efe71244bd49b1d77d0fa11906e65c4a8e9365335dc916f5a881a732b02b5"
+    },
+    {
+      "english": "app/README.md",
+      "zh_cn": "app/README_zh_cn.md",
+      "zh_hk": "app/README_zh_hk.md",
+      "original_sha256": "5db8b8642d357131eb1fd75f3d2dcbb11622b5086af880f354ca8af2d4ae4f20"
+    },
+    {
+      "english": "docs/README.md",
+      "zh_cn": "docs/README_zh_cn.md",
+      "zh_hk": "docs/README_zh_hk.md",
+      "original_sha256": "d9e30e1181aab8d3d7484cc494cd7801698af5b6ffaac7a8256af5f2e2f36ccd"
+    },
+    {
+      "english": "docs/architecture/README.md",
+      "zh_cn": "docs/architecture/README_zh_cn.md",
+      "zh_hk": "docs/architecture/README_zh_hk.md",
+      "original_sha256": "8f7f40a160bfd9e758b0faa91620972c7352017ef57e46883579fe8c469e2307"
+    },
+    {
+      "english": "docs/protocols/alarm-control.md",
+      "zh_cn": "docs/protocols/alarm-control_zh_cn.md",
+      "zh_hk": "docs/protocols/alarm-control_zh_hk.md",
+      "original_sha256": "9baab9e76fa495038727b8c83e31b67ef0f9edd8dfd1b6894fe963ddc32feccd"
+    },
+    {
+      "english": "docs/protocols/espnow-alarm.md",
+      "zh_cn": "docs/protocols/espnow-alarm_zh_cn.md",
+      "zh_hk": "docs/protocols/espnow-alarm_zh_hk.md",
+      "original_sha256": "592266e955de5c54a84ad1e3b7c6c89a032f0c4c80ca59ffda6fa7911a0862b8"
+    },
+    {
+      "english": "docs/protocols/usb-camera.md",
+      "zh_cn": "docs/protocols/usb-camera_zh_cn.md",
+      "zh_hk": "docs/protocols/usb-camera_zh_hk.md",
+      "original_sha256": "7084660e685020dd97ac6c5d72178c452410eace0f96c7edca0725d40e165be8"
+    },
+    {
+      "english": "firmware/README.md",
+      "zh_cn": "firmware/README_zh_cn.md",
+      "zh_hk": "firmware/README_zh_hk.md",
+      "original_sha256": "65dd948372c3742c10f19cf4aa362c7dd578648067f3549b42474d0147cd2117"
+    },
+    {
+      "english": "firmware/alarm-mega/README.md",
+      "zh_cn": "firmware/alarm-mega/README_zh_cn.md",
+      "zh_hk": "firmware/alarm-mega/README_zh_hk.md",
+      "original_sha256": "ca1c6f3b247c548eaf0090dcab9edfdbe216f42028d0063e99fcab2c4dd8a6f4"
+    },
+    {
+      "english": "firmware/arduino-uno/README.md",
+      "zh_cn": "firmware/arduino-uno/README_zh_cn.md",
+      "zh_hk": "firmware/arduino-uno/README_zh_hk.md",
+      "original_sha256": "7df111e6775c61da965dc5c62a696f06e3f2b8eeaefe2c4e5e6ba87df7a8a971"
+    },
+    {
+      "english": "firmware/imu-s3/README.md",
+      "zh_cn": "firmware/imu-s3/README_zh_cn.md",
+      "zh_hk": "firmware/imu-s3/README_zh_hk.md",
+      "original_sha256": "531cdaa69fbe371f85590e0941392400771e5465bdc1b2dc1ce3b4580384426c"
+    },
+    {
+      "english": "firmware/usb-ai-bridge/README.md",
+      "zh_cn": "firmware/usb-ai-bridge/README_zh_cn.md",
+      "zh_hk": "firmware/usb-ai-bridge/README_zh_hk.md",
+      "original_sha256": "8d53c0769103e71629ebc6b98a93fd87611f5fa7e978f2bb964495f19fffb554"
+    },
+    {
+      "english": "models/README.md",
+      "zh_cn": "models/README_zh_cn.md",
+      "zh_hk": "models/README_zh_hk.md",
+      "original_sha256": "fe85c43fe3ad212baa9625761d00bcb1e301faacaffd393db48b4b3e3d9e5229"
+    },
+    {
+      "english": "tools/imu-position/README.md",
+      "zh_cn": "tools/imu-position/README_zh_cn.md",
+      "zh_hk": "tools/imu-position/README_zh_hk.md",
+      "original_sha256": "60ff8f3bae7f2303a43a424bad5085348cc20ffa1bfbdc80a12e09bd8b70b30f"
+    },
+    {
+      "english": "app/UNIFIED_APP.md",
+      "zh_cn": "app/UNIFIED_APP_zh_cn.md",
+      "zh_hk": "app/UNIFIED_APP_zh_hk.md",
+      "original_sha256": "4a0abe3bbbb126152df6e0d0238909a0cfe2df8b4939ff3e0baadcb313a82e54",
+      "introduced": "2026-11-11 unified PC application",
+      "migration_snapshot_sha256": "d51841582025994e9e13fcdad55f5bd60359a3d5a20e314f4d5e25e058ca79ab",
+      "content_updated": "2026-11-11: current dashboard screenshots, first-four overview, six-movement library, live monitoring and module/session controls; migration hash retained separately"
+    }
+  ],
+  "excluded_historical_documents": [
+    "experiments/yancheng/esp32-pose-bench/README.md",
+    "experiments/yancheng/esp32-pose-bench/results/2026-10-23-classic-esp32.md",
+    "firmware/esp32-camera/BMI160_AXES_CALIBRATION.md",
+    "firmware/esp32-camera/BMI160_BUS_DIAG.md",
+    "firmware/esp32-camera/BMI160_RECOVERY.md",
+    "firmware/esp32-camera/BMI160_SIX_AXIS.md",
+    "firmware/esp32-camera/BMI160_SIX_AXIS_RESULT.md",
+    "firmware/esp32-camera/BMI160_TEST_RESULT.md",
+    "firmware/esp32-camera/BMI160_WIRING.md",
+    "firmware/esp32-camera/CAM_RECHECK.md",
+    "firmware/esp32-camera/CAM_RECHECK_RESULT.md",
+    "firmware/esp32-camera/DUAL_ESP_IMAGE.md",
+    "firmware/esp32-camera/DUAL_ESP_IMAGE_RESULT.md",
+    "firmware/esp32-camera/DUAL_ESP_TEXT.md",
+    "firmware/esp32-camera/DUAL_ESP_TEXT_RESULT.md",
+    "firmware/esp32-camera/HANDOFF.md",
+    "firmware/esp32-camera/IMAGE_IMU_CONCURRENCY.md",
+    "firmware/esp32-camera/IMAGE_IMU_RESULT.md",
+    "firmware/esp32-camera/IMU_SELECTION.md",
+    "firmware/esp32-camera/PROGRESS.md",
+    "firmware/esp32-camera/README.md",
+    "firmware/esp32-camera/S3_BRINGUP.md",
+    "firmware/esp32-camera/S3_TEST_RESULT.md",
+    "firmware/esp32-camera/USB_CAMERA_DEMO.md",
+    "firmware/esp32-camera/WIFI_GATEWAY.md",
+    "firmware/esp32-camera/WIFI_GATEWAY_RESULT.md",
+    "firmware/esp32-camera/YANCHENG_BMI160_REPRO.md"
+  ],
+  "policy": {
+    "zh_cn": "Byte-for-byte original snapshots, including any originally English content.",
+    "english": "Full prose translations under original filenames. Commands, literal logs and JSON payloads preserved.",
+    "zh_hk": "Hong Kong written Chinese, with localized terminology and links to in-scope Hong Kong counterparts.",
+    "history": "27 historical experiment, reproduction and handoff records excluded and unchanged."
+  }
+}

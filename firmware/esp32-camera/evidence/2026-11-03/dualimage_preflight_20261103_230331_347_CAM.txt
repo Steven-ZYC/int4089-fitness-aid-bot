@@ -1,0 +1,10 @@
+INFO fw=DualESP_Image_Check_v1 role=CAM chip=ESP32-D0WD-V3 boot=1015978044 peer_boot=1382437599 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=2097152 imu=OFF
+STATE role=CAM boot=1015978044 paired=1 peer_boot=1382437599 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+INFO fw=DualESP_Image_Check_v1 role=CAM chip=ESP32-D0WD-V3 boot=1015978044 peer_boot=1382437599 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=2097152 imu=OFF
+STATE role=CAM boot=1015978044 paired=1 peer_boot=1382437599 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+INFO fw=DualESP_Image_Check_v1 role=CAM chip=ESP32-D0WD-V3 boot=1015978044 peer_boot=1382437599 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=2097152 imu=OFF
+STATE role=CAM boot=1015978044 paired=1 peer_boot=1382437599 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+INFO fw=DualESP_Image_Check_v1 role=CAM chip=ESP32-D0WD-V3 boot=1015978044 peer_boot=1382437599 paired=1 channel=1 packet_bytes=240 payload_bytes=200 max_image=262144 psram_bytes=2097152 imu=OFF
+STATE role=CAM boot=1015978044 paired=1 peer_boot=1382437599 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+STATE role=CAM boot=1015978044 paired=1 peer_boot=1382437599 image_state=0 queue_drop=0 tx_queue_drop=0 tx_errors=0 radio_fail=0 bad_packets=0
+CONTROL_RX req=1 nonce=34787154 duplicate=0 text=TEST_ONLY

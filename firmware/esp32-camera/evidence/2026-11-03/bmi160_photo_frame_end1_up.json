@@ -1,0 +1,71 @@
+{
+  "label": "photo_frame_end1_up",
+  "port_open_utc": "2026-11-03T10:07:27.3257097Z",
+  "capture_start_utc": "2026-11-03T10:07:27.3712301Z",
+  "port": "COM9",
+  "requested_seconds": 10,
+  "valid_rows": 500,
+  "config_reports": 2,
+  "malformed_rows": 0,
+  "startup_fragments": 0,
+  "diagnostic_errors": 0,
+  "sequence_discontinuities": 0,
+  "nonmonotonic_read_times": 0,
+  "read_span_seconds": 10.033,
+  "measured_read_rate_hz": 49.735871623641984,
+  "read_interval_us": {
+    "mean": 20106.2124248497,
+    "stddev": 308.5921311042283,
+    "min": 19974.0,
+    "max": 21026.0
+  },
+  "read_intervals_over_30ms": 0,
+  "clipping_rows": 0,
+  "accel_norm_g": {
+    "mean": 1.0378548168642598,
+    "stddev": 0.0013933931760720343,
+    "min": 1.034008218004093,
+    "max": 1.0425178562019932
+  },
+  "axes": {
+    "ax_g": {
+      "mean": -0.040054979999999935,
+      "stddev": 0.001553160524488585,
+      "min": -0.04468,
+      "max": -0.03479
+    },
+    "ay_g": {
+      "mean": -0.4901732799999998,
+      "stddev": 0.0019824851415010786,
+      "min": -0.49683,
+      "max": -0.48364
+    },
+    "az_g": {
+      "mean": 0.9139259600000001,
+      "stddev": 0.0018245896890717443,
+      "min": 0.90784,
+      "max": 0.92017
+    },
+    "gx_dps": {
+      "mean": -0.0588706,
+      "stddev": 0.6220253429323758,
+      "min": -1.9512,
+      "max": 2.0274
+    },
+    "gy_dps": {
+      "mean": -0.3537791999999999,
+      "stddev": 0.14594167997960888,
+      "min": -0.7927,
+      "max": 0.1829
+    },
+    "gz_dps": {
+      "mean": 0.28023799999999977,
+      "stddev": 0.03526513256958353,
+      "min": 0.1677,
+      "max": 0.4116
+    }
+  },
+  "transport_check_passed": true,
+  "calibrated": false,
+  "note": "Uncorrected data. S3 read-start timestamps and BMI160 read-time clock are separate time domains. Read gaps flag delivery timing, not an exact count of internally lost sensor samples. Stationary/motion labels describe the requested physical test, not automatic proof of stillness or calibration."
+}

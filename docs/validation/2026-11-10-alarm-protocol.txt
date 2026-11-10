@@ -1,0 +1,8 @@
+011: expected ACK 011; pass=True; log=ACK 011
+000: expected ACK 000; pass=True; log=ACK 000
+010: expected ERR CHECKSUM; pass=True; log=ERR CHECKSUM
+110: expected ERR SOURCE; pass=True; log=ERR SOURCE
+0111: expected ERR FORMAT; pass=True; log=ERR FORMAT
+PC heartbeat for 2.4s: ACK 011 received; no ESP takeover: True
+ESP resumes after PC lease: True
+Visible LED/buzzer response and physical disconnect watchdog not observed.

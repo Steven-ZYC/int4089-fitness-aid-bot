@@ -1,6 +1,10 @@
+> **当前集成说明（2026-11-10）：** 本目录合入 Yuankun 的历史摄像头、IMU 和 ESP-NOW 验证源码。以下历史分工、端口与故障结论保留为交接记录，不能替代当前实物状态。最新架构见 [根 README](../../README.md)，统一由 Yancheng 维护。S3 当前 BMI160 自动地址探测修正与报警模块均保留；历史 IMU 文档中的固定地址／固件版本须以实际源码为准。
+
 # 双 ESP32、IMU 与网络传输（Prototype）
 
 负责人：**Dong Yuankun**；专属分支：**`Feat-Esp-Yuankun`**。
+
+**本次交接入口：[HANDOFF.md](HANDOFF.md)。** 已有成果與 IMU 故障分開列明；Yuankun 確認沒有萬用表，已請組長接手後續硬件排查，尚待實際接手。
 
 开始前阅读根目录 [AGENTS.md](../../AGENTS.md)，确认身份和本人分支后再修改；只通过本人分支和 PR 交付工作。
 
@@ -12,7 +16,7 @@
 | --- | --- | --- |
 | **ESP32-CAM / Camera Node** | 采集图像或帧，并与 Arduino Uno 建立硬件连接 | 具体相机型号、接线／供电、采集格式、帧率和与主 ESP 的传输方式须实测 |
 | **ESP32-S3 N16R8 / Main ESP（暂按现有目标板规划）** | 接入 IMU；作为双板系统的主节点，负责联网和与电脑交换数据 | 实物规格／GPIO、Wi-Fi 数据通路、打包与可靠性、异常处理待验证 |
-| **Bosch BMI-series IMU** | 测量运动相关信息，例如三轴加速度和角速度 | **具体 BMI 型号尚未确认**；I²C/SPI、供电和采样率以实物和官方资料为准 |
+| **Bosch BMI-series IMU** | 测量运动相关信息，例如三轴加速度和角速度 | **基礎採集驗收通過**：身份、約 49.73 Hz 六軸、照片參考加速度方向、順時針負 Z 及電腦端獨立零偏驗證；精密校準等後續項目另列 |
 | **Arduino Uno** | 与 ESP32-CAM 硬件相连，完成 LED／蜂鸣器等本地控制 | 与其他模块的通信协议及 AI 判断结果回传路径由 Yancheng 统筹确认 |
 
 ## 建议工作顺序与交付
@@ -31,4 +35,21 @@
 - **Yancheng** 负责硬件架构、Arduino 协同、最终数据接口及集成。
 - 早先 RDK X5 NPU 和 ESP32-S3 板上 AI 模型部署已不再是本阶段主线；未来的云端 HPC 也不是当前交付要求。
 
-本目录目前仍是任务规划，**不代表已完成双板联网或 IMU 验证**。不得提交 Wi-Fi 密码、其他密钥、可辨识人像或未经授权的数据。参见 [根 README](../../README.md)。
+## Yuankun 本地進度（2026-11-04）
+
+- 標示 **ESP32-S3-N16R8** 的主板已於 COM9 完成基本自檢：Flash 16MB、PSRAM 8MB、寫入校驗通過，程式連續輸出兩次報告，見 [實測結果](S3_TEST_RESULT.md)。
+- 本人已確認：仍有舊 ESP32-CAM，現有 **藍色 GY-801 三塊、紫色 BMI160 標示模組一塊**；第一版使用紫色 BMI160，已讀到預期晶片 ID 及六軸資料，見 [選型理由](IMU_SELECTION.md)。
+- 第一個實作入口是 [S3 主板自檢與逐步操作](S3_BRINGUP.md)，配套 [S3_Board_Check 草圖](S3_Board_Check/S3_Board_Check.ino)；已在本機 esp32 3.3.12 編譯及完成基本上板驗證。雙板單張圖片、反向訊息及合併版 Normal 並發檢查已有實測；IMU 精密校準、長期並發和網絡功能仍待驗證。
+- 10-23 舊 AI Thinker ESP32-CAM 的 USB 拍照成果保留在 [歷史離線演示](USB_CAMERA_DEMO.md)，不等同於新 S3 主節點已完成聯網或 IMU 采集。
+- 統一任務清單和每一步驗收條件見 [PROGRESS.md](PROGRESS.md)。第 1–4 步基礎驗收已通過；第 5 步合併版 Normal 並發檢查也已通過，目前待固定鏡頭方向、建立網絡通路；每輪更新「已完成／目前／下一步」。
+- 第 2 步入口：[BMI160 逐針接線與身份讀取](BMI160_WIRING.md)。GPIO4／GPIO5 作 SDA／SCL；COM9 連續兩次讀到 0x68／0xD1，見 [BMI160 身份結果](BMI160_TEST_RESULT.md)。
+- 第 3 步入口：[六軸程式及解讀指南](BMI160_SIX_AXIS.md)。BMI160_SixAxis_v2 曾完成靜止及自由轉動各 747 組，約 49.73 Hz，無格式／診斷錯誤或 >30 ms 讀取空檔；原始 CSV 及統計見 [六軸結果](BMI160_SIX_AXIS_RESULT.md)。獨立基線未套用校準；目前 S3 已換成下列第 5 步合併版。
+- 第 3 步續記：[固定方向與零偏驗證](BMI160_AXES_CALIBRATION.md)。照片參考下兩個水平加速度方向已區分；90 秒 4479 組的順時針記錄主要負向 gz。電腦端獨立零偏驗證 RMS 0.468 → 0.058 °/s；S3 仍輸出原始數據，完整精密校準及 X／Y 角速度的各自定向標定列為後續工作。
+- 第 4 步相機入口：[重連與新畫面自檢](CAM_RECHECK.md)。COM11 實測讀回 ESP32-D0WD-V3、4MB Flash、2MB PSRAM、OV2640；相機自檢 3 次 640×480 JPEG 均通過時間門檻、長度／序號和解碼，包含桌面物件樣張，見 [CAM 重測結果](CAM_RECHECK_RESULT.md)。
+- 第 4 步文字入口：[雙板無線教學](DUAL_ESP_TEXT.md)／[實測結果](DUAL_ESP_TEXT_RESULT.md)。S3 COM9 和 CAM COM11 正常雙向各 20／20 次，平均往返約 5.043／4.075 ms；兩個漏 ACK 案例各重試一次後通過。
+- 第 4 步圖片入口：[圖像分片與驗證](DUAL_ESP_IMAGE.md)／[實測記錄](DUAL_ESP_IMAGE_RESULT.md)。當時兩板運行 DualESP_Image_Check_v1，240-byte 包、200-byte 資料區；11-04 三個圖片案例均通過三端 SHA256、640×480 解碼及反向 TEST_ONLY。正常 74 片、零重試；兩個受控故障各重試一次恢復。該獨立圖片版未讀 IMU；本輪 S3 已換下列合併版。未測持續視頻或網絡。
+
+- 第 5 步前半：[並發教學](IMAGE_IMU_CONCURRENCY.md)／[實測結果](IMAGE_IMU_RESULT.md)。S3 COM9 現運行 S3_Image_IMU_Check_v1、CAM COM11 保留圖片版；Normal 一張 10,031-byte JPEG 的三端指紋、解碼、反向回覆通過，同時取得 496 筆 IMU、49.7338 Hz、最大間隔 21.946 ms。實拍仍朝天花板，固定取景待改善；網絡／AI／Uno 尚未整合。
+
+本目录已有 S3 及 IMU 基礎採集證據，**双板联网、精密校准及完整项目仍待验证**。不得提交 Wi-Fi 密码、其他密钥、可辨识人像或未经授权的数据。参见 [根 README](../../README.md)。
+最新狀態（2026-11-05）：[Wi-Fi 控制／TCP 重連](WIFI_GATEWAY_RESULT.md) 的歷史成功保留；目前先恢復 IMU。用戶已依正面位置核對六線全部吻合、VIN 留空；16:09 獨立 BMI160_Bus_Check_v1 上板及版本讀回通過，但 0x68／0x69 各三次未應答，停在 INITIAL_ID，沒有六軸數據，詳見 [分段診斷](BMI160_BUS_DIAG.md)。目前板上是獨立診斷程式，未啟動網關或 ESP-NOW；原成功映像及網關來源保留。下一步視有無萬用表，量實際供電／接點或用現有 GY-801 做通訊對照，見 [IMU 排查](BMI160_RECOVERY.md)。不再要求重複整套接線或拆線拍照；本頁其餘 11-04 成果屬歷史基線，當前統一狀態見 [PROGRESS.md](PROGRESS.md)。

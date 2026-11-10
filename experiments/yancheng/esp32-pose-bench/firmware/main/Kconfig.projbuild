@@ -1,0 +1,16 @@
+menu "Yancheng pose benchmark"
+    config BENCH_POSE
+        bool "Run a custom C-target INT8 YOLO11n-Pose model"
+        default n
+        help
+            Requires a model exported for target=c and its matching manifest.
+            Disabled builds only measure hardware/camera acquisition, never inference FPS.
+    config BENCH_SAMPLES
+        int "Measured frames"
+        range 1 10000
+        default 10
+    config BENCH_WARMUP
+        int "Warmup frames excluded from measurements"
+        range 0 100
+        default 2
+endmenu

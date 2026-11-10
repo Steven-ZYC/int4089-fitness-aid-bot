@@ -1,0 +1,219 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x2b (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x116c
+load:0x403c8700,len:0xc2c
+load:0x403cb700,len:0x3108
+entry 0x403c88b8
+INFO fw=BMI160_Bus_Check_v2_autoaddr bus_ready=1 initialized=0 address=0x00 sda=4 scl=5 hz=100000 timeout_ms=100 wifi=OFF
+PINS stage=PROBE sda=1 scl=1 measurement=DIGITAL_ONLY
+PROBE address=0x68 stop_code=2 elapsed_us=222
+READ stage=IDENTITY address=0x68 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=360
+IDENTITY address=0x68 read_ok=0 expected_id_match=0
+PROBE address=0x69 stop_code=0 elapsed_us=177
+READ stage=IDENTITY address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=503 value=0xD1
+IDENTITY address=0x69 read_ok=1 expected_id_match=1
+PROBE_DONE configuration_written=NO
+READY commands=INFO,PROBE,RUN_INIT,SAMPLE
+INFO fw=BMI160_Bus_Check_v2_autoaddr bus_ready=1 initialized=0 address=0x00 sda=4 scl=5 hz=100000 timeout_ms=100 wifi=OFF
+PINS stage=PROBE sda=1 scl=1 measurement=DIGITAL_ONLY
+PROBE address=0x68 stop_code=2 elapsed_us=183
+READ stage=IDENTITY address=0x68 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=266
+IDENTITY address=0x68 read_ok=0 expected_id_match=0
+PROBE address=0x69 stop_code=0 elapsed_us=179
+READ stage=IDENTITY address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=489 value=0xD1
+IDENTITY address=0x69 read_ok=1 expected_id_match=1
+PROBE_DONE configuration_written=NO
+READ stage=SELECT_ADDRESS address=0x68 reg=0x00 queued_code=0 received=0 expected=1 ok=0 elapsed_us=242
+READ stage=SELECT_ADDRESS address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=499 value=0xD1
+INIT_BEGIN address=0x69 settings=VOLATILE_ONLY
+READ stage=INITIAL_ID address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=479 value=0xD1
+PINS stage=SOFT_RESET sda=1 scl=1 measurement=DIGITAL_ONLY
+WRITE stage=SOFT_RESET reg=0x7E value=0xB6 code=0 elapsed_us=378
+READ stage=SOFT_RESET address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=488 value=0xD1
+READ stage=SOFT_RESET address=0x69 reg=0x03 queued_code=0 received=1 expected=1 ok=1 elapsed_us=476 value=0x00
+READ stage=SOFT_RESET address=0x69 reg=0x02 queued_code=0 received=1 expected=1 ok=1 elapsed_us=475 value=0x00
+PINS stage=SOFT_RESET sda=1 scl=1 measurement=DIGITAL_ONLY
+STATE stage=SOFT_RESET valid=1 expected_pmu=0x00
+PINS stage=ACCEL_WAKE sda=1 scl=1 measurement=DIGITAL_ONLY
+WRITE stage=ACCEL_WAKE reg=0x7E value=0x11 code=0 elapsed_us=359
+READ stage=ACCEL_WAKE address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=482 value=0xD1
+READ stage=ACCEL_WAKE address=0x69 reg=0x03 queued_code=0 received=1 expected=1 ok=1 elapsed_us=476 value=0x10
+READ stage=ACCEL_WAKE address=0x69 reg=0x02 queued_code=0 received=1 expected=1 ok=1 elapsed_us=474 value=0x00
+PINS stage=ACCEL_WAKE sda=1 scl=1 measurement=DIGITAL_ONLY
+STATE stage=ACCEL_WAKE valid=1 expected_pmu=0x10
+PINS stage=GYRO_WAKE sda=1 scl=1 measurement=DIGITAL_ONLY
+WRITE stage=GYRO_WAKE reg=0x7E value=0x15 code=0 elapsed_us=350
+READ stage=GYRO_WAKE address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=479 value=0xD1
+READ stage=GYRO_WAKE address=0x69 reg=0x03 queued_code=0 received=1 expected=1 ok=1 elapsed_us=475 value=0x14
+READ stage=GYRO_WAKE address=0x69 reg=0x02 queued_code=0 received=1 expected=1 ok=1 elapsed_us=476 value=0x00
+PINS stage=GYRO_WAKE sda=1 scl=1 measurement=DIGITAL_ONLY
+STATE stage=GYRO_WAKE valid=1 expected_pmu=0x14
+PINS stage=CONFIG sda=1 scl=1 measurement=DIGITAL_ONLY
+WRITE stage=CONFIG reg=0x40 value=0x27 code=0 elapsed_us=354
+PINS stage=CONFIG sda=1 scl=1 measurement=DIGITAL_ONLY
+WRITE stage=CONFIG reg=0x41 value=0x05 code=0 elapsed_us=347
+PINS stage=CONFIG sda=1 scl=1 measurement=DIGITAL_ONLY
+WRITE stage=CONFIG reg=0x42 value=0x27 code=0 elapsed_us=346
+PINS stage=CONFIG sda=1 scl=1 measurement=DIGITAL_ONLY
+WRITE stage=CONFIG reg=0x43 value=0x02 code=0 elapsed_us=347
+READ stage=CONFIG_VERIFY address=0x69 reg=0x40 queued_code=0 received=4 expected=4 ok=1 elapsed_us=748
+READ stage=FINAL address=0x69 reg=0x00 queued_code=0 received=1 expected=1 ok=1 elapsed_us=480 value=0xD1
+READ stage=FINAL address=0x69 reg=0x03 queued_code=0 received=1 expected=1 ok=1 elapsed_us=475 value=0x14
+READ stage=FINAL address=0x69 reg=0x02 queued_code=0 received=1 expected=1 ok=1 elapsed_us=475 value=0x00
+PINS stage=FINAL sda=1 scl=1 measurement=DIGITAL_ONLY
+STATE stage=FINAL valid=1 expected_pmu=0x14
+INIT_RESULT pass=1 stage=FINAL config_ok=1 state_ok=1
+SAMPLE seq=1 sensor_ticks=52263 ax=-608 ay=-713 az=8175 gx=-13 gy=-26 gz=19
+SAMPLE seq=2 sensor_ticks=52798 ax=-621 ay=-716 az=8173 gx=-17 gy=-28 gz=19
+SAMPLE seq=3 sensor_ticks=53333 ax=-624 ay=-722 az=8183 gx=-17 gy=-25 gz=19
+SAMPLE seq=4 sensor_ticks=53791 ax=-618 ay=-715 az=8173 gx=-14 gy=-22 gz=16
+SAMPLE seq=5 sensor_ticks=54326 ax=-627 ay=-712 az=8172 gx=-16 gy=-24 gz=17
+SAMPLE seq=6 sensor_ticks=54860 ax=-614 ay=-711 az=8166 gx=-18 gy=-22 gz=16
+SAMPLE seq=7 sensor_ticks=55395 ax=-613 ay=-706 az=8163 gx=-14 gy=-23 gz=18
+SAMPLE seq=8 sensor_ticks=55853 ax=-617 ay=-712 az=8180 gx=-17 gy=-23 gz=21
+SAMPLE seq=9 sensor_ticks=56388 ax=-616 ay=-718 az=8164 gx=-17 gy=-23 gz=23
+SAMPLE seq=10 sensor_ticks=56923 ax=-622 ay=-713 az=8159 gx=-11 gy=-23 gz=21
+SAMPLE seq=11 sensor_ticks=57381 ax=-612 ay=-723 az=8168 gx=-14 gy=-22 gz=19
+SAMPLE seq=12 sensor_ticks=57916 ax=-615 ay=-716 az=8182 gx=-15 gy=-22 gz=18
+SAMPLE seq=13 sensor_ticks=58451 ax=-618 ay=-710 az=8169 gx=-21 gy=-23 gz=20
+SAMPLE seq=14 sensor_ticks=58909 ax=-622 ay=-712 az=8171 gx=-15 gy=-24 gz=19
+SAMPLE seq=15 sensor_ticks=59444 ax=-625 ay=-713 az=8173 gx=-15 gy=-24 gz=22
+SAMPLE seq=16 sensor_ticks=59978 ax=-616 ay=-714 az=8172 gx=-13 gy=-24 gz=22
+SAMPLE seq=17 sensor_ticks=60513 ax=-621 ay=-715 az=8174 gx=-16 gy=-28 gz=20
+SAMPLE seq=18 sensor_ticks=60972 ax=-618 ay=-715 az=8174 gx=-17 gy=-26 gz=20
+SAMPLE seq=19 sensor_ticks=61506 ax=-612 ay=-713 az=8172 gx=-15 gy=-24 gz=21
+SAMPLE seq=20 sensor_ticks=62041 ax=-620 ay=-710 az=8175 gx=-21 gy=-24 gz=21
+SAMPLE seq=21 sensor_ticks=62499 ax=-613 ay=-715 az=8184 gx=-14 gy=-25 gz=23
+SAMPLE seq=22 sensor_ticks=63034 ax=-621 ay=-718 az=8169 gx=-15 gy=-26 gz=21
+SAMPLE seq=23 sensor_ticks=63569 ax=-614 ay=-716 az=8169 gx=-16 gy=-29 gz=18
+SAMPLE seq=24 sensor_ticks=64027 ax=-617 ay=-706 az=8173 gx=-15 gy=-24 gz=19
+SAMPLE seq=25 sensor_ticks=64562 ax=-621 ay=-715 az=8168 gx=-14 gy=-24 gz=22
+SAMPLE seq=26 sensor_ticks=65097 ax=-616 ay=-707 az=8170 gx=-19 gy=-22 gz=19
+SAMPLE seq=27 sensor_ticks=65631 ax=-630 ay=-717 az=8172 gx=-16 gy=-24 gz=19
+SAMPLE seq=28 sensor_ticks=66090 ax=-620 ay=-712 az=8175 gx=-15 gy=-26 gz=17
+SAMPLE seq=29 sensor_ticks=66624 ax=-611 ay=-698 az=8177 gx=-15 gy=-24 gz=22
+SAMPLE seq=30 sensor_ticks=67159 ax=-616 ay=-708 az=8169 gx=-16 gy=-25 gz=18
+SAMPLE seq=31 sensor_ticks=67618 ax=-620 ay=-714 az=8152 gx=-18 gy=-25 gz=19
+SAMPLE seq=32 sensor_ticks=68152 ax=-620 ay=-713 az=8158 gx=-18 gy=-20 gz=20
+SAMPLE seq=33 sensor_ticks=68687 ax=-622 ay=-710 az=8177 gx=-15 gy=-23 gz=21
+SAMPLE seq=34 sensor_ticks=69145 ax=-617 ay=-704 az=8173 gx=-16 gy=-23 gz=21
+SAMPLE seq=35 sensor_ticks=69680 ax=-625 ay=-711 az=8170 gx=-13 gy=-21 gz=20
+SAMPLE seq=36 sensor_ticks=70215 ax=-623 ay=-712 az=8173 gx=-19 gy=-23 gz=23
+SAMPLE seq=37 sensor_ticks=70750 ax=-622 ay=-715 az=8175 gx=-17 gy=-22 gz=20
+SAMPLE seq=38 sensor_ticks=71208 ax=-607 ay=-716 az=8152 gx=-14 gy=-23 gz=21
+SAMPLE seq=39 sensor_ticks=71743 ax=-617 ay=-710 az=8165 gx=-16 gy=-25 gz=20
+SAMPLE seq=40 sensor_ticks=72277 ax=-615 ay=-715 az=8168 gx=-20 gy=-25 gz=19
+SAMPLE seq=41 sensor_ticks=72736 ax=-619 ay=-716 az=8186 gx=-15 gy=-26 gz=18
+SAMPLE seq=42 sensor_ticks=73270 ax=-624 ay=-722 az=8166 gx=-17 gy=-22 gz=17
+SAMPLE seq=43 sensor_ticks=73805 ax=-626 ay=-706 az=8165 gx=-16 gy=-22 gz=21
+SAMPLE seq=44 sensor_ticks=74340 ax=-623 ay=-720 az=8188 gx=-15 gy=-25 gz=21
+SAMPLE seq=45 sensor_ticks=74798 ax=-620 ay=-725 az=8188 gx=-18 gy=-24 gz=20
+SAMPLE seq=46 sensor_ticks=75333 ax=-630 ay=-715 az=8168 gx=-18 gy=-25 gz=23
+SAMPLE seq=47 sensor_ticks=75868 ax=-626 ay=-718 az=8170 gx=-18 gy=-26 gz=18
+SAMPLE seq=48 sensor_ticks=76326 ax=-629 ay=-702 az=8161 gx=-22 gy=-26 gz=19
+SAMPLE seq=49 sensor_ticks=76861 ax=-628 ay=-718 az=8167 gx=-16 gy=-24 gz=20
+SAMPLE seq=50 sensor_ticks=77395 ax=-619 ay=-716 az=8174 gx=-16 gy=-23 gz=25
+SAMPLE seq=51 sensor_ticks=77854 ax=-620 ay=-707 az=8157 gx=-15 gy=-26 gz=21
+SAMPLE seq=52 sensor_ticks=78389 ax=-607 ay=-718 az=8154 gx=-17 gy=-25 gz=23
+SAMPLE seq=53 sensor_ticks=78923 ax=-617 ay=-711 az=8176 gx=-14 gy=-24 gz=23
+SAMPLE seq=54 sensor_ticks=79458 ax=-621 ay=-710 az=8173 gx=-16 gy=-26 gz=20
+SAMPLE seq=55 sensor_ticks=79916 ax=-626 ay=-711 az=8178 gx=-19 gy=-23 gz=19
+SAMPLE seq=56 sensor_ticks=80451 ax=-618 ay=-710 az=8179 gx=-16 gy=-24 gz=21
+SAMPLE seq=57 sensor_ticks=80986 ax=-608 ay=-709 az=8169 gx=-13 gy=-22 gz=18
+SAMPLE seq=58 sensor_ticks=81444 ax=-616 ay=-714 az=8185 gx=-17 gy=-23 gz=15
+SAMPLE seq=59 sensor_ticks=81979 ax=-618 ay=-724 az=8184 gx=-20 gy=-20 gz=16
+SAMPLE seq=60 sensor_ticks=82514 ax=-625 ay=-713 az=8166 gx=-18 gy=-23 gz=19
+SAMPLE seq=61 sensor_ticks=82972 ax=-608 ay=-722 az=8176 gx=-18 gy=-22 gz=22
+SAMPLE seq=62 sensor_ticks=83507 ax=-615 ay=-714 az=8163 gx=-14 gy=-24 gz=23
+SAMPLE seq=63 sensor_ticks=84041 ax=-608 ay=-719 az=8156 gx=-12 gy=-23 gz=20
+SAMPLE seq=64 sensor_ticks=84576 ax=-620 ay=-720 az=8168 gx=-15 gy=-25 gz=20
+SAMPLE seq=65 sensor_ticks=85034 ax=-607 ay=-712 az=8165 gx=-15 gy=-22 gz=19
+SAMPLE seq=66 sensor_ticks=85569 ax=-615 ay=-717 az=8165 gx=-14 gy=-21 gz=21
+SAMPLE seq=67 sensor_ticks=86104 ax=-612 ay=-715 az=8174 gx=-13 gy=-24 gz=21
+SAMPLE seq=68 sensor_ticks=86562 ax=-619 ay=-712 az=8169 gx=-17 gy=-26 gz=18
+SAMPLE seq=69 sensor_ticks=87097 ax=-627 ay=-695 az=8161 gx=-20 gy=-23 gz=18
+SAMPLE seq=70 sensor_ticks=87632 ax=-614 ay=-713 az=8163 gx=-15 gy=-23 gz=18
+SAMPLE seq=71 sensor_ticks=88090 ax=-620 ay=-713 az=8185 gx=-15 gy=-23 gz=21
+SAMPLE seq=72 sensor_ticks=88625 ax=-605 ay=-711 az=8169 gx=-13 gy=-25 gz=22
+SAMPLE seq=73 sensor_ticks=89160 ax=-614 ay=-716 az=8168 gx=-15 gy=-24 gz=17
+SAMPLE seq=74 sensor_ticks=89694 ax=-630 ay=-729 az=8171 gx=-18 gy=-24 gz=20
+SAMPLE seq=75 sensor_ticks=90153 ax=-614 ay=-720 az=8178 gx=-16 gy=-23 gz=20
+SAMPLE seq=76 sensor_ticks=90687 ax=-623 ay=-712 az=8176 gx=-16 gy=-24 gz=19
+SAMPLE seq=77 sensor_ticks=91222 ax=-615 ay=-707 az=8178 gx=-16 gy=-25 gz=19
+SAMPLE seq=78 sensor_ticks=91680 ax=-620 ay=-705 az=8192 gx=-18 gy=-24 gz=20
+SAMPLE seq=79 sensor_ticks=92215 ax=-619 ay=-717 az=8158 gx=-18 gy=-23 gz=21
+SAMPLE seq=80 sensor_ticks=92750 ax=-615 ay=-718 az=8183 gx=-16 gy=-23 gz=21
+SAMPLE seq=81 sensor_ticks=93285 ax=-625 ay=-711 az=8178 gx=-15 gy=-27 gz=17
+SAMPLE seq=82 sensor_ticks=93743 ax=-616 ay=-713 az=8171 gx=-16 gy=-25 gz=17
+SAMPLE seq=83 sensor_ticks=94278 ax=-607 ay=-720 az=8183 gx=-17 gy=-26 gz=23
+SAMPLE seq=84 sensor_ticks=94812 ax=-628 ay=-707 az=8176 gx=-13 gy=-24 gz=22
+SAMPLE seq=85 sensor_ticks=95271 ax=-625 ay=-707 az=8169 gx=-14 gy=-21 gz=16
+SAMPLE seq=86 sensor_ticks=95805 ax=-621 ay=-716 az=8174 gx=-18 gy=-24 gz=19
+SAMPLE seq=87 sensor_ticks=96340 ax=-625 ay=-709 az=8172 gx=-14 gy=-26 gz=19
+SAMPLE seq=88 sensor_ticks=96799 ax=-631 ay=-719 az=8175 gx=-14 gy=-24 gz=17
+SAMPLE seq=89 sensor_ticks=97333 ax=-619 ay=-722 az=8181 gx=-15 gy=-26 gz=20
+SAMPLE seq=90 sensor_ticks=97868 ax=-611 ay=-706 az=8173 gx=-15 gy=-26 gz=23
+SAMPLE seq=91 sensor_ticks=98403 ax=-618 ay=-713 az=8172 gx=-15 gy=-23 gz=22
+SAMPLE seq=92 sensor_ticks=98861 ax=-624 ay=-711 az=8168 gx=-15 gy=-23 gz=20
+SAMPLE seq=93 sensor_ticks=99396 ax=-623 ay=-713 az=8193 gx=-16 gy=-24 gz=18
+SAMPLE seq=94 sensor_ticks=99931 ax=-610 ay=-709 az=8186 gx=-14 gy=-28 gz=20
+SAMPLE seq=95 sensor_ticks=100389 ax=-626 ay=-720 az=8163 gx=-15 gy=-25 gz=17
+SAMPLE seq=96 sensor_ticks=100924 ax=-617 ay=-719 az=8179 gx=-16 gy=-24 gz=18
+SAMPLE seq=97 sensor_ticks=101458 ax=-605 ay=-712 az=8172 gx=-16 gy=-27 gz=20
+SAMPLE seq=98 sensor_ticks=101917 ax=-626 ay=-715 az=8178 gx=-14 gy=-27 gz=19
+SAMPLE seq=99 sensor_ticks=102451 ax=-628 ay=-717 az=8172 gx=-13 gy=-24 gz=18
+SAMPLE seq=100 sensor_ticks=102986 ax=-623 ay=-705 az=8165 gx=-16 gy=-24 gz=18
+SAMPLE seq=101 sensor_ticks=103521 ax=-614 ay=-703 az=8171 gx=-18 gy=-23 gz=16
+SAMPLE seq=102 sensor_ticks=103979 ax=-612 ay=-707 az=8166 gx=-19 gy=-24 gz=21
+SAMPLE seq=103 sensor_ticks=104514 ax=-610 ay=-709 az=8174 gx=-18 gy=-24 gz=19
+SAMPLE seq=104 sensor_ticks=105049 ax=-622 ay=-711 az=8196 gx=-15 gy=-27 gz=17
+SAMPLE seq=105 sensor_ticks=105507 ax=-621 ay=-701 az=8180 gx=-21 gy=-27 gz=20
+SAMPLE seq=106 sensor_ticks=106042 ax=-628 ay=-710 az=8174 gx=-13 gy=-24 gz=24
+SAMPLE seq=107 sensor_ticks=106576 ax=-617 ay=-721 az=8181 gx=-19 gy=-22 gz=22
+SAMPLE seq=108 sensor_ticks=107035 ax=-618 ay=-716 az=8181 gx=-23 gy=-24 gz=22
+SAMPLE seq=109 sensor_ticks=107570 ax=-618 ay=-716 az=8173 gx=-16 gy=-25 gz=22
+SAMPLE seq=110 sensor_ticks=108104 ax=-618 ay=-715 az=8178 gx=-13 gy=-23 gz=18
+SAMPLE seq=111 sensor_ticks=108639 ax=-617 ay=-708 az=8157 gx=-11 gy=-24 gz=20
+SAMPLE seq=112 sensor_ticks=109097 ax=-622 ay=-707 az=8181 gx=-12 gy=-26 gz=21
+SAMPLE seq=113 sensor_ticks=109632 ax=-616 ay=-707 az=8192 gx=-17 gy=-23 gz=19
+SAMPLE seq=114 sensor_ticks=110167 ax=-630 ay=-710 az=8175 gx=-18 gy=-26 gz=20
+SAMPLE seq=115 sensor_ticks=110625 ax=-609 ay=-715 az=8167 gx=-15 gy=-26 gz=21
+SAMPLE seq=116 sensor_ticks=111160 ax=-616 ay=-722 az=8169 gx=-16 gy=-22 gz=21
+SAMPLE seq=117 sensor_ticks=111695 ax=-619 ay=-714 az=8170 gx=-17 gy=-22 gz=17
+SAMPLE seq=118 sensor_ticks=112229 ax=-617 ay=-717 az=8178 gx=-13 gy=-21 gz=20
+SAMPLE seq=119 sensor_ticks=112688 ax=-620 ay=-713 az=8180 gx=-17 gy=-21 gz=21
+SAMPLE seq=120 sensor_ticks=113222 ax=-613 ay=-707 az=8162 gx=-18 gy=-25 gz=21
+SAMPLE seq=121 sensor_ticks=113757 ax=-622 ay=-712 az=8171 gx=-17 gy=-27 gz=18
+SAMPLE seq=122 sensor_ticks=114215 ax=-617 ay=-710 az=8178 gx=-17 gy=-24 gz=19
+SAMPLE seq=123 sensor_ticks=114750 ax=-610 ay=-719 az=8182 gx=-16 gy=-25 gz=22
+SAMPLE seq=124 sensor_ticks=115285 ax=-621 ay=-721 az=8173 gx=-15 gy=-26 gz=19
+SAMPLE seq=125 sensor_ticks=115743 ax=-624 ay=-706 az=8188 gx=-14 gy=-25 gz=19
+SAMPLE seq=126 sensor_ticks=116278 ax=-616 ay=-712 az=8189 gx=-14 gy=-24 gz=22
+SAMPLE seq=127 sensor_ticks=116813 ax=-619 ay=-709 az=8163 gx=-15 gy=-26 gz=21
+SAMPLE seq=128 sensor_ticks=117347 ax=-617 ay=-711 az=8166 gx=-16 gy=-24 gz=20
+SAMPLE seq=129 sensor_ticks=117806 ax=-618 ay=-727 az=8156 gx=-15 gy=-24 gz=20
+SAMPLE seq=130 sensor_ticks=118341 ax=-616 ay=-709 az=8172 gx=-15 gy=-26 gz=16
+SAMPLE seq=131 sensor_ticks=118875 ax=-615 ay=-708 az=8178 gx=-14 gy=-24 gz=19
+SAMPLE seq=132 sensor_ticks=119334 ax=-614 ay=-722 az=8177 gx=-13 gy=-21 gz=21
+SAMPLE seq=133 sensor_ticks=119868 ax=-616 ay=-713 az=8167 gx=-18 gy=-20 gz=17
+SAMPLE seq=134 sensor_ticks=120403 ax=-618 ay=-723 az=8183 gx=-15 gy=-22 gz=18
+SAMPLE seq=135 sensor_ticks=120861 ax=-626 ay=-711 az=8177 gx=-14 gy=-23 gz=15
+SAMPLE seq=136 sensor_ticks=121396 ax=-627 ay=-710 az=8171 gx=-14 gy=-24 gz=16
+SAMPLE seq=137 sensor_ticks=121931 ax=-632 ay=-718 az=8176 gx=-18 gy=-24 gz=18
+SAMPLE seq=138 sensor_ticks=122466 ax=-625 ay=-711 az=8162 gx=-19 gy=-23 gz=19
+SAMPLE seq=139 sensor_ticks=122924 ax=-619 ay=-711 az=8169 gx=-17 gy=-23 gz=16
+SAMPLE seq=140 sensor_ticks=123459 ax=-608 ay=-702 az=8162 gx=-15 gy=-26 gz=20
+SAMPLE seq=141 sensor_ticks=123993 ax=-607 ay=-718 az=8181 gx=-13 gy=-26 gz=14
+SAMPLE seq=142 sensor_ticks=124452 ax=-617 ay=-723 az=8183 gx=-12 gy=-26 gz=19
+SAMPLE seq=143 sensor_ticks=124986 ax=-621 ay=-713 az=8171 gx=-17 gy=-22 gz=21
+SAMPLE seq=144 sensor_ticks=125521 ax=-611 ay=-715 az=8164 gx=-18 gy=-24 gz=18
+SAMPLE seq=145 sensor_ticks=125980 ax=-611 ay=-716 az=8183 gx=-16 gy=-23 gz=20
+SAMPLE seq=146 sensor_ticks=126514 ax=-625 ay=-713 az=8176 gx=-21 gy=-21 gz=17
+SAMPLE seq=147 sensor_ticks=127049 ax=-613 ay=-713 az=8176 gx=-15 gy=-24 gz=20
+SAMPLE seq=148 sensor_ticks=127584 ax=-618 ay=-706 az=8176 gx=-17 gy=-21 gz=19
+SAMPLE seq=149 sensor_ticks=128042 ax=-621 ay=-710 az=8188 gx=-17 gy=-25 gz=19
+SAMPLE seq=150 sensor_ticks=128577 ax=-621 ay=-714 az=8174 gx=-16 gy=-25 gz=24
+SAMPLE_DONE count=150 errors=0 elapsed_us=3003864 timing_acceptance=NOT_TESTED

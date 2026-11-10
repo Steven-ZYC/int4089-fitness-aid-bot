@@ -1,0 +1,46 @@
+{
+  "firmware": "DualESP_Text_Check_v1",
+  "arduino_cli": "1.5.1",
+  "esp32_core": "3.3.12",
+  "esp_idf": "v5.5.5",
+  "isolated_source_directories": true,
+  "source_sha256": "E8A3EAAB4F3824C8A4BB57C112CC76AEF6CDDF3778DF64A03482778BDD07F607",
+  "final_cam": {
+    "role": "CAM",
+    "port": "COM11",
+    "fqbn": "esp32:esp32:esp32cam:CPUFreq=240,FlashMode=dio,FlashFreq=40,PartitionScheme=huge_app,DebugLevel=none,EraseFlash=none",
+    "program_bytes": 919636,
+    "globals_bytes": 46040,
+    "bin_bytes": 919792,
+    "source_sha256": "E8A3EAAB4F3824C8A4BB57C112CC76AEF6CDDF3778DF64A03482778BDD07F607",
+    "bin_sha256": "A801FDD23C2495D2C478B94F74C60460E6D787E86573B68A7CF9C968F0900F73",
+    "upload_exit": 0,
+    "uploaded_utc": "2026-11-03T14:01:57.2805191Z"
+  },
+  "final_s3_com": {
+    "role": "S3",
+    "port": "COM9",
+    "serial_mode": "CH340_UART0_USB_CDC_DISABLED",
+    "fqbn": "esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot=default,USBMode=hwcdc,PartitionScheme=app3M_fat9M_16MB,UploadSpeed=115200",
+    "program_bytes": 875858,
+    "globals_bytes": 45220,
+    "bin_bytes": 876000,
+    "source_sha256": "E8A3EAAB4F3824C8A4BB57C112CC76AEF6CDDF3778DF64A03482778BDD07F607",
+    "bin_sha256": "94932BE9274E91833F61B89B74BD0AA92CCDF567160E13EDE7F319B79B12DFEF",
+    "upload_exit": 0,
+    "uploaded_utc": "2026-11-03T14:17:39.7968264Z"
+  },
+  "earlier_s3_native_not_accepted": {
+    "role": "S3",
+    "port": "COM10",
+    "fqbn": "esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot=cdc,USBMode=hwcdc,PartitionScheme=app3M_fat9M_16MB,UploadSpeed=115200",
+    "program_bytes": 896127,
+    "globals_bytes": 45620,
+    "bin_bytes": 896272,
+    "source_sha256": "E8A3EAAB4F3824C8A4BB57C112CC76AEF6CDDF3778DF64A03482778BDD07F607",
+    "bin_sha256": "EE72A01535E771953098B8858E1746F5B8563E2EDE5FCFA63A6C024D04F91082",
+    "upload_exit": 0,
+    "uploaded_utc": "2026-11-03T14:03:20.959108Z"
+  },
+  "earlier_native_note": "Upload verified, but no S3 serial output in 20-second test. Final test uses COM9 / CDC Disabled. Root cause of native output absence not established."
+}

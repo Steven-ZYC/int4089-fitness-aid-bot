@@ -1,0 +1,20 @@
+{
+  "schema": "imu-retry-v1",
+  "recorded_utc": "2026-11-05T07:18:40.1354795Z",
+  "request": "Retry connecting without rewiring",
+  "port": "COM9",
+  "firmware": "S3_Image_IMU_Check_v1",
+  "firmware_uploaded_this_retry": false,
+  "reset_method": "esptool flash-id read followed by hard-reset",
+  "reset_read_exit_code": 0,
+  "usb_serial_ok": true,
+  "application_observed": "FATAL role=S3 reason=IMU_INIT",
+  "imu_initialization_pass": false,
+  "imu_samples_captured": 0,
+  "detailed_failure_stage": "NOT_AVAILABLE_IN_BASELINE",
+  "power_cycle_performed": false,
+  "wifi_changed": false,
+  "camera_touched": false,
+  "voltage_measured": false,
+  "root_cause": "UNCONFIRMED"
+}

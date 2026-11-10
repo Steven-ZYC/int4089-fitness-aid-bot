@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-11",
+  "kind": "unified-application",
+  "observations": [
+    {
+      "vision_alive": true,
+      "state": "运行中",
+      "fps": 10.4,
+      "frames": 598,
+      "frame_age_s": 0.016,
+      "radio_ack": "2640",
+      "imu_mode": "live",
+      "imu_status": "no_samples",
+      "imu_samples": 0
+    },
+    {
+      "vision_alive": true,
+      "state": "运行中",
+      "fps": 10.3,
+      "frames": 753,
+      "frame_age_s": 0.031,
+      "radio_ack": "2715",
+      "imu_mode": "live",
+      "imu_status": "no_samples",
+      "imu_samples": 0
+    },
+    {
+      "vision_alive": true,
+      "state": "运行中",
+      "fps": 10.3,
+      "frames": 908,
+      "frame_age_s": 0.047,
+      "radio_ack": "2790",
+      "imu_mode": "live",
+      "imu_status": "no_samples",
+      "imu_samples": 0
+    }
+  ],
+  "live_vision_pass": true,
+  "tests": {
+    "imu_service": 8,
+    "http_api": 6,
+    "serial_transport_and_handshake": 5,
+    "original_synthetic_rule_cases": 6
+  },
+  "browser_checked": [
+    "real camera overview",
+    "historical measured CSV replay explicitly labelled non-live",
+    "pause",
+    "3D attitude and position",
+    "corrected signal charts",
+    "invalid profile rejection"
+  ],
+  "imu_live_pass": false,
+  "limitations": [
+    "BMI160 remains without valid live samples; CSV replay is software validation only.",
+    "No new physical Mega light/buzzer acceptance or complete exercise accuracy measurement.",
+    "Camera USB startup needed an EN reset after reconnect; startup handshake recovery and manual reconnect added.",
+    "One serial framing error was observed before increasing Windows receive buffer; this report is a bounded smoke test, not long-term certification."
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-11",
+  "screenshots": {
+    "docs/assets/fitcoach-ui-en-16x9.png": {
+      "width": 1920,
+      "height": 1080,
+      "sha256": "d57f70378fc2674bd66b1852e731a18b7361138928c2c526be51d1b683b8ae2f"
+    },
+    "docs/assets/fitcoach-ui-zh-cn-16x9.png": {
+      "width": 1920,
+      "height": 1080,
+      "sha256": "83f52fa58ad9a41975c3f3c2313ae9e67cc443fe5431f32b2540982bf9d2c280"
+    },
+    "docs/assets/fitcoach-ui-zh-hk-16x9.png": {
+      "width": 1920,
+      "height": 1080,
+      "sha256": "0fe5c3b267fac017b323f567cb9b9f18fea4a0fa7e8b1e3767ec95553c5897a3"
+    }
+  },
+  "locales": [
+    "zh-CN",
+    "en",
+    "zh-HK"
+  ],
+  "messages_per_locale": 199,
+  "automated_tests": {
+    "localization": 4,
+    "unified_api": 8,
+    "orientation": 6,
+    "imu_service": 9,
+    "passed": 27
+  },
+  "manual_browser_checks": [
+    "English, Simplified Chinese, Hong Kong Traditional Chinese static and dynamic labels",
+    "Locale persists after reload",
+    "1920x1080 desktop capture",
+    "390x844 responsive layout",
+    "Default viewport restored; current language zh-CN"
+  ],
+  "capture_state": "Real camera not-ready and IMU disconnected; no simulated data or identifiable portraits",
+  "video_overlay_scope": "Shared local stream; most recent UI language controls overlays for all viewers",
+  "firmware_changed": false
+}
