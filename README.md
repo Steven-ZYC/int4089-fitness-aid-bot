@@ -1,174 +1,143 @@
 # INT4089 Group Project — AI Fitness Form Coach
 
-> **2026-11-05 Yancheng 本机复现：** ESP32-S3 + BMI160 已在 COM4 通过 30 秒六轴采集（1496 组、49.73 Hz）。本机传感器地址为 0x69，已为诊断和六轴程序加入 0x68/0x69 自动识别。源码来源、实测与使用方法见 [复现记录](firmware/esp32-camera/YANCHENG_BMI160_REPRO.md)。本次只验证 S3／IMU／USB 数据链路。
+面向健身初学者的**IMU 模块 + 视觉 AI 模块 + 物理警报模块**课程原型：采集图像和运动数据，在计算平台分析健身动作，并通过 LED／蜂鸣器提供姿势反馈。
 
-基于 **Arduino Uno + ESP32-S3 摄像头 + AI** 的健身姿势反馈 IoT 课程项目。
+> [!NOTE]
+> **最新集成方案（2026-11-10；沿用 consultation 后的电脑端 AI 路线）**
+>
+> - 当前为 **prototype**；AI 模型的训练、推理和姿势判断在**电脑**完成。
+> - 未来可将 AI 服务迁移到**云端 HPC / GPU**；目前未部署。
+> - 两块 ESP32 分别负责 **摄像头采集**和 **IMU 采集**；当前实物使用 **Arduino Mega 2560** 控制 LED／蜂鸣器。ESP32-CAM 仅与电脑通信，ESP32-S3 通过单向 UART 直接连接 Mega。
 
-GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4089-fitness-aid-bot)（私有仓库；组员需要先获得仓库访问权限，并使用各自的 GitHub 账号）。
+> [!IMPORTANT]
+>
+> - **每人只在自己的工作分支修改并提交；默认不要在 `main` 开发。**
+> - 组员与编程 agent 开始任务前应先阅读本 README 和 [AGENTS.md](AGENTS.md)；所有未完成事项须明确标记。
 
-项目面向健身新手及希望更高效训练的人：通过采集动作、分析姿势并发出灯光或声音提醒，帮助用户发现和纠正不规范动作。项目仍处于原型阶段；ESP32 摄像头模块已归档单张拍照成果，AI 模型、Uno 联动及端到端效果仍待实现与验证。
+> [!TIP]
+>
+> - [项目方案与架构](#项目方案与架构)
+> - [成员与分工](#成员与分工)
+> - [当前维护方式](#当前维护方式)
+> - [当前进展/To-do list](#当前进展to-do-list)
 
-## ESP32 摄像头阶段成果（2026-10-23）
+GitHub：[Steven-ZYC/int4089-fitness-aid-bot](https://github.com/Steven-ZYC/int4089-fitness-aid-bot)（私有仓库；组员须先获得访问权限）。
 
-Dong Yuankun 已完成 **AI Thinker ESP32-CAM 经 USB 串口离线拍照并保存为 JPG** 的演示。本分支包含 Arduino IDE 草图、无需 Python 的 Windows PowerShell 接收脚本，以及本次指定归档的两张 640×480 演示照片。
+## 项目背景
 
-运行命令、实际环境、引脚表、照片预览和排错步骤见 [ESP32-CAM 离线演示 README](firmware/esp32-camera/README.md)。本次硬件按 AI Thinker ESP32-CAM 配置，与下方原方案规划的 ESP32-S3 区分记录；USB 传输使用串口，当前实现逐张拍照。
+针对健身新手缺乏即时指导的问题，本项目尝试在健身动作过程中识别姿势异常，向用户提供低成本、直观的提醒。课程要求以 **Arduino Uno** 参与传感器与执行器控制；ESP32 和电脑作为协作模块。
 
-## 项目方案
+### 为什么改变方案？
 
-课程要求必须使用 **Arduino Uno，结合传感器与执行器**。规划的数据流程为：
+早期尝试直接在 ESP32-CAM 上运行 AI 模型，但既有测试表明该方式性能不足，不适合作为当前实时动作分析路径：
 
-```text
-用户动作 → ESP32-S3 摄像头采集 → 远程服务器上的 AI 姿势分析
-                                          ↓ 判定结果
-                              ESP32-S3 → Arduino Uno
-                                          ↓
-                                   LED / 蜂鸣器提醒
-```
+| 已测项目（旧 ESP32-CAM 本地推理方案） | 测试结果 |
+| --- | ---: |
+| PSRAM | 2 MB |
+| 平均纯模型推理耗时 | 15.126 s/frame |
+| 纯推理速度 | 0.0661 FPS |
+| 包含采集与前／后处理的速度 | 0.0655 FPS |
 
-- **Arduino Uno**：承担传感器／执行器控制，先完成 LED 与蜂鸣器的基础调用；之后接收姿势判定结果并提醒用户。
-- **ESP32-S3 + 摄像头**：负责图像采集，之后接入 Wi-Fi、服务器和 Uno。具体开发板、摄像头型号与连接方式由实际硬件确认，不把「ESP32-CAM」当作确定的板卡型号。
-- **AI／远程服务器**：分析动作是否符合预设标准；后续增加错误动作记录、动作标准程度和纠正建议的交互平台。
-- Uno 与 ESP32 的通信协议、连接及电气要求在硬件确认后制定。当前不假定 Uno 直接处理相机图像或运行 AI 模型。
+以上是旧方案实测，不是新架构的吞吐量。consultation 后，原型改为图像 + IMU 采集、电脑端 AI 处理；ESP32-S3 板上推理和 RDK X5 不再是本阶段主线。
 
-## 成员与分工
+## 项目方案与架构
 
-PIC 指该模块负责人。**每人只在本人当前任务对应的分支修改并提交；默认不要在 `main` 开发。分支名区分大小写，请完整复制。**
+### 三模块解耦设计
 
-| 成员 | 分工与第一阶段交付 | 本人工作分支 |
+系统按职责划分为 **IMU 模块、视觉 AI 模块、物理警报模块**。采集、分析与执行通过明确接口协作；物理警报模块不依赖某一种传感器或姿势算法。
+
+| 模块 | 组成与职责 | 当前验证范围 |
 | --- | --- | --- |
-| **Zhang Yancheng** | 项目统筹、架构、AI／服务器及系统集成；审核并合并 PR | `Feat-Integration-Yancheng` |
-| **Zhang Haoyu** | **PIC Arduino**：接好 Arduino Uno 的蜂鸣器和 LED，能分别完成基础调用，并记录接线和复现步骤 | `Feat-Arduino-Haoyu` |
-| **Zhang Haoyu** | **PIC 电脑端应用**：接收摄像头图像，在电脑端进行姿态分析、显示结果并参与联调；临时 ESP32-CAM 推流固件仅供打通链路，摄像头采集固件以 Dong Yuankun 的实现为准 | `Feat-PC-App-Haoyu` |
-| **Dong Yuankun** | **PIC ESP32 摄像头**：正确调用已经接好的 ESP32-S3 摄像头，至少拍到一张可读取的照片，并记录环境和复现步骤 | `Feat-Esp-Yuankun` |
+| **IMU 模块** | ESP32-S3 N16R8 + BMI160；GPIO4 / GPIO5 通过 I²C 采集加速度与角速度，为运动分析提供数据；需要报警时由上位逻辑输出统一报警命令 | 已有六轴 USB 采集记录；S3 → Mega UART 测试命令已打通，当前 S3 运行的是周期报警测试固件，尚未接入 IMU 判定 |
+| **视觉 AI 模块** | ESP32-CAM 采集图像并单独与电脑通信；电脑负责图像预处理、姿势分析与判断，并可通过 USB 直接控制警报模块 | Haoyu 电脑应用分支已取回；摄像头、AI 与警报的完整闭环尚未联调验收 |
+| **物理警报模块** | Arduino Mega 2560；接收电脑 USB 或 S3 UART 的统一报警命令，控制 D8 LED 与 D9 蜂鸣器同开同关，不解析 IMU 原始数据或运行视觉模型 | 两端固件已烧录；USB 控制、UART 接收、错误命令拒绝及电脑优先控制后 ESP 接管已通过串口验证；灯光、声音及拔线超时仍需现场验收 |
 
-`main` 保存经 Zhang Yancheng 审核合并的成果。两位同学完成工作后从本人分支发起 Pull Request（PR），目标为 `main`，由 Zhang Yancheng 集成；不要直接提交或推送到 `main`，也不要改动对方分支。
+**解耦的意义：** IMU 或视觉算法可以独立替换和调试；只要输出相同的报警状态协议，物理警报模块无需随算法改变。两个分析来源也不要求同时在线才能独立测试执行器。后续若融合视觉与 IMU，应在上位分析逻辑中定义融合规则；当前接口仅传达报警状态，不代表已经实现融合判断。
 
-## 给两位同学及其 agent 的最短指引
+### 当前实际连接与后续闭环
 
-开始时把下面对应的一句发给自己的 agent；**agent 必须先读 [AGENTS.md](AGENTS.md)，确认你的身份，再检查或切换到你的分支后才可改动。身份不明必须询问，不能跳过。**
-
-**Zhang Haoyu／Arduino 任务：**
-
-> 我是 Zhang Haoyu。请先读根目录 AGENTS.md，确认当前分支是 Feat-Arduino-Haoyu，只在我的分支工作。我的任务是 Arduino Uno 蜂鸣器和 LED 的接线与基础调用，请按 firmware/arduino-uno/README.md 执行。
-
-**Zhang Haoyu／电脑端应用任务：**
-
-> 我是 Zhang Haoyu。请先读根目录 AGENTS.md，确认当前分支是 Feat-PC-App-Haoyu，只在我的分支工作。我的任务是电脑端摄像头画面接入、姿态分析和结果展示，请按 app/README.md 执行；摄像头采集固件由 Dong Yuankun 负责。
-
-**Dong Yuankun：**
-
-> 我是 Dong Yuankun。请先读根目录 AGENTS.md，确认当前分支是 Feat-Esp-Yuankun，只在我的分支工作。我的任务是调用已连接的 ESP32-S3 摄像头并至少拍到一张可读取的照片，请按 firmware/esp32-camera/README.md 执行。
-
-### 打开自己的分支
-
-安装 Git 后打开终端。**按当前任务只运行对应的一组**，这样首次克隆就会进入本人分支。若提示仓库不存在或无权限，先联系 Zhang Yancheng 确认访问权限，不要创建另一个仓库。
-
-Zhang Haoyu／Arduino 任务：
-
-```powershell
-git clone --branch Feat-Arduino-Haoyu --single-branch https://github.com/Steven-ZYC/int4089-fitness-aid-bot.git int4089-haoyu
-cd int4089-haoyu
-git branch --show-current
+```mermaid
+flowchart LR
+    IMU["BMI160"] -->|"I²C：GPIO4 / GPIO5"| S3["IMU 模块：ESP32-S3 N16R8"]
+    CAM["ESP32-CAM"] -->|"图像链路：独立连接电脑"| PC["视觉 AI 模块：电脑"]
+    S3 -->|"单向 UART：GPIO17 TX → D19 RX1"| MEGA["物理警报模块：Mega 2560"]
+    PC -->|"USB 串口报警命令"| MEGA
+    S3 -. "IMU 数据接入 / 融合：待联调" .-> PC
+    MEGA --> LED["D8 LED + D9 蜂鸣器：同开同关"]
+    PC -. "未来迁移" .-> HPC["Cloud HPC / GPU"]
 ```
 
-Zhang Haoyu／电脑端应用任务：
+ESP32-CAM 当前没有可用的外接引脚用于此连接，因此 **不连接 Arduino，也不作为 S3 与 Arduino 间的中转节点**。IMU 模块和视觉模块各自采集；物理警报模块接受统一控制接口。图中的视觉报警闭环为待联调目标，已实测部分以表格和测试记录为准。
 
-```powershell
-git clone --branch Feat-PC-App-Haoyu --single-branch https://github.com/Steven-ZYC/int4089-fitness-aid-bot.git int4089-haoyu-app
-cd int4089-haoyu-app
-git branch --show-current
-```
+### 统一报警接口
 
-Dong Yuankun：
+每帧为 **三个 ASCII 数字 + 换行符 LF**，格式为 `[来源][报警状态][校验]`，不发送方括号或逗号。`0` 来源是电脑 USB，`1` 来源是 ESP32 UART；报警 `0` 为同关，`1` 为同开；校验为前两位数值的 **XOR（异或）**。
 
-```powershell
-git clone --branch Feat-Esp-Yuankun --single-branch https://github.com/Steven-ZYC/int4089-fitness-aid-bot.git int4089-yuankun
-cd int4089-yuankun
-git branch --show-current
-```
+| 命令（末尾加 LF） | 含义 | 物理接口 |
+| --- | --- | --- |
+| `000` | 电脑关闭报警 | Mega USB：115200，8N1 |
+| `011` | 电脑开启报警 | Mega USB：115200，8N1 |
+| `101` | ESP32 关闭报警 | Mega Serial1：9600，8N1 |
+| `110` | ESP32 开启报警 | Mega Serial1：9600，8N1 |
 
-已有克隆时，先运行 `git status --short --branch`。工作区干净后：
+- 命令来源必须与实际接收接口匹配；长度、字符、来源或校验错误均拒绝，不刷新超时计时。XOR 是轻量差错检查，不能检测所有错误，也不是身份认证。
+- 电脑有效命令优先保持 1.5 秒，建议每 200ms 重发；期间忽略 ESP 命令。电脑停止发送后，ESP 可在优先期结束时用下一帧接管。
+- 超过 1.5 秒没有任何被接受的命令时，LED 与蜂鸣器关闭；启动也默认关闭。该行为不是安全认证的报警机制。
+- S3 GPIO17 → Mega D19（RX1），两板 GND 共地；**Mega D18（TX1）不接**，避免 5V TX 进入 S3。电源脚不互接，两板各自 USB 供电并同时上电。Mega RX 禁用内部上拉；当前接线已验证可接收，但不代表 3.3V → 5V 逻辑在全部容差条件下都保证可靠。
 
-```powershell
-git fetch origin
-git switch <本人分支>
-git pull --ff-only
-git branch --show-current
-```
+固件、电脑控制示例及完整接口说明见 [物理警报与 UART / USB 协议](docs/protocols/alarm-control.md)，串口验证见 [测试记录](docs/validation/2026-11-10-alarm-protocol.txt)。**当前 S3 周期测试命令不是 IMU 报警判断**；原 BMI160 源码保留，后续需要合入采集及判断逻辑。六轴采集记录见 [BMI160 本机复现](firmware/esp32-camera/YANCHENG_BMI160_REPRO.md)。
 
-若本地没有当前任务对应的本人分支，改用 `git switch --track origin/<本人分支>`。上面的 `<本人分支>` 必须替换成分工表中当前任务对应的完整名字。如果远端没有这个分支，联系 Zhang Yancheng，不要回退到 `main`。有未提交改动时先停止切换，不能直接丢弃或覆盖。
+> 硬件说明：早期课程方案与历史目录使用 Arduino Uno；当前实际联调板为 Mega 2560。是否满足课程对 Uno 的具体要求仍需向课程方确认，不将 Mega 实测写成 Uno 实测。
 
-### 保存、提交与推送
+### 两阶段计算部署路线
 
-每次修改前、提交前都确认 `git branch --show-current` 输出是本人当前任务对应的分支；输出为 `main`、对方分支或空白时停止操作。第一次提交前，请用自己的姓名和邮箱设置仓库级 `git config user.name`、`git config user.email`，不要复制别人的身份。
+| 阶段 | AI 所在位置 | 目标 | 状态 |
+| --- | --- | --- | --- |
+| **Phase 1 — Prototype** | 电脑（可用 GPU／CPU） | 跑通摄像头与 IMU 数据接收、数据集准备、模型训练、实时／准实时姿势分析、LED／蜂鸣器反馈 | **当前开发方向；完整链路尚未验证** |
+| **Phase 2 — Future Extension** | 云端 HPC／GPU 计算平台 | 在原型有效后评估可扩展服务、远程推理性能、部署成本与网络延迟 | **长期规划；不是目前必做项** |
 
-Zhang Haoyu 的提交示例：
+## 当前维护方式
 
-```powershell
-git status --short --branch
-git diff
-git add firmware/arduino-uno/<本次修改的文件>
-git diff --cached
-git commit -m "feat(arduino): add LED and buzzer basic control"
-git push -u origin Feat-Arduino-Haoyu
-```
+2026-11-10 起由 **Zhang Yancheng 统一接手 IMU、视觉 AI、报警执行器及电脑端集成**，在 `Feat-Integration-Yancheng` 开发。既有成员分支保留为源码与贡献历史，后续以普通 merge 集成，保留原作者；不再以原分工限制当前开发范围。main 作为稳定集成目标。
 
-电脑端应用任务使用 `Feat-PC-App-Haoyu`，只暂存 `app/` 下本次修改的文件，并显式推送到 `origin Feat-PC-App-Haoyu`。
+每次提交前检查分支、工作区和暂存差异；仅提交本次明确文件。推送和合并到 main 按用户明确要求执行。当前不包含其他成员分支的完整合并。
 
-Dong Yuankun 的提交示例：
+## 当前进展/To-do list
 
-```powershell
-git status --short --branch
-git diff
-git add firmware/esp32-camera/<本次修改的文件>
-git diff --cached
-git commit -m "feat(esp32): capture first camera photo"
-git push -u origin Feat-Esp-Yuankun
-```
+- [x] **完成方案 consultation**：确认可由电脑承担 prototype 的 AI 推理，并根据建议增加 IMU。
+- [x] **记录旧 ESP32-CAM 本地推理性能**：明确该方案不符合团队对交互速度的预期。
+- [ ] **Haoyu / AI**：选定并记录合法可用的数据集、目标动作与标签；建立训练／验证／测试流程，训练基线模型，搭建电脑端推理服务，测量准确性和处理时延。源码在 `origin/Feat-Arduino-Haoyu` 与 `origin/Feat-PC-App-Haoyu`，待审查合入。
+- [ ] **Yuankun / 采集模块**：完善 Camera Node → 电脑图像链路与 S3 + BMI160 采集；对齐 IMU 数据格式、时间戳及报警命令，不再要求摄像头板中转 Arduino 控制。见 [ESP32 与 IMU 工作](firmware/esp32-camera/README.md)。
+- [ ] **Yancheng / Integration**：已定义统一报警协议并打通 S3 UART / 电脑 USB → Mega 接口；下一步接入真实 IMU／视觉判定，验证 LED／蜂鸣器、拔线超时与完整闭环。见 [Arduino 控制基线](firmware/arduino-uno/README.md)。
+- [ ] **未来评估**：只有在本地原型有效后，才考虑云端 HPC 的部署可行性、网络和成本问题。
 
-将示例文件占位符替换为实际文件名，只暂存本次相关文件。**不要执行 `git push --all`、强制推送或向 `main` 推送。** 然后在 GitHub 选择 Compare & pull request：base 为 `main`，compare 为本人分支。PR 写明改动、板卡／接线、运行步骤和实测结果；没有硬件验证时明确写「未实测」。这些文档约定不等于 GitHub 服务端的分支保护。
-
-## 第一阶段验收
-
-1. **Haoyu / Arduino**：LED 可按预期亮灭；蜂鸣器可按预期发声与停止；接线、实际引脚、开发环境、代码入口和验证结果可复现。见 [Arduino 任务说明](firmware/arduino-uno/README.md)。
-2. **Yuankun / ESP32 摄像头**：程序可初始化实际摄像头，至少获取一张可读取的照片；记录板卡、摄像头、环境、实际 pin map 和复现步骤。见 [摄像头任务说明](firmware/esp32-camera/README.md)。
-3. **Haoyu / 电脑端应用**：接入摄像头图像，展示姿态分析结果；记录运行环境、输入接口、复现步骤和真实场景验证结果。见 [`Feat-PC-App-Haoyu` 分支的应用说明](https://github.com/Steven-ZYC/int4089-fitness-aid-bot/blob/Feat-PC-App-Haoyu/app/README.md)。
-4. **后续集成**：确定板间通信与消息格式，将判定结果回传并驱动 Uno 实时提醒，再完善用户记录和纠正建议平台。
-
-不要提交 Wi-Fi 密码或令牌。日常实拍照片、训练视频、训练记录放在被忽略的 `captures/` 或 `data/` 目录中。本分支按 Dong Yuankun 本次明确要求，将两张指定的演示照片单独归档到 `firmware/esp32-camera/evidence/2026-10-23/`；后续采集默认继续保存在本地忽略目录。
-
-## Yancheng 的性能测试
-
-Zhang Yancheng 的板端推理实验位于 [experiments/yancheng/esp32-pose-bench](experiments/yancheng/esp32-pose-bench/README.md)：针对已识别的经典 ESP32-CAM，分别预检硬件、量化低分辨率 INT8 YOLO11n-Pose 并测量板端速度。相机取帧吞吐与 AI 推理 FPS 分开记录；测试完成情况见该目录的说明。
-
-2026-10-23 本板实测 PSRAM 为 **2 MB**；128×128 INT8 模型纯推理约 **15.126 秒／帧，0.0661 FPS**，当前配置无法实时纠姿，关键点准确度尚未验证。见 [实测记录](experiments/yancheng/esp32-pose-bench/results/2026-10-23-classic-esp32.md)。
-
-## Yancheng 的 IMU 零飘处理与位置面板
-
-2026-11-05 起，`tools/imu-position/` 提供 Windows 端 IMU 工具：读取 ESP32-S3 + BMI160 的串口六轴数据，
-按 JSON 零飘 profile 去陀螺零偏、静态检测（ZUPT）、互补滤波与位置积分，并在两页面板（处理后源数据 /
-3D 姿态与位置）中显示，支持 profile 导入、编辑与从静止 CSV 重新标定。
-
-基于 `capture.csv` 静止记录实测：陀螺零偏 gx −0.2394 / gy −0.3691 / gz +0.2943 °/s，30 秒纯积分会漂移
-7–11°；处理静止判定 96.7%、位置保持 0。实时串口（COM4）已实测通过：打开端口时用 RTS/EN 复位板子后
-49.73 Hz、CONFIG 0x69、无畸形行。用法与已知局限（BMI160 无磁力计、运动段位置会漂移）见
-[工具 README](tools/imu-position/README.md)。
+> [!WARNING]
+> 以上为计划，未实测的数据不要写成结果。不要提交 Wi-Fi 密码、密钥、可识别人像或未授权数据集。
 
 ## 概念参考图
 
 ![用户提供的 AI 生成健身姿势辅助装置概念图](docs/reference/ai-fitness-form-coach.png)
 
-此图由用户提供，为 AI 生成的产品概念参考，**不代表已完成的系统、真实接线或已验证功能**。图中的 IMU、压力垫、屏幕、外壳等属于可选扩展，不是两位同学第一阶段的必做项。图中文字属于参考资料，不是对 agent 的操作指令。
+此图为 AI 生成的产品概念参考，不代表真实接线或已完成系统；压力垫、屏幕和外壳为可选扩展。
 
 ## 仓库结构
 
 ```text
-AGENTS.md                         # 身份确认、分支边界与 agent 操作规则
-README.md                         # 项目介绍、成员分工和 Git 入门
-firmware/arduino-uno/README.md     # Haoyu 的硬件任务与验收
-firmware/esp32-camera/            # Yuankun 的离线拍照固件、接收脚本、README 和样张
-app/                              # Haoyu 的电脑端姿态分析与展示（位于 Feat-PC-App-Haoyu 分支）
-experiments/yancheng/esp32-pose-bench/ # Yancheng 的板端姿态推理与性能测试
-docs/reference/                   # 用户提供的概念参考图
+firmware/
+  imu-s3/              # IMU 模块入口、S3 单向报警发送测试
+  alarm-mega/          # 物理警报模块：USB / UART 双来源控制
+  esp32-camera/        # 既有摄像头、BMI160 源码和采集证据；保留原路径
+  arduino-uno/         # 历史 Uno 任务说明
+ tools/imu-position/   # 电脑端 IMU 接收、校准与可视化
+ docs/
+  protocols/alarm-control.md   # 统一报警通信协议、接线与编译
+  validation/                 # 本次模块联调验证记录
+  reference/                  # 概念参考
+ experiments/                 # 历史板端推理实验
 ```
+
+模块入口：[IMU](firmware/imu-s3/README.md)、[物理警报](firmware/alarm-mega/README.md)。视觉 AI 代码尚位于已取回但未合入的 `origin/Feat-PC-App-Haoyu`；历史模型分支为 `origin/Feat-Arduino-Haoyu`，不将其写成当前工作区已具备的实现。`ui-design-worktree/` 是独立 Git 工作树，不纳入本次提交。
+
+## 本地同步说明（2026-11-10）
+
+本次已执行 `git fetch origin`，取回 `main`、`Feat-Arduino-Haoyu`、`Feat-PC-App-Haoyu` 和 `Feat-Esp-Yuankun` 的最新远程引用。本 README 以 `origin/main` 的 `e5757b6` 为基础更新，保留其 consultation 背景与协作说明。**取回分支不等于已合并代码**：各成员实现尚需差异审查与集成测试；本轮文档与报警模块修改位于 `Feat-Integration-Yancheng`，未直接修改 main 或同学分支。
