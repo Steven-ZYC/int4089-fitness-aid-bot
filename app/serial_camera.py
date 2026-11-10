@@ -157,6 +157,8 @@ class SerialCameraSource:
             if self.port.is_open:
                 try:
                     self.port.write(b'ALARM 0\n')
+                except Exception:
+                    pass  # A disconnected USB port cannot deliver OFF; device watchdogs expire.
                 finally:
                     self.port.close()
 

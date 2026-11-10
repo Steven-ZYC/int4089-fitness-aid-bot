@@ -198,7 +198,9 @@
     "Stationary CSV must be at most 8 MB": "静止 CSV 不得超过 8 MB",
     "已连接 {0} @ {1}，等待数据…": "已连接 {0} @ {1}，等待数据…",
     "收到串口输出（首行：{0}）": "收到串口输出（首行：{0}）",
-    "读线程已停止": "读线程已停止"
+    "读线程已停止": "读线程已停止",
+    "自动校正中：请短暂站直，双手自然下垂": "自动校正中：请短暂站直，双手自然下垂",
+    "未检测到人 — 请确保全身进入画面": "未检测到人 — 请确保全身进入画面"
   },
   "en": {
     "FitCoach AI · 运动控制台": "FitCoach AI · Training Dashboard",
@@ -399,7 +401,9 @@
     "Stationary CSV must be at most 8 MB": "Stationary CSV must be at most 8 MB",
     "已连接 {0} @ {1}，等待数据…": "Connected to {0} @ {1}; waiting for data…",
     "收到串口输出（首行：{0}）": "Serial output received (first line: {0})",
-    "读线程已停止": "Reader stopped"
+    "读线程已停止": "Reader stopped",
+    "自动校正中：请短暂站直，双手自然下垂": "Auto-aligning: stand upright with your arms relaxed.",
+    "未检测到人 — 请确保全身进入画面": "No person detected — keep your whole body in view."
   },
   "zh-HK": {
     "FitCoach AI · 运动控制台": "FitCoach AI · 運動控制台",
@@ -600,6 +604,8 @@
     "Stationary CSV must be at most 8 MB": "靜止 CSV 不得超過 8 MB",
     "已连接 {0} @ {1}，等待数据…": "已連接 {0} @ {1}，等待數據…",
     "收到串口输出（首行：{0}）": "收到串列埠輸出（首行：{0}）",
-    "读线程已停止": "讀取執行緒已停止"
+    "读线程已停止": "讀取執行緒已停止",
+    "自动校正中：请短暂站直，双手自然下垂": "自動校正中：請短暫站直，雙手自然下垂",
+    "未检测到人 — 请确保全身进入画面": "未偵測到人物 — 請確保全身進入畫面"
   }
 }

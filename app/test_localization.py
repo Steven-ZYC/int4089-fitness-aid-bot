@@ -36,6 +36,35 @@ class LocalizationTests(unittest.TestCase):
                          'Squat too shallow: minimum knee angle 115°; target ≤105°')
         self.assertEqual(translate('设备与校准','zh-HK'),'設備與校準')
 
+    def test_pipeline_waiting_overlays_follow_language(self):
+        from types import SimpleNamespace
+        from unittest.mock import Mock, patch
+        import numpy as np
+        from pose_app import Pipeline, STATE
+        from copy import deepcopy
+        for locale in MESSAGES:
+            for locked, key in ((False,'自动校正中：请短暂站直，双手自然下垂'),
+                                (True,'未检测到人 — 请确保全身进入画面')):
+                with self.subTest(locale=locale,locked=locked):
+                    pipeline=Pipeline('test','squat',engine=Mock(infer=lambda _: (None,None)))
+                    pipeline.language=locale
+                    pipeline.orientation=SimpleNamespace(mode='0',angle=0,mirror=False,locked=locked,
+                        update=lambda *args:None,transform=lambda frame:frame,state=lambda:{})
+                    source=Mock(desc='test camera',seq=1)
+                    reads=[]
+                    def frame():
+                        reads.append(True)
+                        if len(reads)>1:pipeline.running=False
+                        return np.zeros((480,640,3),dtype=np.uint8)
+                    source.read=frame
+                    rendered=[]
+                    def capture(frame,items):
+                        rendered.extend(item[0] for item in items)
+                        return frame
+                    with patch('pose_app.STATE',deepcopy(STATE)),patch('pose_app.open_source',return_value=source),patch('pose_app.draw_cn',side_effect=capture):
+                        pipeline._run_pipeline()
+                    self.assertEqual(rendered,[MESSAGES[locale][key]])
+
     def test_raw_protocol_diagnostics_are_not_translated(self):
         raw='# DETECT address=0x68 read_ok=0'
         for locale in MESSAGES:self.assertEqual(translate(raw,locale),raw)

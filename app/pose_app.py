@@ -108,7 +108,7 @@ class Pipeline(threading.Thread):
         self.engine = engine if engine is not None else PoseEngine()
         self.analyzer = make_analyzer(action)
         self.running = True
-        self.language = "zh-CN"
+        self.language = "en"
         self.requested_action = action
         self.last_frame_at = 0.0
         self._source = None
@@ -118,17 +118,34 @@ class Pipeline(threading.Thread):
         self._times = deque(maxlen=20)
 
     def run(self):
-        try:
-            self._run_pipeline()
-        except Exception as exc:
+        retries=0
+        while self.running:
+            started=time.monotonic()
+            try:
+                self._run_pipeline()
+            except Exception as exc:
+                with _LOCK:
+                    STATE['stats'].update(state='Vision pipeline error: '+str(exc),alarm=False,persons=0,fps=0)
+                print('Vision pipeline stopped:',exc)
+            finally:
+                source,self._source=self._source,None
+                if source is not None:
+                    try:
+                        if hasattr(source,'set_alarm'):source.set_alarm(False)
+                        source.release()
+                    except Exception as exc:
+                        print('Camera release:',exc)
+            if not self.running or not self.src_arg.startswith('serial://'):
+                break
+            retries=0 if time.monotonic()-started>15 else retries+1
+            delay=min(8,2**min(retries,3))
             with _LOCK:
-                STATE['stats'].update(state='Vision pipeline error: '+str(exc), alarm=False, persons=0, fps=0)
-            print('Vision pipeline stopped:',exc)
-        finally:
-            if self._source is not None:
-                if hasattr(self._source,'set_alarm'):
-                    self._source.set_alarm(False)
-                self._source.release()
+                STATE['stats'].update(state='Reconnecting camera',alarm=False,persons=0,fps=0,
+                    reconnects=STATE['stats'].get('reconnects',0)+1)
+            # Back off while allowing shutdown/manual reconnect to interrupt the wait.
+            for _ in range(delay*10):
+                if not self.running:break
+                time.sleep(.1)
 
     def _run_pipeline(self):
         try:
@@ -153,7 +170,7 @@ class Pipeline(threading.Thread):
 
         last_seq = -1
         alarm_until = 0.0
-        last_rep = 0
+        last_rep = self.analyzer.reps
         missing_since = None
         orientation_stamp=None
         while self.running:
@@ -227,7 +244,7 @@ class Pipeline(threading.Thread):
                     last_rep = completed_reps
                 res = self.analyzer._snapshot()
                 cv2.rectangle(frame, (0, 0), (frame.shape[1], 38), (28, 28, 32), -1)
-                frame = draw_cn(frame, [(("自动校正中：请短暂站直，双手自然下垂" if not self.orientation.locked else "未检测到人 — 请确保全身进入画面"),
+                frame = draw_cn(frame, [(translate("自动校正中：请短暂站直，双手自然下垂" if not self.orientation.locked else "未检测到人 — 请确保全身进入画面", self.language),
                                          (10, 9), 17, (180, 180, 180))])
 
             if hasattr(src,"set_alarm"):
@@ -335,9 +352,10 @@ class Handler(BaseHTTPRequestHandler):
                 body = json.dumps({"pose": STATE["pose"], "stats": STATE["stats"]},
                                   ensure_ascii=False).encode("utf-8")
             self._send(body, "application/json; charset=utf-8")
-        elif self.path == "/video":
+        elif self.path.split("?",1)[0] == "/video":
             self.send_response(200)
             self.send_header("Content-Type", "multipart/x-mixed-replace; boundary=frame")
+            self.send_header("Cache-Control", "no-store")
             self.end_headers()
             try:
                 last = -1

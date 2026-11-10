@@ -41,6 +41,8 @@ class UnifiedHandler(vision.Handler):
             pipeline=self.server.pipeline
             state['stats']['vision_alive']=bool(pipeline and pipeline.is_alive())
             state['stats']['frame_age_s']=round(time.monotonic()-pipeline.last_frame_at,3) if pipeline and pipeline.last_frame_at else None
+            state['stats']['video_language']=getattr(pipeline,'language',getattr(self.server,'vision_language','en'))
+            state['service_id']=getattr(self.server,'service_id','')
             state['camera_port']=self.server.imu.protected_port
             state['imu']=self.server.imu.snapshot(after)
             self._json(state);return
@@ -150,7 +152,9 @@ def main():
     server.vision_rotate=args.rotate
     server.vision_mirror=not args.no_mirror
     server.orientation_revision=0
-    server.vision_language="zh-CN"
+    server.vision_language="en"
+    import uuid
+    server.service_id=uuid.uuid4().hex
     try:
         if args.imu_port:
             try:imu.connect(args.imu_port,reset=False)
@@ -158,6 +162,7 @@ def main():
         if not args.no_vision:
             try:
                 pipeline=vision.Pipeline(args.source,args.action,args.rotate,mirror=not args.no_mirror)
+                pipeline.language=server.vision_language
                 pipeline.start()
                 server.pipeline=pipeline
             except Exception as exc:
