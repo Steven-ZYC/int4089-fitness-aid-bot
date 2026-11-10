@@ -11,9 +11,9 @@
       "english": "README.md",
       "zh_cn": "README_zh_cn.md",
       "zh_hk": "README_zh_hk.md",
-      "original_sha256": "fb3a757b7bf9e9a9084943d6608b4efed689bcf876e54f6ea00e9ecc389d5642",
+      "original_sha256": "996ee60e299c4768d2ff4c3005066c914f00f0af2070e90421a7d46fd7b19da7",
       "migration_snapshot_sha256": "504660a7222c6408148f060bfc22ba6bd97e7cad1935a002f2ed25798336a39e",
-      "content_updated": "2026-11-11: current dashboard screenshots, first-four overview, six-movement library, live monitoring and module/session controls; migration hash retained separately"
+      "content_updated": "2026-11-11: current workspace/screenshots and merged assembly guide links; migration hash retained separately"
     },
     {
       "english": "app/POSE.md",

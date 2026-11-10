@@ -25,7 +25,7 @@ Camera-based squat recognition works without an IMU connection, and IMU data can
 
 Start training enables repetition counting and vision alarms. Pause freezes the timer, retains completed repetitions and stops counting and vision alarms while video preview continues. End the session to start again. Navigating between pages retains the same acquisition pipeline.
 
-See the [unified application guide](app/UNIFIED_APP.md).
+See the [unified application guide](app/UNIFIED_APP.md). For hardware assembly and operation, see the [illustrated assembly guide](docs/guide/README.md) and [English user manual (PDF)](docs/guide/fitcoach-user-manual.pdf). The PDF records the 9152fe8 baseline; this README and the unified guide describe the latest UI and session controls.
 
 ## Current data flow
 
@@ -95,6 +95,7 @@ tools/imu-position/               # Independent IMU reception, calibration, repl
 experiments/                      # Historical on-ESP32 inference benchmarks
 docs/
   architecture/README.md          # Module responsibilities, dependencies and threads/tasks
+  guide/                         # Illustrated assembly guide, editable LaTeX source and user manual PDF
   protocols/                     # USB images, ESP-NOW states and Mega alarm protocol
   validation/                    # Measurements and acceptance scope; history is not rewritten
   reference/                     # Concept references

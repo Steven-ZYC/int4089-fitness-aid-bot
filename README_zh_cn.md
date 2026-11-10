@@ -25,7 +25,7 @@ Arduino 报警、ESP Camera 和 ESP IMU 可以独立启用／停用。开关控�
 
 点击“开始训练”才启动计次与视觉报警；暂停会冻结计时、保留已完成次数并停止计次与视觉报警，视频预览继续。结束后可重新开始。更换页面不会重新建立另一条采集链路。
 
-使用详情见 [统一应用说明](app/UNIFIED_APP_zh_cn.md)。
+使用详情见 [统一应用说明](app/UNIFIED_APP_zh_cn.md)。硬件装配与使用步骤见 [图解装配指南](docs/guide/README.md) 及 [英文用户手册（PDF）](docs/guide/fitcoach-user-manual.pdf)。PDF 记录的是 9152fe8 基线，最新界面和训练控制以本 README 及统一应用说明为准。
 
 ## 当前数据流
 
@@ -89,6 +89,7 @@ tools/imu-position/               # 独立 IMU 接收、校准、回放、可视
 experiments/                      # 历史 ESP32 本地推理性能实验
 docs/
   architecture/README.md          # 模块职责、代码依赖和线程／任务关系
+  guide/                         # 图解装配指南、可编辑 LaTeX 源码与用户手册 PDF
   protocols/                     # USB 图像、ESP-NOW 状态、Mega 报警协议
   validation/                    # 实测指标与验收范围，历史记录不改写
   reference/                     # 概念参考图
