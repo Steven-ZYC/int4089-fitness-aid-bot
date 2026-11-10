@@ -55,6 +55,28 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(self.call('/api/vision/language',{'language':'unknown'})[0],400)
         self.assertEqual(self.server.vision_language,'zh-HK')
 
+    def test_exercise_library_and_unavailable_ai(self):
+        code,body=self.call('/exercises.json')
+        self.assertEqual(code,200)
+        exercises=json.loads(body)
+        self.assertEqual({e['id'] for e in exercises},{'squat','pushup','lunge'})
+        self.assertEqual([e['id'] for e in exercises if e['available']],['squat'])
+        self.assertEqual(self.call('/exercises.js')[0],200)
+        for item in exercises:
+            self.assertEqual(len(item['cues']),3)
+            self.assertEqual(len(item['stages']),3)
+            self.assertRegex(item['video']['id'],r'^[A-Za-z0-9_-]{11}$')
+            self.assertTrue(item['video']['poster'].startswith('https://i.ytimg.com/vi/'))
+        from unittest.mock import Mock
+        pipeline=Mock()
+        pipeline.requested_action='squat'
+        self.server.pipeline=pipeline
+        for action in ('pushup','lunge'):
+            self.assertEqual(self.call('/api/vision/action',{'action':action})[0],400)
+            self.assertEqual(pipeline.requested_action,'squat')
+        self.assertEqual(self.call('/api/vision/action',{'action':'squat'})[0],200)
+        self.assertEqual(pipeline.requested_action,'squat')
+
     def test_replay_and_pause_share_existing_backend(self):
         self.assertEqual(self.call('/api/imu/example',{})[0],200)
         self.assertEqual(self.call('/api/imu/pause',{'paused':True})[0],200)

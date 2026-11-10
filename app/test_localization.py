@@ -29,6 +29,13 @@ class LocalizationTests(unittest.TestCase):
         for text in texts:
             if text not in ('简体中文','繁體中文（香港）'):self.assertIn(text,MESSAGES['en'])
 
+    def test_exercise_guides_are_translated(self):
+        exercises=json.loads((Path(__file__).parent/'web/exercises.json').read_text(encoding='utf-8'))
+        for item in exercises:
+            labels=[item['name'],item['group'],*item['stages'],*[label for cue in item['cues'] for label in cue]]
+            for label in labels:
+                for locale in MESSAGES:self.assertIn(label,MESSAGES[locale])
+
     def test_dynamic_feedback_preserves_values(self):
         self.assertEqual(translate('深蹲 · 站立 · 第 3 次','en'),'Squat · Standing · Rep 3')
         self.assertEqual(translate('第 12 次：需要调整','en'),'Rep 12: Needs adjustment')

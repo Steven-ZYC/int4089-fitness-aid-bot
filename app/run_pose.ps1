@@ -7,7 +7,7 @@ powershell.exe -File app/run_pose.ps1 -CamPort COM3 -Action squat
 param(
     [string]$CamPort = 'COM3',
     [AllowEmptyString()][string]$ImuPort = 'COM4',
-    [ValidateSet('squat', 'pushup')][string]$Action = 'squat',
+    [ValidateSet('squat')][string]$Action = 'squat',
     [ValidateRange(1024, 65535)][int]$WebPort = 8010
 )
 $ErrorActionPreference = 'Stop'

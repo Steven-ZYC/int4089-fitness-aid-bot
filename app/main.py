@@ -12,7 +12,7 @@ from imu_service import ImuService, list_serial_ports
 import pose_app as vision
 
 WEB = Path(__file__).resolve().parent / 'web'
-STATIC = {'/':'index.html','/dashboard.js':'dashboard.js','/styles.css':'styles.css','/i18n.js':'i18n.js','/locales.json':'locales.json'}
+STATIC = {'/':'index.html','/dashboard.js':'dashboard.js','/styles.css':'styles.css','/i18n.js':'i18n.js','/locales.json':'locales.json','/exercises.js':'exercises.js','/exercises.json':'exercises.json'}
 
 
 class UnifiedHandler(vision.Handler):
@@ -104,7 +104,7 @@ class UnifiedHandler(vision.Handler):
                     pipeline.start()
             elif action=='/api/vision/action':
                 selected=payload.get('action')
-                if selected not in ('squat','pushup'):raise ValueError('Unknown exercise action')
+                if selected != 'squat':raise ValueError('Exercise AI is not available yet')
                 if not self.server.pipeline:raise ValueError('Vision pipeline is not running')
                 self.server.vision_action=selected
                 self.server.pipeline.requested_action=selected
@@ -132,7 +132,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source',default='serial://COM3')
     parser.add_argument('--imu-port',default='COM4',help='Empty string disables automatic IMU connection')
-    parser.add_argument('--action',choices=['squat','pushup'],default='squat')
+    parser.add_argument('--action',choices=['squat'],default='squat')
     parser.add_argument('--rotate',choices=['auto','0','90','180','270'],default='auto')
     parser.add_argument('--no-mirror',action='store_true',help='Disable selfie mirror')
     parser.add_argument('--port',type=int,default=8010)

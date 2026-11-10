@@ -80,3 +80,7 @@ Use the header language selector for English (`en`), Simplified Chinese (`zh-CN`
 `web/locales.json` is the shared catalog; `web/i18n.js` translates static labels, dynamic states, chart messages and feedback without changing protocol values. `localization.py` uses the same catalog for video overlays. Raw firmware diagnostics and profile JSON stay intact. The camera stream is shared, so the latest language selection also applies to its overlays for all local viewers.
 
 The three 1920 × 1080 screenshots in `docs/assets/` show the real disconnected-device state and are embedded in the matching root README editions.
+
+## Movement library
+
+The overview shows Squat (AI available), Push-up and Forward lunge (AI coming soon). All three open teaching previews; only Squat can activate the unified AI pipeline. Legacy standalone exercise rules are retained. Each preview includes a verified official YouTube cover/player, a three-stage original posture diagram, three technique cues and a source link. Videos are from CrossFit and ACEfitness; technique sources are ACE exercise guides. External videos and covers need internet access. Playback starts only on click and stops when leaving the library. Teaching previews do not change AI exercise selection or alarm state.

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "squat",
+    "name": "深蹲",
+    "group": "下肢 · 徒手",
+    "available": true,
+    "video": {
+      "id": "C_VtOYc6j5c",
+      "title": "The Air Squat: CrossFit Foundational Movement",
+      "author": "CrossFit",
+      "watch_url": "https://www.youtube.com/watch?v=C_VtOYc6j5c",
+      "poster": "https://i.ytimg.com/vi/C_VtOYc6j5c/hqdefault.jpg",
+      "verified_on": "2026-11-11"
+    },
+    "source": "https://www.acefitness.org/resources/everyone/exercise-library/135/bodyweight-squat/",
+    "cues": [
+      [
+        "稳定站姿",
+        "双脚略宽于髋部，脚尖自然外展，保持整个脚掌稳定着地。"
+      ],
+      [
+        "控制下蹲",
+        "收紧核心，髋部向后下方移动，膝盖与脚尖方向一致。"
+      ],
+      [
+        "平稳起身",
+        "在可控范围内下蹲，避免脚跟抬起或背部弯曲，再平稳站起。"
+      ]
+    ],
+    "stages": [
+      "准备站立",
+      "控制下蹲",
+      "回到站立"
+    ]
+  },
+  {
+    "id": "pushup",
+    "name": "俯卧撑",
+    "group": "上肢 · 徒手",
+    "available": false,
+    "video": {
+      "id": "7dXB7ZdOhf4",
+      "title": "Performing a Push-Up",
+      "author": "ACEfitness",
+      "watch_url": "https://www.youtube.com/watch?v=7dXB7ZdOhf4",
+      "poster": "https://i.ytimg.com/vi/7dXB7ZdOhf4/hqdefault.jpg",
+      "verified_on": "2026-11-11"
+    },
+    "source": "https://www.acefitness.org/resources/everyone/exercise-library/41/push-up/",
+    "cues": [
+      [
+        "建立支撑",
+        "双手约与肩同宽，肩膀位于手掌上方，保持头部与躯干对齐。"
+      ],
+      [
+        "保持身体一线",
+        "收紧核心与臀部，控制身体整体下降，避免塌腰或抬高臀部。"
+      ],
+      [
+        "整体推起",
+        "胸部接近地面后平稳推起，让肩、髋与腿部同步移动。"
+      ]
+    ],
+    "stages": [
+      "高位支撑",
+      "控制下降",
+      "整体推起"
+    ]
+  },
+  {
+    "id": "lunge",
+    "name": "前弓步",
+    "group": "下肢 · 平衡",
+    "available": false,
+    "video": {
+      "id": "M6DZ0Dca17w",
+      "title": "Learn the Forward Lunge",
+      "author": "ACEfitness",
+      "watch_url": "https://www.youtube.com/watch?v=M6DZ0Dca17w",
+      "poster": "https://i.ytimg.com/vi/M6DZ0Dca17w/hqdefault.jpg",
+      "verified_on": "2026-11-11"
+    },
+    "source": "https://www.acefitness.org/resources/everyone/exercise-library/94/forward-lunge/",
+    "cues": [
+      [
+        "稳定核心",
+        "站稳并收紧核心，向前迈步时避免躯干左右晃动。"
+      ],
+      [
+        "垂直下沉",
+        "前脚踩稳后让髋部下沉，前膝与脚尖方向一致，背部保持平直。"
+      ],
+      [
+        "推回站姿",
+        "在舒适且可控的幅度内下降，再用前脚发力回到起始站姿。"
+      ]
+    ],
+    "stages": [
+      "准备站立",
+      "迈步下沉",
+      "推回站姿"
+    ]
+  }
+]
