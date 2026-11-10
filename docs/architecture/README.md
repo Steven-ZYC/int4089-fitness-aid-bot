@@ -1,70 +1,84 @@
-# 系统架构与代码导航
+[English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-## 三个逻辑模块
+<a id="系统架构与代码导航"></a>
 
-| 模块 | 输入 | 输出 | 代码入口 |
+# System architecture and code guide
+
+<a id="三个逻辑模块"></a>
+
+## Three logical modules
+
+| Module | Inputs | Outputs | Code entry points |
 | --- | --- | --- | --- |
-| 视觉 AI | CAM 的 USB JPEG 图像 | 关键点、动作阶段、计次、违规项、报警状态 | [pose_app.py](../../app/pose_app.py)、[pose_engine.py](../../app/pose_engine.py)、[form_rules.py](../../app/form_rules.py) |
-| IMU | BMI160 六轴数据；无线接收视觉报警状态 | USB IMU CSV；发往 Mega 的报警帧 | [S3 集成固件](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino)、[BMI160 采集实现](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
-| 物理警报 | S3 UART 或电脑直连 USB 的报警帧 | D8 LED、D9 蜂鸣器同开同关 | [Mega 固件](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
+| Vision AI | CAM USB JPEG images | Keypoints, action phase, repetitions, violations, alarm state | [pose_app.py](../../app/pose_app.py), [pose_engine.py](../../app/pose_engine.py), [form_rules.py](../../app/form_rules.py) |
+| IMU | BMI160 six-axis data; wireless vision alarm states | USB IMU CSV; alarm frames to Mega | [Integrated S3 firmware](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino), [BMI160 acquisition](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
+| Physical alarm | S3 UART or direct PC USB alarm frames | D8 LED and D9 buzzer switching together | [Mega firmware](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
 
-S3 同时承担 IMU 采集节点和无线报警转发节点，但两项任务独立。当前无线结果不是 IMU 判定结果；尚未实现 IMU 与视觉融合或 IMU 自动报警。
+S3 is both the IMU acquisition node and the wireless alarm relay, but these tasks are independent. Current wireless results are not IMU decisions. IMU/vision fusion and automatic IMU alarms are not implemented.
 
-## 电脑端文件职责
+<a id="电脑端文件职责"></a>
 
-| 文件 | 职责 |
+## PC file responsibilities
+
+| File | Responsibility |
 | --- | --- |
-| `app/pose_app.py` | 当前应用入口；推理线程、结果状态、网页与 HTTP 服务；不合格完整动作触发短时报警 |
-| `app/pose_engine.py` | YOLOv8n-pose 模型，取最大人体框和 17 个关键点 |
-| `app/form_rules.py` | 深蹲／俯卧撑角度、阶段状态机、计次和违规规则 |
-| `app/sources.py` | 选择 `serial://`、本地摄像头或 HTTP MJPEG 输入 |
-| `app/serial_camera.py` | USB 串口的唯一读写者；接收 JPEG、校验 CRC／帧尾、缓存最新帧、回传报警和读取无线确认 |
-| `app/run_pose.ps1` | 本机固定环境的启动入口；参数选择串口、动作和网页端口 |
-| `app/test_rules.py` | 原动作规则合成关键点测试 |
-| `app/test_serial_camera.py` | 合成 JPEG 的正常、损坏 CRC、错误帧尾测试 |
-| `app/check_usb_bridge.py` | 真实双板硬件测试；短暂开启报警，分别记录无线与 IMU 结果 |
-| `app/benchmark_usb.py` | 图像传输分阶段测速，只保存指标 |
-| `app/app.py`、`detector.py` | 旧人体检测页面；不是当前动作规范判定主入口 |
-| `app/find_camera.py`、`app/firmware/esp32_cam_stream/` | 历史 Wi-Fi MJPEG 路线，当前不使用 |
+| `app/pose_app.py` | Current application entry; inference thread, result state, web page and HTTP server; short alarm after an invalid completed repetition |
+| `app/pose_engine.py` | YOLOv8n-pose; select the largest person box and 17 keypoints |
+| `app/form_rules.py` | Squat/pushup angles, phase state machine, repetition counting and violation rules |
+| `app/sources.py` | Select `serial://`, local camera or HTTP MJPEG input |
+| `app/serial_camera.py` | Sole CAM USB serial owner; receive JPEG, check CRC/trailer, cache latest frame, return alarms and read wireless acknowledgements |
+| `app/run_pose.ps1` | Launcher for the fixed local environment; choose serial port, action and web port |
+| `app/test_rules.py` | Original synthetic-keypoint action-rule tests |
+| `app/test_serial_camera.py` | Synthetic JPEG tests for normal input, damaged CRC and incorrect trailer |
+| `app/check_usb_bridge.py` | Real dual-board test; briefly enable alarm and record wireless/IMU outcomes separately |
+| `app/benchmark_usb.py` | Stage-level image transport benchmark; save metrics only |
+| `app/app.py`, `detector.py` | Earlier person-detection page, not the current exercise-form entry point |
+| `app/find_camera.py`, `app/firmware/esp32_cam_stream/` | Historical Wi-Fi MJPEG route, not currently used |
 
-电脑内只有 `SerialCameraSource` 工作线程访问 CAM 串口。它批量发送报警／状态／拍照请求，按长度读取二进制图像并校验后缓存最新帧。推理线程只读取新鲜帧并回写短期有效的报警状态；HTTP 线程读取结果缓存供网页显示。模型权重和抓帧不提交。
+Only the `SerialCameraSource` worker accesses the CAM serial port. It batches alarm/status/capture requests, reads binary images by length, verifies them and caches the latest frame. The inference thread reads fresh frames and returns short-lived alarm states. HTTP threads read the result cache for display. Model weights and captured frames are not committed.
 
-## 固件依赖与运行任务
+<a id="固件依赖与运行任务"></a>
+
+## Firmware dependencies and runtime tasks
 
 ```text
 Cam_USB_Bridge.ino
-  ├─ OV2640 相机：VGA / JPEG18 / 双缓冲 LATEST
-  ├─ USB：图像、电脑命令和诊断
-  └─ AlarmRadio.h：独立任务周期发送状态并处理 S3 确认
+  |-- OV2640 camera: VGA / JPEG18 / double-buffer LATEST
+  |-- USB: images, PC commands and diagnostics
+  `-- AlarmRadio.h: independent periodic state sending and S3 ACK handling
 
 S3_IMU_Alarm_Bridge.ino
-  ├─ 引入既有 BMI160_SixAxis.ino：初始化及六轴采集
-  └─ AlarmRadio.h：独立任务接收状态、确认并周期写入 Serial1
+  |-- Existing BMI160_SixAxis.ino: initialization and six-axis acquisition
+  `-- AlarmRadio.h: independent state reception, ACKs and periodic Serial1 output
 
 Mega_Alarm_RX.ino
-  ├─ USB / Serial1 各自解析三位命令
-  └─ 来源／XOR 检查、电脑优先期、输出控制与超时
+  |-- USB / Serial1 independently parse three-digit commands
+  `-- Source/XOR checks, PC priority, output control and timeout
 ```
 
-BMI160 源码仍保留在 `firmware/esp32-camera/`，S3 集成固件通过相对包含复用，避免出现两份采集实现。保留原路径也确保历史 PowerShell 脚本和证据可追溯。编译时应保留仓库相对目录；不能只复制一个 `.ino` 去编译。
+BMI160 source remains under `firmware/esp32-camera/`. The integrated S3 firmware reuses it through a relative include, avoiding two acquisition implementations. Keeping the original path preserves historical PowerShell scripts and evidence references. Preserve the relative repository layout when compiling; copying only one `.ino` is insufficient.
 
-## 接口边界
+<a id="接口边界"></a>
 
-1. **CAM ↔ 电脑 USB**：921600 8N1，JPEG 与文本命令共用同一串口。图像不走无线。[USB 图像协议](../protocols/usb-camera.md)
-2. **CAM ↔ S3 ESP-NOW**：信道 1，固定对端 MAC，20 字节状态／确认包；不传图像。[无线报警协议](../protocols/espnow-alarm.md)
-3. **S3 → Mega UART**：9600 8N1，GPIO17 TX → D19 RX1，GND 共地，反向 TX 不接。[Mega 报警协议](../protocols/alarm-control.md)
-4. **BMI160 → S3 I²C**：GPIO4 SDA、GPIO5 SCL，自动探测 0x68 / 0x69；当前无应答，待接线检查。
+## Interface boundaries
 
-协议帧隔离了视觉分析与执行器。无线确认到 S3 为止，不能证明 Mega 接收到命令或灯／蜂鸣器执行成功。端到端确认尚未实现。
+1. **CAM ↔ PC USB**: 921600 8N1; JPEG and text commands share one serial port. Images do not use wireless. [USB image protocol](../protocols/usb-camera.md)
+2. **CAM ↔ S3 ESP-NOW**: channel 1, fixed peer MACs, 20-byte state/ACK packets; no images. [Wireless alarm protocol](../protocols/espnow-alarm.md)
+3. **S3 → Mega UART**: 9600 8N1, GPIO17 TX → D19 RX1, common GND, no reverse TX connection. [Mega alarm protocol](../protocols/alarm-control.md)
+4. **BMI160 → S3 I²C**: GPIO4 SDA, GPIO5 SCL, automatic 0x68/0x69 detection; currently no response, pending wiring inspection.
 
-## 当前参数与验证
+Protocol frames separate vision analysis from actuation. Wireless confirmation ends at S3 and does not prove that Mega received a command or the LED/buzzer acted. End-to-end acknowledgement is not implemented.
 
-当前固定为 VGA、JPEG18、双缓冲、921600；本轮整理不修改这些参数。图像采集时接受最多 200ms 帧龄，USB／推理／显示还会增加延迟。命令新鲜度与超时见各协议文档。
+<a id="当前参数与验证"></a>
 
-- USB 加速后：268 帧／30 秒，8.93 FPS，未见 CRC／解码错误。
-- AI 页面：约 9 FPS，随光照和画面复杂度变化；不是动作准确率指标。
-- 无线：开／关／电脑命令过期测试通过。
-- IMU：目前 0x68 / 0x69 均无应答；并发 IMU 验收仍失败。
-- 现场待验收：真实完整动作、Mega 执行效果、物理断线／掉电。
+## Current settings and validation
 
-记录入口：[文档索引](../README.md)。历史单板与分片图像实验放在 `firmware/esp32-camera/`；独立 UI 工作树尚未合入当前页面。
+Settings remain VGA, JPEG18, double buffering and 921600; this organization pass does not change them. Acquisition accepts frames at most 200ms old. USB/inference/display add latency. See individual protocols for command freshness and timeouts.
+
+- Optimized USB: 268 frames/30 seconds, 8.93 FPS, no observed CRC/decode errors.
+- AI page: about 9 FPS, varying with lighting and scene complexity; not an exercise-accuracy metric.
+- Wireless: ON/OFF/PC-command-expiry tests passed.
+- IMU: neither 0x68 nor 0x69 responds; concurrent IMU acceptance still fails.
+- On-site acceptance pending: complete real exercises, Mega output effects, physical disconnection/power loss.
+
+Records: [documentation index](../README.md). Historical single-board and fragmented-image experiments remain under `firmware/esp32-camera/`. The separate UI worktree is not merged into the current page.

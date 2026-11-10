@@ -1,28 +1,38 @@
-# 文档导航
+[English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-## 当前设计
+<a id="文档导航"></a>
 
-- [系统架构与代码依赖](architecture/README.md)
-- [CAM USB 图像／控制协议](protocols/usb-camera.md)
-- [CAM ↔ S3 ESP-NOW 报警协议](protocols/espnow-alarm.md)
-- [Mega USB／UART 报警协议](protocols/alarm-control.md)
-- [固件导航与当前入口](../firmware/README.md)
-- [电脑端运行与测试](../app/README.md)
+# Documentation guide
 
-## 本轮验证记录
+<a id="当前设计"></a>
 
-| 记录 | 验证内容 |
+## Current design
+
+- [System architecture and code dependencies](architecture/README.md)
+- [CAM USB image/control protocol](protocols/usb-camera.md)
+- [CAM ↔ S3 ESP-NOW alarm protocol](protocols/espnow-alarm.md)
+- [Mega USB/UART alarm protocol](protocols/alarm-control.md)
+- [Firmware guide and active entry points](../firmware/README.md)
+- [PC setup, operation and tests](../app/README.md)
+
+<a id="本轮验证记录"></a>
+
+## Validation records for this iteration
+
+| Record | Validation scope |
 | --- | --- |
-| [报警协议](validation/2026-11-10-alarm-protocol.txt) | Mega USB 命令、校验／来源拒绝、电脑优先后 ESP 接管 |
-| [摄像头基线](validation/2026-11-10-camera-reproduction.json) | 历史 115200 USB 单张拍照／解码 |
-| [真实图像 AI](validation/2026-11-10-usb-ai-smoke.json) | USB 图像输入模型，未进行动作准确性验收 |
-| [无线与 IMU 分项](validation/2026-11-10-usb-espnow-bridge.json) | 无线状态成功，IMU 无应答；整体并发测试失败 |
-| [加速前](validation/2026-11-10-camera-speed-before.json) | 460800／单缓冲／JPEG12，3.53 FPS |
-| [加速后](validation/2026-11-10-camera-speed-after.json) | 921600／双缓冲／JPEG18，8.93 FPS，268 帧无 CRC／解码错误 |
-| [高速下控制回归](validation/2026-11-10-camera-speed-control-check.json) | 高速图像下无线开、关、命令过期成功；IMU 仍失败 |
+| [Alarm protocol](validation/2026-11-10-alarm-protocol.txt) | Mega USB commands, rejection of bad checksum/source, ESP takeover after PC priority |
+| [Camera baseline](validation/2026-11-10-camera-reproduction.json) | Historical 115200 USB single-photo capture/decoding |
+| [Real-image AI](validation/2026-11-10-usb-ai-smoke.json) | USB image model input; no exercise-accuracy acceptance |
+| [Wireless and IMU separately](validation/2026-11-10-usb-espnow-bridge.json) | Wireless state succeeded; IMU unresponsive; overall concurrent test failed |
+| [Before optimization](validation/2026-11-10-camera-speed-before.json) | 460800 / single buffer / JPEG12, 3.53 FPS |
+| [After optimization](validation/2026-11-10-camera-speed-after.json) | 921600 / double buffer / JPEG18, 8.93 FPS; 268 frames without CRC/decode errors |
+| [High-speed control regression](validation/2026-11-10-camera-speed-control-check.json) | Wireless ON/OFF/command expiry passed during fast image transfer; IMU still failed |
 
-这些是不同阶段的真实记录，保留当时参数和失败项，不把历史固件／低速数据写成当前部署。原始图像只保留在本地忽略目录。
+These are real records from different stages. Preserve the settings and failures at the time; do not present historical firmware/low-speed data as the current deployment. Raw images remain only in local ignored directories.
 
-## 历史资料
+<a id="历史资料"></a>
 
-`firmware/esp32-camera/` 的实验说明及 `evidence/` 保留同学贡献、旧固件和故障排查过程；`experiments/` 保留 ESP32 板端推理实验。历史模型任务在 `models/`，当前运行入口是 `app/pose_app.py`。`reference/` 为概念参考，不是实物接线依据。
+## Historical material
+
+Experimental documentation and `evidence/` under `firmware/esp32-camera/` retain member contributions, older firmware and troubleshooting history. `experiments/` retains on-ESP32 inference experiments. Historical model tasks are in `models/`; the active runtime entry point is `app/pose_app.py`. `reference/` contains concepts, not physical wiring specifications.

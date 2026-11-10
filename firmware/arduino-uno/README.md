@@ -1,37 +1,47 @@
-# Arduino Uno：LED 与蜂鸣器
+[English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-任务状态：**保留的 Arduino Uno 基础控制说明**。
+<a id="arduino-unoled-与蜂鸣器"></a>
 
-原负责人为 **Zhang Haoyu**；其当前重点已转为[模型训练研究](../../models/README.md)，本文件不再代表他的当前首要任务。
-Arduino Uno 的课程要求继续保留，后续硬件任务分工由 Zhang Yancheng 统筹确认。
+# Arduino Uno: LED and buzzer
 
-历史任务分支：**`Feat-Arduino-Haoyu`**（大小写必须一致）；该分支目前继续用于 Haoyu 的模型训练研究。
+Task status: **retained Arduino Uno basic-control instructions**.
 
-开始前先读仓库根目录 `AGENTS.md`，明确确认当前用户身份，并检查当前分支。
-身份不明时必须先询问；只有确认本人及专属分支后才能开始修改。
-本任务只在自己的分支修改、提交和推送，禁止直接向 `main` 或其他成员分支提交。
+Original owner: **Zhang Haoyu**, whose focus moved to [model-training research](../../models/README.md). This file no longer describes his primary current task.
+The Arduino Uno course requirement remains; Zhang Yancheng coordinates subsequent hardware assignments.
 
-## 保留的硬件目标
+Historical task branch: **`Feat-Arduino-Haoyu`**, case-sensitive; it continues to hold Haoyu's model-training research.
 
-使用 **Arduino Uno** 接好 LED 和蜂鸣器，并能分别进行基础控制。
-本目录目前是任务说明，尚未提供或验证固件与接线。
+Read root `AGENTS.md`, explicitly confirm the current user's identity and check the branch before starting.
+If identity is unknown, ask first. Modify only after confirming the member and their assigned branch.
+Make changes, commits and pushes on your own branch; do not commit directly to `main` or another member's branch.
 
-## 交付与验收
+<a id="保留的硬件目标"></a>
 
-1. 提交清晰的接线记录：器件、实际引脚、电源／地线、必要元件及接线照片或示意图。
-2. 提交可烧录的最小示例：LED 能亮灭，蜂鸣器能按指令响起并停止。
-3. 记录板上实际运行结果，让其他成员按步骤能够复现。
-4. 明确标注哪些内容已实测、哪些仍待确认；不要把预期效果写成实测结果。
+## Retained hardware objective
 
-## 随交付记录
+Wire LED and buzzer to **Arduino Uno** and demonstrate independent basic control.
+This directory is currently a task description; firmware and wiring have not been provided or verified here.
 
-- 实际 Uno 板卡型号／版本、LED 类型与蜂鸣器类型。
-- 完整引脚映射、供电方式及实际使用的电阻等元件。
-- Arduino IDE 版本、开发板选择、板卡包版本及上传端口选择方法。
-- 所需库及版本；无额外库时明确写明。
-- 从打开工程、编译、烧录到操作 LED／蜂鸣器的复现步骤。
-- 已观察到的表现、失败现象和排查方法。
+<a id="交付与验收"></a>
 
-硬件型号、引脚、电压或器件类型尚未确认时，先记录待确认项，不得猜测接线。
-Arduino Uno 负责本地 LED／蜂鸣器控制，需与 **ESP32-CAM** 建立硬件连接；另一块 **ESP32-S3 N16R8** 规划作为连接 Bosch BMI-series IMU 和电脑网络的主 ESP。**AI 训练与推理现阶段在团队电脑上进行**，将来原型有效后才考虑云端 HPC。具体 AI 判断结果返回 Uno 的链路、引脚和电气设计仍待集成验证；旧的 ESP32-S3 板上推理与 RDK X5 方案已不是当前主线。
-不要提交 Wi-Fi 密钥、凭据或含可识别人像的照片。
+## Delivery and acceptance
+
+1. Provide clear wiring records: components, actual pins, power/GND, required parts and photos or diagrams.
+2. Provide a flashable minimal example: LED ON/OFF and buzzer start/stop by command.
+3. Record actual board behavior so others can reproduce it.
+4. Distinguish measured work from pending confirmation; do not present expectations as observations.
+
+<a id="随交付记录"></a>
+
+## Required delivery records
+
+- Actual Uno model/revision, LED type and buzzer type.
+- Complete pin map, supply method and actual resistors/other components.
+- Arduino IDE version, board selection, board package version and upload-port identification.
+- Libraries/versions, or explicitly no additional libraries.
+- Reproduction steps from opening, compiling and flashing through operating LED/buzzer.
+- Observed behavior, failure symptoms and troubleshooting.
+
+If hardware, pins, voltages or component types are unconfirmed, record them as pending rather than guessing wiring.
+Arduino Uno handles local LED/buzzer control and is to connect physically to **ESP32-CAM**. A separate **ESP32-S3 N16R8** is planned as the main ESP for Bosch BMI-series IMU and PC networking. **AI training/inference currently run on the team PC**, with cloud HPC considered only after a viable prototype. AI-result return routing, pins and electrical design remain pending integration validation. Earlier on-S3 inference and RDK X5 plans are no longer the main route.
+Do not commit Wi-Fi keys, credentials or identifiable portraits.

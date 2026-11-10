@@ -1,100 +1,111 @@
-# 动作规范实时判定（电脑端 AI）
+[English](POSE.md) | [简体中文 / 原文](POSE_zh_cn.md) | [繁體中文（香港）](POSE_zh_hk.md)
 
-ESP32-CAM 采集 → 电脑上做姿态估计 → 几何规则判断动作是否标准 → 网页实时显示。
+<a id="动作规范实时判定电脑端-ai"></a>
 
-这是「姿势判断」这一块的第一版实现。之前 `esp32_cam_app` 只做到「画面里有没有人」，
-本项目真正需要的是「**这个人的动作做得规不规范**」，本目录补上这一段（入口是 `pose_app.py`，与检测版 `app.py` 共用 `sources.py`）。
+# Real-time exercise-form assessment (PC AI)
 
-## 方案
+ESP32-CAM capture → PC pose estimation → geometric form rules → live web display.
+
+This is the first implementation of form assessment. Earlier `esp32_cam_app` only answered whether a person was present. The project needs to determine **whether that person's exercise form is correct**. This directory adds that stage through `pose_app.py`, sharing `sources.py` with the detection-only `app.py`.
+
+<a id="方案"></a>
+
+## Approach
 
 ```
-ESP32-CAM ──MJPEG──> 电脑
-                     ├─ YOLOv8n-pose  → 17 个 COCO 关键点
-                     ├─ 角度计算      → 膝角 / 肘角 / 躯干倾角 / 左右差
-                     ├─ 动作规则      → 阈值判定 + 违规项
-                     └─ 状态机        → 计次，在最底点采样判定
-                              ↓
-                     网页 UI（骨架 + 角度 + 判决）
+ESP32-CAM --MJPEG--> PC
+                     |-- YOLOv8n-pose -> 17 COCO keypoints
+                     |-- Angles -> knee / elbow / torso tilt / left-right difference
+                     |-- Action rules -> thresholds + violations
+                     `-- State machine -> repetitions, assessment at the bottom
+                              |
+                     Web UI (skeleton + angles + decision)
 ```
 
-**为什么用规则而不是端到端分类**
+**Why rules rather than end-to-end classification**
 
-| | 规则方案（本实现） | 端到端分类 |
+| | Rule-based approach (this implementation) | End-to-end classification |
 | --- | --- | --- |
-| 能否说清"哪里不对" | 能，逐项列出 | 只能说"不标准" |
-| 需要标注数据 | 不需要 | 需要大量 |
-| 阈值可调 | 是 | 否 |
-| 新动作支持 | 加一组阈值 | 重新训练 |
+| Explain what is wrong | Yes, item by item | Only labels form as incorrect |
+| Labeled data required | No | A large amount |
+| Adjustable thresholds | Yes | No |
+| Support another action | Add thresholds | Retrain |
 
-逻辑：先用规则跑通闭环，拿到真实数据后再决定要不要训练分类器做二次校准。
+First close the loop using rules, then use real data to decide whether a classifier is needed for further calibration.
 
-## 文件
+<a id="文件"></a>
 
-| 文件 | 说明 |
+## Files
+
+| File | Description |
 | --- | --- |
-| `pose_engine.py` | YOLOv8n-pose 封装，输出 17 点关键点（多人时取最大框） |
-| `form_rules.py` | 角度计算、深蹲/俯卧撑规则、计次状态机 |
-| `pose_app.py` | 推理管线 + 网页 UI（骨架叠加、角度、判决面板） |
-| `sources.py` | 视频源（本地摄像头 / ESP32 MJPEG 流） |
-| `test_rules.py` | 规则引擎单元测试（合成关键点，不依赖摄像头） |
+| `pose_engine.py` | YOLOv8n-pose wrapper producing 17 keypoints; choose the largest box with multiple people |
+| `form_rules.py` | Angle calculations, squat/pushup rules and repetition state machine |
+| `pose_app.py` | Inference pipeline and web UI with skeleton, angles and decision panel |
+| `sources.py` | Video sources: local camera / ESP32 MJPEG stream |
+| `test_rules.py` | Synthetic-keypoint rule tests, independent of camera hardware |
 
-## 运行
+<a id="运行"></a>
+
+## Run
 
 ```bash
-# 接 ESP32-CAM（摄像头装歪时加 --rotate）
+# Use ESP32-CAM; add --rotate if mounted sideways
 python pose_app.py --source http://<ESP32_IP>/stream --rotate 270 --action squat
 
-# 用本机摄像头
+# Use the local camera
 python pose_app.py --action pushup
 
-# 规则引擎自测（不需要硬件）
+# Rule-engine tests, no hardware required
 python test_rules.py
 
-# 不开 UI，跑 N 帧存图排查
+# Run N frames without UI and save a diagnostic image
 python pose_app.py --self-test 40 --action squat
 ```
 
 UI: `http://127.0.0.1:8010`
 
-## 拍摄要求（很关键）
+<a id="拍摄要求很关键"></a>
 
-规则靠关键点算角度，**关键点不全就等于没法判**：
+## Framing requirements (critical)
 
-1. **全身必须进画面** —— 深蹲要看到踝关节，只拍上半身算不出膝角
-2. **距离 2–3 米**，人占画面高度的 60% 以上
-3. **侧面或正面 45°** 最理想；纯正面看不出躯干前倾，纯侧面看不出左右对称
-4. **不要逆光** —— 背光时 ESP32-CAM 会把人拍成剪影，关键点全丢
+Rules calculate angles from keypoints. **Missing required keypoints prevent assessment**:
 
-当前这台 ESP32-CAM 的画面只拍到手臂（或顶着天花板），所以膝角恒为 `None`、
-阶段停在「未开始」，这是取景问题，不是算法问题。
+1. **The whole body must be visible**. Squats require ankles; an upper-body crop cannot produce knee angles.
+2. **Use a distance of 2–3 meters**, with the person occupying over 60% of image height.
+3. **A side view or 45° front view is ideal**. A pure front view hides forward torso lean; a pure side view hides left/right symmetry.
+4. **Avoid backlighting**. Silhouettes cause ESP32-CAM keypoints to disappear.
 
-## 判定规则（阈值都可改，见 `SQUAT_CFG` / `PUSHUP_CFG`）
+At the time of this note, the camera showed only arms or the ceiling, so knee angles stayed `None` and the phase stayed not started. This was a framing issue rather than an algorithm issue.
 
-**深蹲**
+<a id="判定规则阈值都可改见-squat_cfg--pushup_cfg"></a>
 
-| 指标 | 阈值 | 违规提示 |
+## Assessment rules (adjustable in `SQUAT_CFG` / `PUSHUP_CFG`)
+
+**Squat**
+
+| Metric | Threshold | Violation |
 | --- | --- | --- |
-| 最低膝角 | ≤ 105° | 下蹲深度不足 |
-| 躯干倾角 | ≤ 45° | 躯干前倾过大（易塌腰） |
-| 左右膝角差 | ≤ 20° | 左右不对称，存在代偿 |
+| Minimum knee angle | ≤ 105° | Insufficient depth |
+| Torso tilt | ≤ 45° | Excessive forward lean (possible lower-back collapse) |
+| Left/right knee angle difference | ≤ 20° | Asymmetry / compensation |
 
-**俯卧撑**
+**Pushup**
 
-| 指标 | 阈值 | 违规提示 |
+| Metric | Threshold | Violation |
 | --- | --- | --- |
-| 最低肘角 | ≤ 95° | 幅度不够 |
-| 肩-髋-踝直线度 | ≥ 160° | 身体没成一条线（塌腰或撅臀） |
+| Minimum elbow angle | ≤ 95° | Insufficient range |
+| Shoulder–hip–ankle alignment | ≥ 160° | Body not straight (sagging or raised hips) |
 
-计次逻辑：膝角（肘角）经过 EMA 平滑后驱动状态机
-`站立 → 下蹲 → 底部 → 起身 → 站立`，回到站立时结算一次，
-并在整个过程中记录最低角度与最大倾角用于判定。
+Repetition logic uses EMA-smoothed knee/elbow angles to drive the state machine: standing → descending → bottom → rising → standing. Count a repetition on return to standing, tracking minimum angle and maximum tilt throughout the motion.
 
-**注意**：只要开始下蹲就算一次，蹲得浅也会计数——否则"蹲得不够深"这个最该报的违规会被漏掉。
-这个 bug 在单元测试里被发现了。
+**Note:** an initiated descent can count when completed even if shallow. Otherwise the insufficient-depth violation that most needs feedback would be missed. Unit tests revealed this bug.
 
-## 测试结果
+<a id="测试结果"></a>
 
-`python test_rules.py` 全部通过（合成关键点，可复现）：
+## Test results
+
+`python test_rules.py` passes all synthetic-keypoint cases reproducibly:
 
 ```
 [PASS] 角度计算
@@ -105,9 +116,11 @@ UI: `http://127.0.0.1:8010`
 [PASS] 塌腰 违规=['身体没成一条线：最小 152°，建议 ≥160°（塌腰或撅臀）']
 ```
 
-性能：YOLOv8n-pose 推理 **7 ms/帧**（RTX 5080，imgsz 480），端到端帧率受 ESP32 推流限制（约 7–16 FPS）。
+Performance: YOLOv8n-pose inference **7 ms/frame** on RTX 5080, imgsz 480. End-to-end rate was limited by ESP32 streaming to about 7–16 FPS.
 
-## 输出数据结构（后续回传给 ESP32 / Arduino 用）
+<a id="输出数据结构后续回传给-esp32--arduino-用"></a>
+
+## Output structure (for later ESP32 / Arduino feedback)
 
 ```json
 {
@@ -124,19 +137,23 @@ UI: `http://127.0.0.1:8010`
 }
 ```
 
-这个结构由 `/stats` 接口直接返回，也可以改成串口/UDP 发给 Arduino Uno 驱动 LED、蜂鸣器。
+`/stats` returns this structure directly. It could also be sent over serial/UDP to Arduino Uno for LED/buzzer control.
 
-## 已知限制
+<a id="已知限制"></a>
 
-- **单目 2D 规则**：膝内扣这类需要俯视/正面精细判断的问题判不了，只能看膝角、倾角、对称性
-- 关键点抖动会让角度有 ±5° 波动，所以用了 EMA 平滑，代价是响应略滞后
-- 只支持深蹲、俯卧撑两种动作；硬拉、卧推的规则需要另加
-- 侧面拍摄时躯干倾角有意义，正面拍摄时该项基本失效
-- 阈值目前是按运动常识设的，**没有用真实数据校准**
+## Known limitations
 
-## 下一步
+- **Monocular 2D rules** cannot assess issues such as knee valgus requiring precise frontal/top-down views; only knee angles, tilt and symmetry are assessed.
+- Keypoint jitter can produce ±5° angle variations. EMA smoothing reduces jitter but adds lag.
+- Only squat and pushup are supported; deadlift/bench-press rules must be added.
+- Torso tilt is meaningful in a side view but largely ineffective in a front view.
+- Thresholds are based on general exercise knowledge and **have not been calibrated with real data**.
 
-1. 用真实拍摄的深蹲视频校准阈值（录 10–20 次，看角度分布）
-2. 增加动作自动识别（先判断在做深蹲还是俯卧撑，再套对应规则）
-3. 把判决结果通过 UDP/串口发给 Arduino Uno，形成完整闭环
-4. 需要更细的违规类型（膝内扣、重心偏移）时，再评估是否训练分类器
+<a id="下一步"></a>
+
+## Next steps
+
+1. Calibrate thresholds with real squat videos, recording 10–20 repetitions and examining angle distributions.
+2. Add action recognition to select squat or pushup rules automatically.
+3. Send decisions over UDP/serial to Arduino Uno to close the loop.
+4. Evaluate classifier training only if finer violations such as knee valgus or weight shifts are required.

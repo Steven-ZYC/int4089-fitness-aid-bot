@@ -1,3 +1,5 @@
+[English](alarm-control.md) | [简体中文 / 原文](alarm-control_zh_cn.md) | [繁體中文（香港）](alarm-control_zh_hk.md)
+
 # Modular alarm controller: USB PC or UART ESP32-S3
 
 Owner: Zhang Yancheng / Feat-Integration-Yancheng. Mega 2560 controls LED D8

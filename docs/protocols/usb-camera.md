@@ -1,44 +1,54 @@
-# CAM ↔ 电脑 USB 图像／控制协议
+[English](usb-camera.md) | [简体中文 / 原文](usb-camera_zh_cn.md) | [繁體中文（香港）](usb-camera_zh_hk.md)
 
-当前固件：[Cam_USB_Bridge](../../firmware/usb-ai-bridge/Cam_USB_Bridge/Cam_USB_Bridge.ino)。电脑实现：[serial_camera.py](../../app/serial_camera.py)。
+<a id="cam--电脑-usb-图像控制协议"></a>
 
-## 串口与图像
+# CAM ↔ PC USB image/control protocol
 
-921600 波特率、8N1，无流控。图像为 640×480 JPEG，quality=18，两个 PSRAM 帧缓冲，LATEST 模式。相机与 S3 的引脚和无线 MAC 不随本轮仓库整理改变。
+Current firmware: [Cam_USB_Bridge](../../firmware/usb-ai-bridge/Cam_USB_Bridge/Cam_USB_Bridge.ino). PC implementation: [serial_camera.py](../../app/serial_camera.py).
 
-电脑启动时发送 `INFO\n`，要求返回 `fw=Cam_USB_Bridge_v1`。随后每轮批量写入三条命令，固件按顺序响应：
+<a id="串口与图像"></a>
+
+## Serial link and images
+
+921600 baud, 8N1, no flow control. Images are 640×480 JPEG, quality=18, with two PSRAM buffers in LATEST mode. Camera/S3 pins and wireless MACs are unchanged by the repository organization task.
+
+At startup, the PC sends `INFO\n` and requires `fw=Cam_USB_Bridge_v1`. Each cycle then batches three commands; firmware responds in order:
 
 ```text
-ALARM 0\n       # 或 ALARM 1；数字为报警关／开
+ALARM 0\n       # Or ALARM 1; 0=alarm OFF, 1=ON
 STATUS\n
 CAPTURE\n
 ```
 
-响应顺序：
+Response order:
 
 ```text
 CMD_OK state=0
 BRIDGE role=CAM state=... ack=... ack_state=... ack_age_ms=... errors=... drops=...
 META seq=... request_us=... frame_us=... acquired_us=... discarded=... width=640 height=480 len=N
 IMG N crc=xxxxxxxx
-<N 个原始 JPEG 字节>
+<N raw JPEG bytes>
 \nDONE seq=... written=N send_us=...
 ```
 
-上例 `\n` 表示换行符，`N` 和省略号是占位符，不按字面发送。CRC 是 JPEG 原始字节的 CRC32，8 位十六进制；不使用 Base64。电脑按精确长度读取二进制，再检查 CRC、JPEG 标记、解码尺寸、帧尾序号和长度，不能把 JPEG 当作逐行文本。
+Here `\n` means LF; `N` and ellipses are placeholders, not literal transmitted text. CRC is an eight-digit hexadecimal CRC32 of the raw JPEG bytes. Base64 is not used. Read the exact binary length, then verify CRC, JPEG markers, decoded dimensions, trailer sequence and length. Do not treat JPEG as line-oriented text.
 
-`READY` 等文本可出现在帧外。无线任务不写 CAM USB，避免将异步日志插入图像。当前只有一个电脑工作线程访问串口。
+Text such as `READY` may appear outside frames. The wireless task never writes CAM USB, preventing asynchronous logs from entering images. A single PC worker owns the serial port.
 
-## 新鲜度与报警
+<a id="新鲜度与报警"></a>
 
-- 相机取帧时只接受 first-DMA 时间戳不超过当前时刻 200ms 的图像。它不是曝光时间，也不是到网页的完整延迟；旧单次拍照要求“请求后才开始取帧”，当前双缓冲策略改为“最近已完成的帧”。
-- 电脑缓存的图像超过 1.5 秒不可用；推理线程跳过重复序号。
-- 电脑判定超过 1 秒不刷新时，工作线程发送关闭。CAM 超过 1.2 秒没有有效电脑报警命令时也发送关闭。
-- `CMD_OK` 表示 CAM 解析了命令；S3 是否收到需看无线 ACK。USB 错误会终止工作线程，后续依赖两端超时清除旧报警。
-- 当前无自动重连，断线后重新确认串口并启动应用。
+## Freshness and alarms
 
-## 性能
+- At acquisition, accept only images whose first-DMA timestamp is no more than 200ms old. This is neither exposure time nor full web-display latency. The older snapshot baseline required capture after the request; current double buffering uses the most recently completed frame.
+- PC-cached images older than 1.5 seconds are unavailable; inference skips duplicate sequences.
+- If a PC decision is not refreshed for one second, the worker sends OFF. CAM also sends OFF after 1.2 seconds without a valid PC alarm command.
+- `CMD_OK` means CAM parsed the command; wireless ACK indicates S3 receipt. USB errors terminate the worker, after which endpoint timeouts clear stale alarms.
+- Automatic reconnection is not implemented. Re-identify the port and restart after disconnection.
 
-实测 268 帧／30 秒，约 8.93 FPS；带 AI 页面约 9 FPS，画面细节／光照会影响 JPEG 大小和速率。CRC、解码、帧尾校验始终保留。
+<a id="性能"></a>
 
-电脑可用 `serial://COM3?baud=460800` 显式选择历史速率，但它只修改电脑配置，固件必须使用相同速率。默认保持 921600，不进行自动速率切换。
+## Performance
+
+Measured 268 frames/30 seconds, about 8.93 FPS; AI page about 9 FPS. Scene detail/lighting affect JPEG size and rate. CRC, decoding and trailer checks remain enabled.
+
+The PC can explicitly select the historical rate with `serial://COM3?baud=460800`, but this changes only PC configuration: firmware must match. Default remains 921600 without automatic baud switching.

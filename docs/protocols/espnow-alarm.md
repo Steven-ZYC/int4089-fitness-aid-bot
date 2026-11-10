@@ -1,32 +1,40 @@
-# CAM ↔ S3 ESP-NOW 报警协议
+[English](espnow-alarm.md) | [简体中文 / 原文](espnow-alarm_zh_cn.md) | [繁體中文（香港）](espnow-alarm_zh_hk.md)
 
-共享实现：[AlarmRadio.h](../../firmware/usb-ai-bridge/AlarmRadio.h)。本链路只发送报警状态与应用确认，图像始终走 CAM USB。
+<a id="cam--s3-esp-now-报警协议"></a>
 
-## 无线配置与帧结构
+# CAM ↔ S3 ESP-NOW alarm protocol
 
-Station 模式，不连接路由器；信道 1；固定当前 CAM / S3 的 MAC 为对端。更换板卡须核对 MAC 并重新编译。当前无加密，属于本机原型链路。
+Shared implementation: [AlarmRadio.h](../../firmware/usb-ai-bridge/AlarmRadio.h). This link carries only alarm states and application acknowledgements. Images always use CAM USB.
 
-| 字段 | 字节 | 用途 |
+<a id="无线配置与帧结构"></a>
+
+## Wireless configuration and packet layout
+
+Station mode without a router connection; channel 1; fixed current CAM/S3 peer MACs. Verify MACs and recompile after replacing boards. The current link is an unencrypted local prototype.
+
+| Field | Bytes | Purpose |
 | --- | ---: | --- |
-| magic | 4 | `0x41493438`，识别本协议 |
-| boot | 4 | CAM 随机启动标识；ACK 回显 |
-| seq | 4 | CAM 递增序号；ACK 回显 |
-| version | 1 | 当前为 1 |
-| kind | 1 | 1=命令，2=应用 ACK |
-| alarm | 1 | 0=关，1=开 |
-| reserved | 1 | 必须为 0 |
-| crc | 4 | 对前 16 字节计算 CRC32 |
+| magic | 4 | `0x41493438`, protocol identifier |
+| boot | 4 | Random CAM boot identifier, echoed by ACK |
+| seq | 4 | Increasing CAM sequence, echoed by ACK |
+| version | 1 | Currently 1 |
+| kind | 1 | 1=command, 2=application ACK |
+| alarm | 1 | 0=OFF, 1=ON |
+| reserved | 1 | Must be 0 |
+| crc | 4 | CRC32 over the first 16 bytes |
 
-共 20 字节，packed 结构；当前两种 ESP 平台按小端表示整数。检查来源 MAC、长度、magic、版本、保留位、状态及 CRC。CRC 是差错检查，不是身份认证。
+The packed structure totals 20 bytes; integers are little-endian on these ESP platforms. Validate source MAC, length, magic, version, reserved byte, state and CRC. CRC checks errors, not identity.
 
-## 状态、确认与超时
+<a id="状态确认与超时"></a>
 
-- CAM 每 200ms 发送当前有效状态；电脑命令超过 1.2 秒未刷新时改发关闭。
-- S3 接受有效命令后回显 boot、seq、alarm，kind 改为 2，重新计算 CRC。
-- 同一启动标识下，重复／旧序号不刷新 S3 超时。新的启动标识允许序号重新开始；这是原型会话区分，不是防重放安全机制。
-- CAM 追踪匹配当前启动标识、已发送序号范围的递增 ACK；状态诊断显示最近 ACK 序号、状态和时间。
-- S3 超过 1.2 秒无有效命令时关闭；每 200ms 向 Mega UART 写 `110`（开）或 `101`（关）。无线接收与转发运行在独立任务，BMI160 初始化失败不阻塞这一任务。
+## State, acknowledgement and expiry
 
-**确认范围到 S3 为止。** 单向 UART 无 Mega 回复，不能用无线 ACK 证明灯或蜂鸣器已执行。Mega 自身保留来源／XOR 校验、电脑 USB 优先和 1.5 秒超时，见 [报警协议](alarm-control.md)。
+- CAM sends its valid state every 200ms. If the PC command is not refreshed for 1.2 seconds, send OFF.
+- After accepting a valid command, S3 echoes boot, seq and alarm, changes kind to 2 and recalculates CRC.
+- Duplicate/old sequences within one boot identifier do not renew the S3 timeout. A new boot identifier permits sequence restart; this distinguishes prototype sessions, not secure replay protection.
+- CAM tracks increasing ACKs matching its current boot and sent sequence range. Diagnostics expose the latest ACK sequence, state and time.
+- S3 turns OFF after 1.2 seconds without a valid command and writes `110` (ON) or `101` (OFF) to Mega UART every 200ms. Wireless reception/relaying runs independently; BMI160 initialization failure does not block it.
 
-ESP-NOW 仍使用 2.4GHz 空口，每秒约 5 条命令及对应确认；当前减少的是无线数据量，不代表完全不影响其他无线设备。
+**Acknowledgement ends at S3.** One-way UART has no Mega reply, so wireless ACK does not prove physical light/buzzer execution. Mega retains source/XOR validation, PC USB priority and a 1.5-second timeout. See the [alarm protocol](alarm-control.md).
+
+ESP-NOW still uses 2.4GHz airtime for approximately five commands and corresponding ACKs per second. This reduces wireless data volume, not all effects on other wireless devices.

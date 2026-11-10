@@ -1,28 +1,38 @@
-# AI 模型与电脑端分析（Prototype）
+[English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-负责人：**Zhang Haoyu**；专属分支：**`Feat-Arduino-Haoyu`**（历史分支名，当前任务不以 Arduino 固件为主）。
+<a id="ai-模型与电脑端分析prototype"></a>
 
-开始前阅读根目录 [AGENTS.md](../AGENTS.md)，确认身份、本人分支及工作区状态。只在本人分支修改提交；用 PR 申请合并到 `main`。
+# AI models and PC analysis (prototype)
 
-## 最新任务（2026-10-30 consultation 后）
+Owner: **Zhang Haoyu**. Assigned branch: **`Feat-Arduino-Haoyu`**, a historical name; the current task is not mainly Arduino firmware.
 
-**AI 推理暂时在团队电脑上运行，不要求把模型部署在 ESP32 上。** 数据由 Dong Yuankun 的双 ESP32 系统提供：ESP32-CAM 采集图像，ESP32-S3 主 ESP 采集 Bosch BMI-series IMU 的运动数据，并负责与电脑的网络通信。
+Read root [AGENTS.md](../AGENTS.md), confirm identity, assigned branch and worktree state. Modify/commit only on your own branch and request a PR merge into `main`.
 
-此目录应逐步形成可复现的**数据集选择 → 训练／验证 → 电脑端推理 → 姿势结果输出**流程。未来若原型验证可行，可再考虑迁移至云端 HPC／GPU 服务器；目前不得写成已上线。
+<a id="最新任务2026-10-30-consultation-后"></a>
 
-## 当前交付要求
+## Latest task after the 2026-10-30 consultation
 
-1. **任务定义**：先明确要支持的健身动作、姿势异常的判定标准、模型输出（关键点／动作类别／错误类型等）和可观测评价指标；不要只以“人体姿态检测”笼统代替“动作是否标准”。
-2. **数据集调查与选型**：对比候选数据集的动作覆盖、姿势标注、许可、规模、可用性及数据质量；记录下载／标注流程、训练／验证／测试划分，避免数据泄漏。无法直接支持姿势正误识别的数据集须说明补标或迁移方案。
-3. **模型训练与验证**：建立最低可用 baseline，保存版本、环境、超参数、预处理与验证结果；如尚未跑通就标明未训练，不预报准确率。
-4. **电脑端推理服务**：编写可在团队电脑运行的图像输入、推理、后处理与结果输出流程。和 Yuankun 确认网络消息格式及摄像头帧、IMU 时间戳的数据接口。
-5. **融合策略与指标**：明确第一版使用图像 alone 还是图像 + IMU 融合；如果融合未实现，需明确标记。记录模型级时延、有效帧率及与系统集成相关的端到端延迟。
-6. **交付集成**：给出判断结果的数据结构（含动作、时间戳、置信度／阈值、反馈类型等可用字段）、测试样例与运行说明，让 Yancheng 可以对接 Arduino Uno 的 LED／蜂鸣器提醒。
+**AI inference initially runs on the team PC; deployment on ESP32 is not required.** Dong Yuankun's dual-ESP32 system supplies data: ESP32-CAM images and motion data from a Bosch BMI-series IMU on the main ESP32-S3, which also handles PC networking.
 
-## 协作接口
+This directory should progressively establish a reproducible **dataset selection → training/validation → PC inference → posture-result output** workflow. Cloud HPC/GPU migration may be considered after prototype validation; do not describe it as deployed now.
 
-- 与 **Dong Yuankun**：约定图像输入格式、IMU 单位和坐标系、时间戳、传输速率／容错、电脑侧接收方法。
-- 与 **Zhang Yancheng**：确认原型范围、系统接口与测试场景；输出“姿势正常／需要提醒”等结构化消息供硬件闭环使用。
-- 历史 ESP32-S3 板上部署与 RDK X5 NPU 不再是本阶段的交付要求。
+<a id="当前交付要求"></a>
 
-本文件是任务说明，**不代表已选定数据集、训练成功、验证模型性能或完成电脑端服务**。不提交可辨识的人像、未授权数据或凭据；模型权重和训练数据根据项目忽略规则及许可管理。
+## Current delivery requirements
+
+1. **Task definition:** specify supported exercises, criteria for incorrect form, outputs such as keypoints/action classes/error types, and observable evaluation metrics. Generic human-pose detection is not equivalent to assessing correct form.
+2. **Dataset research/selection:** compare action coverage, pose annotations, licenses, scale, availability and quality. Record download/annotation procedures and training/validation/test splits without leakage. If a dataset cannot directly support correct/incorrect form labels, describe annotation or transfer plans.
+3. **Training/validation:** establish a minimum baseline, retaining versions, environment, hyperparameters, preprocessing and results. If not working, label it untrained rather than forecasting accuracy.
+4. **PC inference service:** implement image input, inference, postprocessing and output runnable on the team PC. Agree with Yuankun on network message formats, camera-frame and IMU-timestamp interfaces.
+5. **Fusion strategy/metrics:** state whether v1 is image-only or image+IMU. Mark fusion as unimplemented if so. Record model latency, effective FPS and integration-related end-to-end latency.
+6. **Integration delivery:** define result structures with usable action, timestamp, confidence/threshold and feedback fields, examples and instructions so Yancheng can connect Arduino Uno LED/buzzer feedback.
+
+<a id="协作接口"></a>
+
+## Collaboration interfaces
+
+- With **Dong Yuankun**: agree image formats, IMU units/axes, timestamps, transfer rates/fault handling and PC reception.
+- With **Zhang Yancheng**: confirm prototype scope, interfaces and test scenarios; output structured normal-posture/reminder-needed messages for the hardware loop.
+- Historical ESP32-S3 on-device deployment and RDK X5 NPU are no longer deliverables for this phase.
+
+This is a task description, **not evidence of selected datasets, successful training, measured model performance or a completed PC service**. Do not commit identifiable portraits, unauthorized data or credentials. Manage weights/training data according to ignore rules and licenses.

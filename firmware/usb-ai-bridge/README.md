@@ -1,46 +1,58 @@
-# 当前 CAM / S3 集成固件
+[English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-当前链路：**CAM USB 图像 → 电脑 AI → CAM USB 状态 → ESP-NOW → S3 UART → Mega**。图像不走无线。
+<a id="当前-cam--s3-集成固件"></a>
 
-## 文件入口
+# Current integrated CAM / S3 firmware
 
-| 文件 | 运行位置 | 职责 |
+Active route: **CAM USB images → PC AI → CAM USB state → ESP-NOW → S3 UART → Mega**. Images do not travel wirelessly.
+
+<a id="文件入口"></a>
+
+## File entry points
+
+| File | Runs on | Responsibility |
 | --- | --- | --- |
-| [Cam_USB_Bridge.ino](Cam_USB_Bridge/Cam_USB_Bridge.ino) | ESP32-CAM / OV2640 | 相机、USB 帧协议、电脑命令接收 |
-| [S3_IMU_Alarm_Bridge.ino](S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino) | ESP32-S3 N16R8 | 复用 BMI160 采集，启动独立无线接收／UART 转发任务 |
-| [AlarmRadio.h](AlarmRadio.h) | 两端共用 | 固定对端、20 字节包、CRC／序号检查、ACK、周期发送和超时 |
+| [Cam_USB_Bridge.ino](Cam_USB_Bridge/Cam_USB_Bridge.ino) | ESP32-CAM / OV2640 | Camera, USB frame protocol, PC command reception |
+| [S3_IMU_Alarm_Bridge.ino](S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino) | ESP32-S3 N16R8 | Reuse BMI160 acquisition and start independent wireless reception/UART relay task |
+| [AlarmRadio.h](AlarmRadio.h) | Shared by both | Fixed peer, 20-byte packets, CRC/sequence checks, ACKs, periodic sending and timeouts |
 
-Mega 固件位于 [alarm-mega](../alarm-mega/README.md)。S3 相对包含 [BMI160_SixAxis](../esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino)，编译时保持仓库目录，避免复制单个草图。
+Mega firmware is under [alarm-mega](../alarm-mega/README.md). S3 includes [BMI160_SixAxis](../esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) through a relative path. Preserve the repository layout for builds rather than copying a sketch alone.
 
-## 固定配置
+<a id="固定配置"></a>
 
-- CAM USB：921600 8N1；640×480 JPEG、quality=18、双 PSRAM 缓冲、LATEST；取帧时最大 first-DMA 帧龄 200ms。
-- S3 USB：115200 8N1；BMI160 GPIO4 SDA、GPIO5 SCL，自动探测 0x68 / 0x69。
-- ESP-NOW：信道 1、固定当前两板 MAC、20 字节命令／ACK、200ms 周期；CAM 电脑命令和 S3 无线接收均为 1.2 秒超时。
-- UART：S3 GPIO17 TX → Mega D19 RX1，9600 8N1；GND 共地；Mega D18 TX 不接。
-- Mega：D8 LED、D9 无源蜂鸣器，同开同关；1.5 秒超时及电脑 USB 优先策略保留。
+## Fixed configuration
 
-当前两板各自 USB 供电，电源脚不互接；改线前断电。换板后核对芯片、相机引脚、串口和固定对端 MAC，不沿用本机端口假设。
+- CAM USB: 921600 8N1; 640×480 JPEG, quality=18, two PSRAM buffers, LATEST; maximum first-DMA frame age of 200ms at acquisition.
+- S3 USB: 115200 8N1; BMI160 GPIO4 SDA, GPIO5 SCL; automatic 0x68/0x69 detection.
+- ESP-NOW: channel 1, fixed MACs for the current boards, 20-byte command/ACK, 200ms interval. CAM PC commands and S3 wireless reception each expire after 1.2 seconds.
+- UART: S3 GPIO17 TX → Mega D19 RX1, 9600 8N1; common GND; Mega D18 TX disconnected.
+- Mega: D8 LED and D9 passive buzzer switch together; retain 1.5-second timeout and PC USB priority.
 
-## 编译／烧录
+Each board is USB-powered independently; do not interconnect supply pins. Power off before rewiring. After board replacement, verify chip, camera pins, serial ports and fixed peer MACs rather than reusing local port assumptions.
 
-先停止占用串口的检测程序，在仓库根目录执行；确认 COM3 为 CAM、COM4 为 S3 后才带 `--upload`：
+<a id="编译烧录"></a>
+
+## Build/upload
+
+Stop the detection program occupying serial ports first. Run from the repository root and add `--upload` only after confirming COM3 is CAM and COM4 is S3:
 
 ```powershell
 arduino-cli compile --fqbn esp32:esp32:esp32cam --upload --port COM3 firmware/usb-ai-bridge/Cam_USB_Bridge
 arduino-cli compile --fqbn esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot=default,USBMode=hwcdc,PartitionScheme=app3M_fat9M_16MB,UploadSpeed=115200 --upload --port COM4 firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge
 ```
 
-重刷会覆盖当前固件。旧独立相机、UART、ESP-NOW 分片图像测试仅作为历史基线，不与当前程序同时运行。
+Reflashing replaces current firmware. Earlier standalone camera/UART/fragmented ESP-NOW image tests are historical baselines and do not run alongside the current program.
 
-## 运行与验收
+<a id="运行与验收"></a>
 
-电脑入口与环境：[app/README.md](../../app/README.md)。当前本机应用已用项目 `.venv` 验证，无需为了本次整理重新安装依赖。
+## Operation and acceptance
 
-- 纯 USB：268 帧／30 秒，8.93 FPS，无 CRC／解码错误。
-- AI 页面：预热后约 9 FPS。取景会影响 JPEG 大小和速率，并非固定保证值。
-- 无线开／关／命令过期通过；ACK 只确认到 S3。
-- BMI160 当前无应答，用户将断电检查；包含 IMU 的整体并发验收仍失败。
-- 新闭环的 Mega 接收与现场声光效果、真实完整动作准确性、物理断线／掉电仍需验收。
+PC entry/environment: [app/README.md](../../app/README.md). The local application has already been verified in the project `.venv`; this organization task does not require reinstalling dependencies.
 
-设计与证据：[系统架构](../../docs/architecture/README.md)、[USB 协议](../../docs/protocols/usb-camera.md)、[ESP-NOW 协议](../../docs/protocols/espnow-alarm.md)、[Mega 协议](../../docs/protocols/alarm-control.md)、[测试记录导航](../../docs/README.md)。
+- USB alone: 268 frames/30 seconds, 8.93 FPS, no CRC/decode errors.
+- AI page: about 9 FPS after warm-up. Scene content affects JPEG size and rate; this is not a fixed guarantee.
+- Wireless ON/OFF/command expiry passed. ACK confirms receipt at S3 only.
+- BMI160 currently does not respond; the user will inspect with power off. Overall concurrent acceptance including IMU still fails.
+- Pending: Mega reception and physical light/sound in the new loop, complete real exercise accuracy, physical disconnection/power loss.
+
+Design and evidence: [architecture](../../docs/architecture/README.md), [USB](../../docs/protocols/usb-camera.md), [ESP-NOW](../../docs/protocols/espnow-alarm.md), [Mega](../../docs/protocols/alarm-control.md), [test record guide](../../docs/README.md).

@@ -1,58 +1,72 @@
-# 电脑端视觉 AI
+[English](README.md) | [简体中文 / 原文](README_zh_cn.md) | [繁體中文（香港）](README_zh_hk.md)
 
-当前入口是 [pose_app.py](pose_app.py)：CAM USB 图像 → YOLOv8n-pose → 深蹲／俯卧撑几何规则 → 网页结果 → CAM USB 报警状态。图像不经过 ESP-NOW。
+<a id="电脑端视觉-ai"></a>
 
-## 启动
+# PC vision AI
 
-本机已有 `app/.venv`。在仓库根目录运行：
+The current entry point is [pose_app.py](pose_app.py): CAM USB images → YOLOv8n-pose → squat/pushup geometric rules → web results → CAM USB alarm state. Images do not use ESP-NOW.
+
+<a id="启动"></a>
+
+## Start
+
+This PC already has `app/.venv`. Run from the repository root:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File app/run_pose.ps1 -CamPort COM3 -Action squat
 ```
 
-或在本目录直接运行：
+Or run directly from this directory:
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 pose_app.py --source serial://COM3 --action squat --no-browser
 ```
 
-打开 [检测页面](http://127.0.0.1:8010)。俯卧撑使用 `pushup`；其他命令行参数见 `pose_app.py --help`。一个串口同时只允许一个检测／测试／烧录进程访问。USB 断开后需检查端口并重新启动，当前没有自动重连。
+Open the [detection page](http://127.0.0.1:8010). Use `pushup` for pushups; see `pose_app.py --help` for other options. Only one detection/test/upload process may access a serial port at a time. After USB disconnection, check the port and restart; automatic reconnection is not implemented.
 
-## 环境
+<a id="环境"></a>
 
-当前本机环境基于已有 AI 包建立项目虚拟环境，隔离 pyserial 与全局同名 `serial` 包冲突：
+## Environment
+
+The current local project environment reuses installed AI packages and isolates pyserial from a conflicting global package named `serial`:
 
 ```powershell
 python -m venv --system-site-packages .venv
 .\.venv\Scripts\python.exe -m pip install --ignore-installed pyserial==3.5
 ```
 
-新电脑可创建独立虚拟环境并安装 `requirements.txt`。它是新安装依赖范围，不是当前旧环境的精确锁文件。当前实测 torch 1.12.1+cu116、ultralytics 8.3.141、RTX 4060 Laptop，模型加载／真实 USB 图像推理已通过。首次运行需要官方 `yolov8n-pose.pt` 权重；权重、虚拟环境、运行日志、抓帧均被 Git 忽略。
+On a new PC, create an isolated virtual environment and install `requirements.txt`. This declares fresh-install dependency ranges, not an exact lockfile for the current legacy environment. The tested environment has torch 1.12.1+cu116, ultralytics 8.3.141 and an RTX 4060 Laptop GPU. Model loading and real USB-frame inference passed. First use requires the official `yolov8n-pose.pt` weights. Weights, virtual environments, logs and captured frames are ignored by Git.
 
-## 代码分工
+<a id="代码分工"></a>
 
-| 文件 | 用途 |
+## File responsibilities
+
+| File | Purpose |
 | --- | --- |
-| `pose_app.py` | 当前网页和推理主程序 |
-| `pose_engine.py` | 17 点姿态估计 |
-| `form_rules.py` | 角度、动作状态机、计次和规则扣分 |
-| `sources.py` | 视频源选择；当前使用 `serial://COM3` |
-| `serial_camera.py` | 串口独占读写、二进制图像校验、最新帧缓存、报警回传和性能指标 |
-| `run_pose.ps1` | 本机启动脚本 |
-| `app.py` / `detector.py` | 旧人体检测入口，保留为基线 |
-| `find_camera.py` / `firmware/esp32_cam_stream/` | 旧 Wi-Fi MJPEG 路线；当前不使用 |
+| `pose_app.py` | Current web application and inference entry point |
+| `pose_engine.py` | 17-keypoint pose estimation |
+| `form_rules.py` | Angles, action state machine, repetition counting and rule penalties |
+| `sources.py` | Video source selection; currently `serial://COM3` |
+| `serial_camera.py` | Exclusive serial I/O, binary image verification, latest-frame cache, alarm return path and performance metrics |
+| `run_pose.ps1` | Local launcher |
+| `app.py` / `detector.py` | Earlier person-detection entry point, retained as a baseline |
+| `find_camera.py` / `firmware/esp32_cam_stream/` | Earlier Wi-Fi MJPEG route; not currently used |
 
-## 当前配置与反馈
+<a id="当前配置与反馈"></a>
 
-- VGA 640×480、JPEG18、双缓冲 LATEST、USB 921600。保持当前约 9 FPS 的实测效果。
-- 相机帧在采集时最多 200ms 旧；电脑仅处理新鲜最新帧。这个边界不是完整显示延迟。
-- 动作手动选择，全身需入画。完成一次不合格动作时产生两秒报警事件；关键点不足时清除报警，持续丢失时清除未完成动作状态，累计完成次数保留。
-- 原模型输出关键点，规则产生违规项和分数；分数不是模型置信度。真实动作准确率尚未验收。
-- `/stats` 提供姿态结果、帧率、无线 ACK 和 `transport` 图像分阶段指标。
+## Current configuration and feedback
 
-## 测试与测速
+- VGA 640×480, JPEG18, two LATEST buffers, USB 921600. Keep the current measured result of about 9 FPS.
+- Frames may be at most 200ms old at acquisition; the PC processes only fresh latest frames. This is not the complete display latency bound.
+- Select the action manually and keep the whole body visible. An invalid completed repetition causes a two-second alarm. Missing required keypoints clear the alarm; sustained loss resets incomplete action state while preserving the completed repetition count.
+- The model produces keypoints; rules produce violations and scores. Scores are not model confidence. Real exercise accuracy has not been accepted.
+- `/stats` exposes pose results, FPS, wireless ACKs and image-stage timings under `transport`.
 
-从本目录使用 `.venv/Scripts/python.exe`：
+<a id="测试与测速"></a>
+
+## Tests and benchmarks
+
+Use `.venv/Scripts/python.exe` from this directory:
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 test_rules.py
@@ -61,6 +75,6 @@ python -m venv --system-site-packages .venv
 .\.venv\Scripts\python.exe -X utf8 benchmark_usb.py --baud 921600 --seconds 30 --out ../firmware/usb-ai-bridge/captures/speed.json
 ```
 
-先停止正在运行的检测页面，再执行硬件脚本。`check_usb_bridge.py` 会短暂开启报警，并分开报告通信与 IMU；当前 IMU 无应答，所以整体并发验收失败，即使无线部分通过。测速不保存图像。
+Stop the running detection page before hardware scripts. `check_usb_bridge.py` briefly enables the alarm and reports communication and IMU separately. The IMU currently does not respond, so overall concurrent acceptance fails even when the wireless portion passes. Benchmarks do not save images.
 
-详细资料：[系统架构](../docs/architecture/README.md)、[动作规则说明](POSE.md)、[USB 协议](../docs/protocols/usb-camera.md)、[固件与编译](../firmware/usb-ai-bridge/README.md)。
+Details: [system architecture](../docs/architecture/README.md), [action rules](POSE.md), [USB protocol](../docs/protocols/usb-camera.md), [firmware and builds](../firmware/usb-ai-bridge/README.md).
