@@ -20,7 +20,7 @@
 \setlist{itemsep=3pt,topsep=4pt}
 \titleformat{\section}{\Large\bfseries\color{ink}}{\tikz[baseline=(n.base)]\node[fill=cream,rounded corners=2mm,text=green,inner sep=7pt](n){\large\thesection};}{0.6em}{}
 \titleformat{\subsection}{\large\bfseries\color{green}}{\thesubsection}{0.7em}{}
-\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\brand\quad{\color{muted}/ Product guide}}\fancyhead[R]{\small\color{muted}LOCAL PROTOTYPE / v1.1}\fancyfoot[L]{\scriptsize\color{muted}YOUR FITNESS COMPANION}\fancyfoot[R]{\small\color{green}\thepage\ {\color{muted}/ \pageref{LastPage}}}\renewcommand{\headrulewidth}{0.3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\brand\quad{\color{muted}/ Product guide}}\fancyhead[R]{\small\color{muted}LOCAL PROTOTYPE / v1.2}\fancyfoot[L]{\scriptsize\color{muted}YOUR FITNESS COMPANION}\fancyfoot[R]{\small\color{green}\thepage\ {\color{muted}/ \pageref{LastPage}}}\renewcommand{\headrulewidth}{0.3pt}
 \newtcolorbox{note}[1]{colback=soft,colframe=line,colbacktitle=soft,coltitle=green,boxrule=0.5pt,arc=3mm,borderline west={2pt}{0pt}{peach},title={#1},fonttitle=\bfseries,breakable}
 \lstset{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{blue},breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{soft},showstringspaces=false}
 \newcommand{\file}[1]{\nolinkurl{#1}}
@@ -50,16 +50,13 @@
 {\scriptsize\color{muted}Actual interface capture / disconnected-device state}\par
 \end{tcolorbox}
 \vfill
-\begin{note}{Before your first session}
-Build the camera, motion and alarm modules step by step. Live BMI160 acquisition and physical light/sound acceptance in the latest loop remain pending. Illustrations describe connections, not PCB layouts.
-\end{note}
 \vspace{4mm}
-{\small Zhang Yancheng\hfill Version 1.1 / 11 November 2026\par}
-{\scriptsize\color{muted}Integration baseline: \file{9152fe896a05} / Assembly, setup and everyday operation\par}
+{\small Zhang Yancheng\hfill Version 1.2 / 12 November 2026\par}
+{\scriptsize\color{muted}Main branch / Assembly, setup and everyday operation\par}
 \end{titlepage}
 {\footnotesize\setlength{\parskip}{0pt}\tableofcontents}
 \page{Product overview and readiness}
-FitCoach AI helps demonstrate camera-based squat assessment. An ESP32-CAM sends images to a PC, where YOLOv8n-pose estimates body keypoints and geometric rules evaluate movement. A separate ESP32-S3 relays alarm states to an Arduino. A BMI160 provides a motion-sensing development path and dashboard visualizations.
+FitCoach AI helps demonstrate camera-based squat assessment. An ESP32-CAM sends images to a PC, where YOLOv8n-pose estimates body keypoints and geometric rules evaluate movement. A separate ESP32-S3 relays alarm states to an Arduino. A BMI160 supplies live six-axis motion data through the ESP32-S3 for dashboard visualization.
 \begin{note}{What the current product supports}
 The unified application enables \textbf{Squat AI}. Push-up and Forward lunge have teaching previews marked AI coming soon. Legacy push-up rules in the source do not make push-up AI available in the current unified launcher.
 \end{note}
@@ -67,7 +64,7 @@ The unified application enables \textbf{Squat AI}. Push-up and Forward lunge hav
 Subsystem & Readiness at this revision\\\midrule
 Vision & Real USB frames and PC inference validated; real exercise accuracy and thresholds still need evaluation.\\
 Wireless bridge & ON/OFF, acknowledgements and command expiry validated. An ACK proves S3 receipt only.\\
-IMU & Current hardware does not answer at either I\textsuperscript{2}C address. Historical six-axis success does not establish present health.\\
+IMU & Verified on 12 November: address 0x68, chip ID 0xD1; 1,583 samples at 49.74 Hz with zero reported read errors.\\
 Physical alarm & Protocol reception has evidence; latest-loop Arduino reception, visible LED and audible buzzer still need on-site acceptance.\\
 Cloud & Future direction; no cloud deployment is required.\\\bottomrule
 \end{tabularx}
@@ -116,7 +113,7 @@ Use one data-capable USB cable for each controller: CAM (through its USB interfa
 \begin{center}\includegraphics[width=0.85\linewidth,height=44mm,keepaspectratio]{parts/usb.jpg}\end{center}
 {\small\textbf{USB connector identification.} Type-A, Type-B, Micro-USB and Type-C appearance examples. Source: \href{https://fr.ugreen.com/blogs/chargeur/principes-de-base-de-lusb-types-vitesse-et-raisons-de-sa-popularite}{UGREEN USB connector guide}.}
 \vspace{3mm}
-\begin{center}\includegraphics[width=0.95\linewidth,height=82mm,keepaspectratio]{parts/components.jpg}\end{center}
+\begin{center}\includegraphics[width=0.95\linewidth,height=65mm,keepaspectratio]{parts/components.jpg}\end{center}
 {\small\textbf{Small-component identification.} Reference chart showing breadboard, jumper wires, LEDs, resistors and passive/active buzzers. Use only the parts listed in this manual: one LED, one 220 $\Omega$ resistor, one compatible low-current passive buzzer, breadboard and jumper wires. Other chart items and quantities are not required. Source: \href{https://manuals.plus/asin/B0D929MYW4}{Psytfei kit reference chart}.}
 \begin{note}{Check values, not appearance alone}
 Measure or read the resistor value; colour and body shape are insufficient. Active and passive buzzers can look alike, so check their type and current rating. Select jumper ends to match the actual headers. The PC and stable camera support are additional equipment, not illustrated electronic components.
@@ -171,7 +168,7 @@ Leave VIN, OCS, INT1, INT2, SCX and SDX unconnected in this arrangement. CS is n
 \subsection{Mount and verify}
 Secure the module without stressing its leads. Record the sensor's axis orientation; body placement and a validated sensor-to-exercise fusion method have not been established. Keep loose bench wiring off the exercising person.
 
-After power-up, an identity check should find \file{CHIP_ID=0xD1} at the selected address. The active firmware probes 0x68 and 0x69. \textbf{Both addresses currently fail on the integrated hardware.} Power down and inspect supply, continuity, CS/SA0 and I2C pull-ups before claiming live motion sensing. A replay trace is not a substitute for this check.
+After power-up, the active firmware probes 0x68 and 0x69 and selects the device returning \file{CHIP_ID=0xD1}. With SA0 grounded, the verified unit uses \file{0x68}. On 12 November 2026, the restored integrated firmware produced 1,583 six-axis samples across 31.80 seconds at 49.74 Hz, with zero reported read errors, sequence gaps or non-increasing read timestamps. Wireless reception continued alongside sampling. Keep the ground connection secure and provide strain relief for all sensor leads.
 \page{Assembly: alarm and camera}
 \subsection{Connect the one-way alarm interface}
 \begin{center}
@@ -223,7 +220,7 @@ Open \url{http://127.0.0.1:8010}. To skip automatic IMU connection, use \file{-I
 \begin{enumerate}
 \item Inspect the assembly and clear the exercise area. Connect the CAM, S3 and Arduino USB cables. Identify ports again after reconnecting.
 \item Launch the application and open the local page. Choose English in the header language selector; the browser remembers the preference.
-\item Confirm a fresh camera image and check connection indicators. A radio ACK alone does not establish IMU or actuator health.
+\item Confirm a fresh camera image and check connection indicators. Confirm live IMU updates separately from the radio connection indicator.
 \item Stand upright briefly with shoulders, hips and naturally lowered hands visible. Automatic camera direction needs three consistent, sufficiently distinct scans before locking.
 \item Select Squat AI from the movement library. Keep the whole body visible and perform a slow trial repetition before a demonstration.
 \end{enumerate}
@@ -252,7 +249,7 @@ These are implementation thresholds in \file{app/form_rules.py}, not validated i
 \item For software demonstrations, load a historical or uploaded CSV and use pause/resume. Replay affects IMU visualization only; live vision continues independently and may still trigger its normal alarm.
 \item Import or edit a profile, or calibrate from stationary CSV, only with a trace whose stationary conditions are known. Export JSON to retain changes; session edits do not overwrite repository profiles.
 \end{enumerate}
-The 3D view displays attitude, gravity, velocity and an integrated position trail. Position drifts during motion because acceleration is integrated twice. Yaw has no magnetometer reference. Position reset changes the origin; it does not improve physical accuracy. Replay never proves current hardware health and does not generate alarms.
+The 3D view displays attitude, gravity, velocity and an integrated position trail. Position drifts during motion because acceleration is integrated twice. Yaw has no magnetometer reference. Position reset changes the origin; it does not improve physical accuracy. Replay displays recorded data and does not generate alarms.
 \subsection{End the session}
 Stop exercising, stop the server with Ctrl+C, and verify outputs are OFF. On command loss, CAM/S3 leases expire after about 1.2 seconds and Arduino turns outputs off after 1.5 seconds without an accepted frame. These are separate timers, not a guaranteed total shutdown latency. Disconnect all supplies before storage or rewiring.
 \page{Commissioning and troubleshooting}
@@ -265,7 +262,7 @@ Camera & Fresh decoded frames with whole-body framing and stable orientation.\\
 Vision & Trial repetition counted; feedback matches observed movement. Real accuracy still needs a labelled evaluation.\\
 Radio & ON/OFF and S3 ACK observed; document command-expiry behavior.\\
 Actuators & Arduino receives commands; LED visibly changes and buzzer audibly changes in the latest loop.\\
-IMU & Expected identity and plausible live six-axis samples; current unit remains pending.\\
+IMU & Verified identity 0xD1 at 0x68; continuous six-axis samples at approximately 50 Hz.\\
 Loss cases & Observe actual USB/radio/power-loss behavior; do not infer it solely from software tests.\\\bottomrule
 \end{tabularx}
 \subsection{Common problems}
@@ -276,7 +273,7 @@ No camera image & Check USB data cable and actual CAM port. Use camera reconnect
 No repetitions & Check full-body framing, lighting, Squat selection and orientation lock. Ankles outside the image prevent knee-angle assessment.\\
 S3 ACK absent & Check both nodes are powered, correct active firmware, fixed peer MACs and channel 1. Images may still work over USB.\\
 ACK present, no alarm & Check S3 GPIO17 to Arduino D19 and common ground. Check Arduino firmware, LED polarity, resistor and buzzer rating. ACK is not actuator feedback.\\
-IMU has no samples & Power off; inspect 3.3 V rail, ground, CS/SA0, SDA/SCL, continuity and pull-ups. Both addresses currently fail on the unit.\\
+IMU port selection & Select the S3 port (COM4 on the verified PC), 115200 baud, and live input. Close other serial tools before connecting.\\
 Position drifts & Expected integration limitation; reset origin for viewing. Do not interpret the trail as measured absolute position.\\\bottomrule
 \end{tabularx}
 \page{Maintenance and technical reference}
@@ -292,13 +289,14 @@ Frame + LF & Input & Meaning\\\midrule
 \file{110} & S3 UART & ON\\\bottomrule\end{tabular}\end{center}
 For a supervised direct Arduino test, stop competing tools, open its actual port in Serial Monitor at 115200 with newline ending, wait about two seconds after opening, then send \file{011} and \file{000}. A single accepted command lasts only 1.5 seconds; a 200 ms heartbeat sustains control. Direct PC commands take priority over S3 for 1.5 seconds. An OFF command is not a physical disconnection of power.
 \subsection{Evidence and source map}
-This manual was checked against integration snapshot \file{9152fe896a05}. It is not based on the older main-branch plan. Relevant repository files:
+This edition follows the main-branch application and the integrated S3/IMU verification performed on 12 November 2026. Relevant repository files:
 \begin{itemize}
 \item \file{README.md}; \file{app/UNIFIED_APP.md}; \file{app/run_pose.ps1}: current architecture, interface and launch behavior.
 \item \file{firmware/usb-ai-bridge/}: active CAM/S3 sketches and \file{AlarmRadio.h}; \file{firmware/alarm-mega/Mega_Alarm_RX/}: actuator code.
-\item \file{firmware/esp32-camera/BMI160_WIRING.md}: existing breakout wiring and later no-response findings.
+\item \file{firmware/esp32-camera/BMI160_WIRING.md}: six-wire breakout connection reference.
 \item \file{docs/protocols/}: USB, ESP-NOW and alarm contracts.
 \item \file{docs/validation/2026-11-10-camera-speed-after.json}: USB-only 268 frames in 30 seconds, 8.93 FPS, no CRC/decode errors. This is not guaranteed AI throughput.
-\item \file{docs/validation/2026-11-11-unified-app.json}: unified application validation scope. Real exercise accuracy, live IMU and physical latest-loop acceptance remain open.
+\item \file{docs/validation/2026-11-11-unified-app.json}: unified application validation scope. Interface and software checks; live IMU verification is recorded separately below.
+\item \file{docs/validation/2026-11-12-imu-restored.json}: integrated IMU acquisition and passive wireless reception results.
 \end{itemize}
 \end{document}

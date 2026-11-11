@@ -19,4 +19,4 @@ Validation: XeLaTeX twice; no overfull boxes; PDF pages rendered and inspected. 
 
 ## Integration note
 
-Merged from `Docs-Assembly-Guide-Yancheng` into the integrated application without rewriting its source commit. The bundled PDF remains the validated 9152fe8-baseline manual; it has not been rebuilt to represent the newer UI. See the [current project README](../../README.md) and [unified application guide](../../app/UNIFIED_APP.md) for the six-movement library, live page and module/session controls. Rebuilding the source uses the current dashboard screenshot from `../assets/`. No hardware acceptance is implied by this merge.
+Merged from `Docs-Assembly-Guide-Yancheng` into the integrated application without rewriting its source commit. The bundled PDF is version 1.2 (12 November 2026), rebuilt with verified live IMU acquisition results. See the [current project README](../../README.md) and [unified application guide](../../app/UNIFIED_APP.md) for the six-movement library, live page and module/session controls. Rebuilding the source uses the current dashboard screenshot from `../assets/`. No hardware acceptance is implied by this merge.
