@@ -56,9 +56,9 @@ A modular, PC-powered AI fitness coaching prototype built for **INT4089 — Tech
 | --- | --- | --- |
 | **ESP Camera** (ESP32-CAM / OV2640) | Captures JPEG frames and sends them to the PC over USB | Camera-based squat coaching does not require live IMU data |
 | **ESP IMU** (ESP32-S3 N16R8 + BMI160) | Acquires inertial signals for monitoring and analysis | IMU monitoring/replay may be viewed without camera-based coaching; live BMI160 is pending validation |
-| **Arduino alerts** (Mega 2560) | Drives LED and buzzer from received alarm state | Switchable; **physical alarm delivery** needs the complete CAM → S3 → Mega path |
+| **Arduino alerts** | Drives LED and buzzer from received alarm state | Switchable; **physical alarm delivery** needs the complete CAM → S3 → Arduino path |
 
-App toggles do **not** cut hardware power. The current integration uses **Mega 2560** rather than the early **Uno** plan; course-compatibility confirmation remains outstanding.
+App toggles do **not** cut hardware power.
 
 <a id="architecture"></a>
 
@@ -71,11 +71,11 @@ flowchart LR
     PC -->|Alarm state over USB| CAM
     CAM <-->|ESP-NOW: alarm + ACK only| S3[ESP32-S3 N16R8]
     IMU[BMI160 IMU] -->|I²C| S3
-    S3 -->|One-way UART| MEGA[Arduino Mega 2560]
-    MEGA --> LED[LED + Buzzer]
+    S3 -->|One-way UART| Arduino[Arduino]
+    Arduino --> LED[LED + Buzzer]
     classDef compute fill:#f9eedb,stroke:#eb9861,color:#303a40;
     classDef sensor fill:#eaf3f8,stroke:#bdd6e8,color:#303a40;
-    class PC,MEGA compute;
+    class PC,Arduino compute;
     class CAM,S3,IMU sensor;
 ```
 
@@ -119,7 +119,7 @@ See the [test evidence](docs/validation/2026-11-10-camera-speed-after.json) and 
 
 ```text
 app/                  # Local web app, computer-side pose inference and IMU service
-firmware/             # ESP32-CAM, ESP32-S3, Mega and protocol implementations
+firmware/             # ESP32-CAM, ESP32-S3, Arduino and protocol implementations
 models/               # Model tasks and research notes
 experiments/          # Historical on-board inference benchmarks
 tools/imu-position/   # IMU acquisition, calibration and visualization

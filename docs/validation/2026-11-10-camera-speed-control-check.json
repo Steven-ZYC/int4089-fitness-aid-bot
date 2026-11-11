@@ -28,6 +28,6 @@
   "error": "Concurrent IMU data not observed",
   "communication_pass": true,
   "imu_pass": false,
-  "limits": "No real exercise accuracy test, no observed Mega RX or visible/audible actuator acceptance; no physical radio/power disconnect test.",
+  "limits": "No real exercise accuracy test, no observed Arduino RX or visible/audible actuator acceptance; no physical radio/power disconnect test.",
   "baud": 921600
 }

@@ -11,7 +11,7 @@
 - [System architecture and code dependencies](architecture/README.md)
 - [CAM USB image/control protocol](protocols/usb-camera.md)
 - [CAM ↔ S3 ESP-NOW alarm protocol](protocols/espnow-alarm.md)
-- [Mega USB/UART alarm protocol](protocols/alarm-control.md)
+- [Arduino USB/UART alarm protocol](protocols/alarm-control.md)
 - [Firmware guide and active entry points](../firmware/README.md)
 - [PC setup, operation and tests](../app/README.md)
 
@@ -21,7 +21,7 @@
 
 | Record | Validation scope |
 | --- | --- |
-| [Alarm protocol](validation/2026-11-10-alarm-protocol.txt) | Mega USB commands, rejection of bad checksum/source, ESP takeover after PC priority |
+| [Alarm protocol](validation/2026-11-10-alarm-protocol.txt) | Arduino USB commands, rejection of bad checksum/source, ESP takeover after PC priority |
 | [Camera baseline](validation/2026-11-10-camera-reproduction.json) | Historical 115200 USB single-photo capture/decoding |
 | [Real-image AI](validation/2026-11-10-usb-ai-smoke.json) | USB image model input; no exercise-accuracy acceptance |
 | [Wireless and IMU separately](validation/2026-11-10-usb-espnow-bridge.json) | Wireless state succeeded; IMU unresponsive; overall concurrent test failed |

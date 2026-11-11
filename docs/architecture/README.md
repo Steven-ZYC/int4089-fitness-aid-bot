@@ -13,8 +13,8 @@
 | Module | Inputs | Outputs | Code entry points |
 | --- | --- | --- | --- |
 | Vision AI | CAM USB JPEG images | Keypoints, action phase, repetitions, violations, alarm state | [pose_app.py](../../app/pose_app.py), [pose_engine.py](../../app/pose_engine.py), [form_rules.py](../../app/form_rules.py) |
-| IMU | BMI160 six-axis data; wireless vision alarm states | USB IMU CSV; alarm frames to Mega | [Integrated S3 firmware](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino), [BMI160 acquisition](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
-| Physical alarm | S3 UART or direct PC USB alarm frames | D8 LED and D9 buzzer switching together | [Mega firmware](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
+| IMU | BMI160 six-axis data; wireless vision alarm states | USB IMU CSV; alarm frames to Arduino | [Integrated S3 firmware](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino), [BMI160 acquisition](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
+| Physical alarm | S3 UART or direct PC USB alarm frames | D8 LED and D9 buzzer switching together | [Arduino firmware](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
 
 S3 is both the IMU acquisition node and the wireless alarm relay, but these tasks are independent. Current wireless results are not IMU decisions. IMU/vision fusion and automatic IMU alarms are not implemented.
 
@@ -66,10 +66,10 @@ BMI160 source remains under `firmware/esp32-camera/`. The integrated S3 firmware
 
 1. **CAM ↔ PC USB**: 921600 8N1; JPEG and text commands share one serial port. Images do not use wireless. [USB image protocol](../protocols/usb-camera.md)
 2. **CAM ↔ S3 ESP-NOW**: channel 1, fixed peer MACs, 20-byte state/ACK packets; no images. [Wireless alarm protocol](../protocols/espnow-alarm.md)
-3. **S3 → Mega UART**: 9600 8N1, GPIO17 TX → D19 RX1, common GND, no reverse TX connection. [Mega alarm protocol](../protocols/alarm-control.md)
+3. **S3 → Arduino UART**: 9600 8N1, GPIO17 TX → D19 RX1, common GND, no reverse TX connection. [Arduino alarm protocol](../protocols/alarm-control.md)
 4. **BMI160 → S3 I²C**: GPIO4 SDA, GPIO5 SCL, automatic 0x68/0x69 detection; currently no response, pending wiring inspection.
 
-Protocol frames separate vision analysis from actuation. Wireless confirmation ends at S3 and does not prove that Mega received a command or the LED/buzzer acted. End-to-end acknowledgement is not implemented.
+Protocol frames separate vision analysis from actuation. Wireless confirmation ends at S3 and does not prove that Arduino received a command or the LED/buzzer acted. End-to-end acknowledgement is not implemented.
 
 <a id="当前参数与验证"></a>
 
@@ -81,6 +81,6 @@ Settings remain VGA, JPEG18, double buffering and 921600; this organization pass
 - AI page: about 9 FPS, varying with lighting and scene complexity; not an exercise-accuracy metric.
 - Wireless: ON/OFF/PC-command-expiry tests passed.
 - IMU: neither 0x68 nor 0x69 responds; concurrent IMU acceptance still fails.
-- On-site acceptance pending: complete real exercises, Mega output effects, physical disconnection/power loss.
+- On-site acceptance pending: complete real exercises, Arduino output effects, physical disconnection/power loss.
 
 Records: [documentation index](../README.md). Historical single-board and fragmented-image experiments remain under `firmware/esp32-camera/`. The separate UI worktree is not merged into the current page.

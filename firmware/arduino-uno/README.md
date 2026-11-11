@@ -2,12 +2,12 @@
 
 <a id="arduino-unoled-与蜂鸣器"></a>
 
-# Arduino Uno: LED and buzzer
+# Arduino: LED and buzzer
 
-Task status: **retained Arduino Uno basic-control instructions**.
+Task status: **retained Arduino basic-control instructions**.
 
 Original owner: **Zhang Haoyu**, whose focus moved to [model-training research](../../models/README.md). This file no longer describes his primary current task.
-The Arduino Uno course requirement remains; Zhang Yancheng coordinates subsequent hardware assignments.
+Zhang Yancheng coordinates hardware integration.
 
 Historical task branch: **`Feat-Arduino-Haoyu`**, case-sensitive; it continues to hold Haoyu's model-training research.
 
@@ -19,7 +19,7 @@ Make changes, commits and pushes on your own branch; do not commit directly to `
 
 ## Retained hardware objective
 
-Wire LED and buzzer to **Arduino Uno** and demonstrate independent basic control.
+Wire LED and buzzer to **Arduino** and demonstrate independent basic control.
 This directory is currently a task description; firmware and wiring have not been provided or verified here.
 
 <a id="交付与验收"></a>
@@ -35,7 +35,7 @@ This directory is currently a task description; firmware and wiring have not bee
 
 ## Required delivery records
 
-- Actual Uno model/revision, LED type and buzzer type.
+- Actual Arduino model/revision, LED type and buzzer type.
 - Complete pin map, supply method and actual resistors/other components.
 - Arduino IDE version, board selection, board package version and upload-port identification.
 - Libraries/versions, or explicitly no additional libraries.
@@ -43,5 +43,5 @@ This directory is currently a task description; firmware and wiring have not bee
 - Observed behavior, failure symptoms and troubleshooting.
 
 If hardware, pins, voltages or component types are unconfirmed, record them as pending rather than guessing wiring.
-Arduino Uno handles local LED/buzzer control and is to connect physically to **ESP32-CAM**. A separate **ESP32-S3 N16R8** is planned as the main ESP for Bosch BMI-series IMU and PC networking. **AI training/inference currently run on the team PC**, with cloud HPC considered only after a viable prototype. AI-result return routing, pins and electrical design remain pending integration validation. Earlier on-S3 inference and RDK X5 plans are no longer the main route.
+Arduino handles local LED/buzzer control and is to connect physically to **ESP32-CAM**. A separate **ESP32-S3 N16R8** is planned as the main ESP for Bosch BMI-series IMU and PC networking. **AI training/inference currently run on the team PC**, with cloud HPC considered only after a viable prototype. AI-result return routing, pins and electrical design remain pending integration validation. Earlier on-S3 inference and RDK X5 plans are no longer the main route.
 Do not commit Wi-Fi keys, credentials or identifiable portraits.

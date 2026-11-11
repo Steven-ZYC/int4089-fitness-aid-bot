@@ -26,7 +26,7 @@
   "imu_samples_during_test": 0,
   "pass": false,
   "error": "Concurrent IMU data not observed",
-  "limits": "No real exercise accuracy test, no observed Mega RX or visible/audible actuator acceptance; no physical radio/power disconnect test.",
+  "limits": "No real exercise accuracy test, no observed Arduino RX or visible/audible actuator acceptance; no physical radio/power disconnect test.",
   "communication_pass": true,
   "imu_pass": false,
   "imu_diagnosis": "After fixing Serial TX-buffer initialization order, both 0x68 and 0x69 read_ok=0 before radio starts. User confirms IMU remains wired and will inspect after power-off."

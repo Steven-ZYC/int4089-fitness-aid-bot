@@ -33,8 +33,8 @@ The packed structure totals 20 bytes; integers are little-endian on these ESP pl
 - After accepting a valid command, S3 echoes boot, seq and alarm, changes kind to 2 and recalculates CRC.
 - Duplicate/old sequences within one boot identifier do not renew the S3 timeout. A new boot identifier permits sequence restart; this distinguishes prototype sessions, not secure replay protection.
 - CAM tracks increasing ACKs matching its current boot and sent sequence range. Diagnostics expose the latest ACK sequence, state and time.
-- S3 turns OFF after 1.2 seconds without a valid command and writes `110` (ON) or `101` (OFF) to Mega UART every 200ms. Wireless reception/relaying runs independently; BMI160 initialization failure does not block it.
+- S3 turns OFF after 1.2 seconds without a valid command and writes `110` (ON) or `101` (OFF) to Arduino UART every 200ms. Wireless reception/relaying runs independently; BMI160 initialization failure does not block it.
 
-**Acknowledgement ends at S3.** One-way UART has no Mega reply, so wireless ACK does not prove physical light/buzzer execution. Mega retains source/XOR validation, PC USB priority and a 1.5-second timeout. See the [alarm protocol](alarm-control.md).
+**Acknowledgement ends at S3.** One-way UART has no Arduino reply, so wireless ACK does not prove physical light/buzzer execution. Arduino retains source/XOR validation, PC USB priority and a 1.5-second timeout. See the [alarm protocol](alarm-control.md).
 
 ESP-NOW still uses 2.4GHz airtime for approximately five commands and corresponding ACKs per second. This reduces wireless data volume, not all effects on other wireless devices.

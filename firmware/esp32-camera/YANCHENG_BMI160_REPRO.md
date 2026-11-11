@@ -2,7 +2,7 @@
 
 2026-11-05，Asia/Singapore。身份已由用户明确声明为 Zhang Yancheng，工作分支 `Feat-Integration-Yancheng`。
 
-**本机六轴采集已跑通，当前 S3 保留连续采集固件，串口已释放。** 本轮未接入 CAM、Uno、Wi-Fi 或电脑 AI，不能把本结果视为完整健身机器人验收。
+**本机六轴采集已跑通，当前 S3 保留连续采集固件，串口已释放。** 本轮未接入 CAM、Arduino、Wi-Fi 或电脑 AI，不能把本结果视为完整健身机器人验收。
 
 ## 来源与修正
 
@@ -79,4 +79,4 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\firmware\esp32-camera\
 
 ## 后续边界
 
-本次完成 S3 + BMI160 → USB → 电脑 CSV。运动方向标定、零偏校准、长时间稳定性、CAM 图像、双板通信、Wi-Fi 数据上传、AI 和 Uno 反馈均未在本机验收。
+本次完成 S3 + BMI160 → USB → 电脑 CSV。运动方向标定、零偏校准、长时间稳定性、CAM 图像、双板通信、Wi-Fi 数据上传、AI 和 Arduino 反馈均未在本机验收。

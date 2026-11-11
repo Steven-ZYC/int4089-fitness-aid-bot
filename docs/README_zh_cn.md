@@ -5,7 +5,7 @@
 - [系统架构与代码依赖](architecture/README.md)
 - [CAM USB 图像／控制协议](protocols/usb-camera.md)
 - [CAM ↔ S3 ESP-NOW 报警协议](protocols/espnow-alarm.md)
-- [Mega USB／UART 报警协议](protocols/alarm-control.md)
+- [Arduino USB／UART 报警协议](protocols/alarm-control.md)
 - [固件导航与当前入口](../firmware/README.md)
 - [电脑端运行与测试](../app/README.md)
 
@@ -13,7 +13,7 @@
 
 | 记录 | 验证内容 |
 | --- | --- |
-| [报警协议](validation/2026-11-10-alarm-protocol.txt) | Mega USB 命令、校验／来源拒绝、电脑优先后 ESP 接管 |
+| [报警协议](validation/2026-11-10-alarm-protocol.txt) | Arduino USB 命令、校验／来源拒绝、电脑优先后 ESP 接管 |
 | [摄像头基线](validation/2026-11-10-camera-reproduction.json) | 历史 115200 USB 单张拍照／解码 |
 | [真实图像 AI](validation/2026-11-10-usb-ai-smoke.json) | USB 图像输入模型，未进行动作准确性验收 |
 | [无线与 IMU 分项](validation/2026-11-10-usb-espnow-bridge.json) | 无线状态成功，IMU 无应答；整体并发测试失败 |

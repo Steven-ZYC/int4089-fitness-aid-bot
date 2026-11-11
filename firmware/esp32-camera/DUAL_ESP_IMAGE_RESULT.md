@@ -4,7 +4,7 @@
 
 **正常、漏 ACK、損壞小包三個圖片案例全部通過，第 4 步基礎雙板圖像與反向訊息驗收完成。** 用戶於 11-04 確認鏡頭已放穩朝向桌面物件後，實際取得 3 張 640×480 JPEG：CAM → ESP-NOW → S3 重組 → USB → 電腦。逐張 CAM／S3／電腦 SHA256 相同、完整解碼成功，且圖像傳送後的反向 TEST_ONLY 及 nonce 回覆均通過。
 
-以下時間均為 UTC+8，原始 JSON 保留 UTC。11-03 的編譯及前置檢查保留為歷史準備；當時的 `image_transfer_tested=false`／構建摘要 NOT_RUN 標記沒有改寫。11-04 下列三份圖片報告才是圖像實測證據。IMU 同時讀取、網絡及 Uno 尚未整合。
+以下時間均為 UTC+8，原始 JSON 保留 UTC。11-03 的編譯及前置檢查保留為歷史準備；當時的 `image_transfer_tested=false`／構建摘要 NOT_RUN 標記沒有改寫。11-04 下列三份圖片報告才是圖像實測證據。IMU 同時讀取、網絡及 Arduino 尚未整合。
 
 本檔保留獨立圖片版實測；後續 01:04 S3 已更新為 [IMU 合併版](IMAGE_IMU_RESULT.md)，當前狀態以 [PROGRESS.md](PROGRESS.md) 為準。原理與操作見 [DUAL_ESP_IMAGE.md](DUAL_ESP_IMAGE.md)。
 
@@ -60,7 +60,7 @@ Arduino CLI 1.5.1，Espressif core 3.3.12／IDF v5.5.5。兩板都使用 CH340�
 - **DropAck：** S3 故意漏掉第 2 號片的一次 ACK，CAM 重試一次；S3 `duplicate_chunks=1`、`dropped_ack=1`，沒有把重試資料追加兩次。最終長度、CRC32、SHA256 正確。
 - **CorruptPacket：** CAM 在第 2 號片算好包 CRC 後故意翻轉一個資料位元；S3 記錄一次 `PACKET_REJECT ... reason=CRC32`，CAM 重試一次，最終圖像正確。`corruptions=1`、`crc_rejects=1`，S3 累計 bad_packets 由 0 → 1 是這次受控注入的預期結果，不是自然干擾測試。
 - 三案例的收／發佇列丟失、發送 API 錯誤、底層發送失敗計數均為零。兩板沒有在測試中重啟。
-- 每張完成後，電腦透過 S3 傳送不同 nonce 的 TEST_ONLY 給 CAM；兩端 request／nonce 對應，1 次嘗試均收到回覆。往返分別約 7.587／7.582／7.587 ms；未傳送 AI 結果或 Uno 指令。
+- 每張完成後，電腦透過 S3 傳送不同 nonce 的 TEST_ONLY 給 CAM；兩端 request／nonce 對應，1 次嘗試均收到回覆。往返分別約 7.587／7.582／7.587 ms；未傳送 AI 結果或 Arduino 指令。
 
 ### 分段耗時
 
@@ -86,4 +86,4 @@ CAM 取幀及無線流程各用 CAM 本地時間，S3 就緒時間用 S3 本地�
 
 第 4 步只完成桌面單張圖像及反向測試訊息的基礎驗收。下一步先把 BMI160 讀取合回 S3，檢查收圖／導出時六軸採集的頻率與時間連續性，再進行 S3 與電腦的網絡通路。
 
-尚未驗證持續視頻／長時間穩定性、距離／遮擋／自然干擾、最大重試耗盡或斷電重啟後恢復、加密／身份認證、Wi-Fi 聯網共存、IMU 同時採集、跨板校時、AI／Uno 聯動。三個受控案例的通過不擴大為上述項目通過。
+尚未驗證持續視頻／長時間穩定性、距離／遮擋／自然干擾、最大重試耗盡或斷電重啟後恢復、加密／身份認證、Wi-Fi 聯網共存、IMU 同時採集、跨板校時、AI／Arduino 聯動。三個受控案例的通過不擴大為上述項目通過。

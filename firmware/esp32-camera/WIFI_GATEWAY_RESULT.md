@@ -38,7 +38,7 @@
 - [外層原始 false 報告](evidence/2026-11-05/switch_summary.json)、[後續恢復上網檢查](evidence/2026-11-05/wifi_postcheck_20261105.json)。
 - [逐階段開機診斷](evidence/2026-11-05/wifi_gateway_final_diagnostic.txt)、[最後診斷版編譯摘要](evidence/2026-11-05/wifi_gateway_build_20261105.json)、[最後上傳日誌](evidence/2026-11-05/wifi_gateway_diagnostic_upload.txt)。
 
-第 1–4 步與 11-04 的 496 筆並發記錄保留為歷史驗收；今天的 IMU 故障需要先恢復。第 5 步仍進行中，下一步定位初始化失敗、恢復六軸後，再做照片及 IMU 的 Wi-Fi 接收。固定鏡頭、AP 掉線／傳圖中斷線、長時間、AI／Uno 也未驗收。
+第 1–4 步與 11-04 的 496 筆並發記錄保留為歷史驗收；今天的 IMU 故障需要先恢復。第 5 步仍進行中，下一步定位初始化失敗、恢復六軸後，再做照片及 IMU 的 Wi-Fi 接收。固定鏡頭、AP 掉線／傳圖中斷線、長時間、AI／Arduino 也未驗收。
 
 復現與程式入口見 [WIFI_GATEWAY.md](WIFI_GATEWAY.md)，最新狀態見 [PROGRESS.md](PROGRESS.md)。
 斷電後更新：用戶確認拔掉 S3 全部 USB 10 秒再接回；本機只見 COM3／COM4／相機 COM11，暫未識別 S3 COM9。正等待重新插牢 COM 資料接口，斷電後 IMU 是否恢復未知，見 [USB 狀態](evidence/2026-11-05/s3_after_cold_usb_status_20261105.json)。前述 GYRO_WAKE_WRITE 是斷電前已確認的失敗階段。

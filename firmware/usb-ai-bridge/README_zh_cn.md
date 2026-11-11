@@ -1,6 +1,6 @@
 # 当前 CAM / S3 集成固件
 
-当前链路：**CAM USB 图像 → 电脑 AI → CAM USB 状态 → ESP-NOW → S3 UART → Mega**。图像不走无线。
+当前链路：**CAM USB 图像 → 电脑 AI → CAM USB 状态 → ESP-NOW → S3 UART → Arduino**。图像不走无线。
 
 ## 文件入口
 
@@ -10,15 +10,15 @@
 | [S3_IMU_Alarm_Bridge.ino](S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino) | ESP32-S3 N16R8 | 复用 BMI160 采集，启动独立无线接收／UART 转发任务 |
 | [AlarmRadio.h](AlarmRadio.h) | 两端共用 | 固定对端、20 字节包、CRC／序号检查、ACK、周期发送和超时 |
 
-Mega 固件位于 [alarm-mega](../alarm-mega/README.md)。S3 相对包含 [BMI160_SixAxis](../esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino)，编译时保持仓库目录，避免复制单个草图。
+Arduino 固件位于 [alarm-Arduino](../alarm-mega/README.md)。S3 相对包含 [BMI160_SixAxis](../esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino)，编译时保持仓库目录，避免复制单个草图。
 
 ## 固定配置
 
 - CAM USB：921600 8N1；640×480 JPEG、quality=18、双 PSRAM 缓冲、LATEST；取帧时最大 first-DMA 帧龄 200ms。
 - S3 USB：115200 8N1；BMI160 GPIO4 SDA、GPIO5 SCL，自动探测 0x68 / 0x69。
 - ESP-NOW：信道 1、固定当前两板 MAC、20 字节命令／ACK、200ms 周期；CAM 电脑命令和 S3 无线接收均为 1.2 秒超时。
-- UART：S3 GPIO17 TX → Mega D19 RX1，9600 8N1；GND 共地；Mega D18 TX 不接。
-- Mega：D8 LED、D9 无源蜂鸣器，同开同关；1.5 秒超时及电脑 USB 优先策略保留。
+- UART：S3 GPIO17 TX → Arduino D19 RX1，9600 8N1；GND 共地；Arduino D18 TX 不接。
+- Arduino：D8 LED、D9 无源蜂鸣器，同开同关；1.5 秒超时及电脑 USB 优先策略保留。
 
 当前两板各自 USB 供电，电源脚不互接；改线前断电。换板后核对芯片、相机引脚、串口和固定对端 MAC，不沿用本机端口假设。
 
@@ -41,6 +41,6 @@ arduino-cli compile --fqbn esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot
 - AI 页面：预热后约 9 FPS。取景会影响 JPEG 大小和速率，并非固定保证值。
 - 无线开／关／命令过期通过；ACK 只确认到 S3。
 - BMI160 当前无应答，用户将断电检查；包含 IMU 的整体并发验收仍失败。
-- 新闭环的 Mega 接收与现场声光效果、真实完整动作准确性、物理断线／掉电仍需验收。
+- 新闭环的 Arduino 接收与现场声光效果、真实完整动作准确性、物理断线／掉电仍需验收。
 
-设计与证据：[系统架构](../../docs/architecture/README.md)、[USB 协议](../../docs/protocols/usb-camera.md)、[ESP-NOW 协议](../../docs/protocols/espnow-alarm.md)、[Mega 协议](../../docs/protocols/alarm-control.md)、[测试记录导航](../../docs/README.md)。
+设计与证据：[系统架构](../../docs/architecture/README.md)、[USB 协议](../../docs/protocols/usb-camera.md)、[ESP-NOW 协议](../../docs/protocols/espnow-alarm.md)、[Arduino 协议](../../docs/protocols/alarm-control.md)、[测试记录导航](../../docs/README.md)。

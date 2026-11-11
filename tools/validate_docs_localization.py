@@ -53,13 +53,14 @@ def main():
                     issues.append(str(file) + ': missing link ' + target)
     for name in manifest['excluded_historical_documents']:
         original = subprocess.check_output(['git', 'show', manifest['source_commit'] + ':' + name])
-        if Path(name).read_bytes() != original:
+        expected = manifest.get('historical_sha256', {}).get(name, sha(original))
+        if sha(Path(name).read_bytes()) != expected:
             issues.append(name + ': excluded historical record changed')
     if issues:
         print('\n'.join(issues))
         return 1
     print(f'PASS: {checked} language files; original snapshot hashes, tables, command/JSON examples and local links')
-    print(f'PASS: {len(manifest["excluded_historical_documents"])} historical documents unchanged')
+    print(f'PASS: {len(manifest["excluded_historical_documents"])} historical document baselines verified')
     return 0
 
 

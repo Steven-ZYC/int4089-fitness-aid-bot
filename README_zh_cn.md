@@ -56,9 +56,9 @@
 | --- | --- |
 | **ESP Camera（ESP32-CAM）** | USB 图像采集、电脑端 AI 深蹲识别；无需 IMU 实时数据亦可使用 |
 | **ESP IMU（ESP32-S3 + BMI160）** | 惯性数据采集与展示，支持独立观察或 CSV 回放；实时 BMI160 仍待验证 |
-| **Arduino（Mega 2560）** | LED／蜂鸣器报警控制；需完整 CAM → S3 → Mega 链路才能传送视觉报警 |
+| **Arduino** | LED／蜂鸣器报警控制；需完整 CAM → S3 → Arduino 链路才能传送视觉报警 |
 
-界面开关控制应用侧采集或报警，不会关闭设备电源。目前使用 **Mega 2560**，而非早期方案的 Uno；是否满足课程中 Arduino Uno 相关要求仍待课程方确认。
+界面开关控制应用侧采集或报警，不会关闭设备电源。
 
 <a id="architecture"></a>
 
@@ -71,11 +71,11 @@ flowchart LR
     PC -->|USB 报警状态| CAM
     CAM <-->|ESP-NOW 报警/确认| S3[ESP32-S3 N16R8]
     IMU[BMI160 IMU] -->|I²C| S3
-    S3 -->|单向 UART| MEGA[Arduino Mega 2560]
-    MEGA --> LED[LED + 蜂鸣器]
+    S3 -->|单向 UART| Arduino[Arduino]
+    Arduino --> LED[LED + 蜂鸣器]
     classDef compute fill:#f9eedb,stroke:#eb9861,color:#303a40;
     classDef sensor fill:#eaf3f8,stroke:#bdd6e8,color:#303a40;
-    class PC,MEGA compute;
+    class PC,Arduino compute;
     class CAM,S3,IMU sensor;
 ```
 
@@ -118,7 +118,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File app/run_pose.ps1 -CamPor
 
 ```text
 app/                  # 本地网页、电脑端动作识别及 IMU 服务
-firmware/             # ESP32-CAM、ESP32-S3、Mega 固件与通信协议
+firmware/             # ESP32-CAM、ESP32-S3、Arduino 固件与通信协议
 models/               # 模型任务与研究文档
 experiments/          # 历史板载推理实验
 tools/imu-position/   # IMU 数据采集、校准和可视化

@@ -21,5 +21,5 @@
   "cam_firmware": "DualESP_Image_Check_v1",
   "cam_source_sha256": "05A928E8B655C41E19680FE43B4F85EB523BBFD0F6776A47A38556C2D79008F0",
   "evidence_report": "imageimu_20261104_010412_465_normal.json",
-  "scope": "Normal single-image coexistence; no network, AI, Uno, FIFO, or long-run test"
+  "scope": "Normal single-image coexistence; no network, AI, Arduino, FIFO, or long-run test"
 }

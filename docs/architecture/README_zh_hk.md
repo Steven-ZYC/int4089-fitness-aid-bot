@@ -13,8 +13,8 @@
 | 模組 | 輸入 | 輸出 | 程式碼入口 |
 | --- | --- | --- | --- |
 | 視覺 AI | CAM 的 USB JPEG 影像 | 關鍵點、動作階段、計次、違規項、報警狀態 | [pose_app.py](../../app/pose_app.py)、[pose_engine.py](../../app/pose_engine.py)、[form_rules.py](../../app/form_rules.py) |
-| IMU | BMI160 六軸數據；無線接收視覺報警狀態 | USB IMU CSV；發往 Mega 的報警幀 | [S3 集成韌體](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino)、[BMI160 採集實現](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
-| 物理警報 | S3 UART 或電腦直連 USB 的報警幀 | D8 LED、D9 蜂鳴器同開同關 | [Mega 韌體](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
+| IMU | BMI160 六軸數據；無線接收視覺報警狀態 | USB IMU CSV；發往 Arduino 的報警幀 | [S3 集成韌體](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino)、[BMI160 採集實現](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
+| 物理警報 | S3 UART 或電腦直連 USB 的報警幀 | D8 LED、D9 蜂鳴器同開同關 | [Arduino 韌體](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
 
 S3 同時承擔 IMU 採集節點和無線報警轉發節點，但兩項任務獨立。目前無線結果不是 IMU 判定結果；尚未實現 IMU 與視覺融合或 IMU 自動報警。
 
@@ -66,10 +66,10 @@ BMI160 源碼仍保留在 `firmware/esp32-camera/`，S3 集成韌體通過相對
 
 1. **CAM ↔ 電腦 USB**：921600 8N1，JPEG 與文本命令共用同一串列埠。影像不走無線。[USB 影像協議](../protocols/usb-camera_zh_hk.md)
 2. **CAM ↔ S3 ESP-NOW**：信道 1，固定對端 MAC，20 位元組狀態／確認包；不傳影像。[無線報警協議](../protocols/espnow-alarm_zh_hk.md)
-3. **S3 → Mega UART**：9600 8N1，GPIO17 TX → D19 RX1，GND 共地，反向 TX 不接。[Mega 報警協議](../protocols/alarm-control_zh_hk.md)
+3. **S3 → Arduino UART**：9600 8N1，GPIO17 TX → D19 RX1，GND 共地，反向 TX 不接。[Arduino 報警協議](../protocols/alarm-control_zh_hk.md)
 4. **BMI160 → S3 I²C**：GPIO4 SDA、GPIO5 SCL，自動探測 0x68 / 0x69；目前無應答，待接線檢查。
 
-協議幀隔離了視覺分析與執行器。無線確認到 S3 為止，不能證明 Mega 接收到命令或燈／蜂鳴器執行成功。端到端確認尚未實現。
+協議幀隔離了視覺分析與執行器。無線確認到 S3 為止，不能證明 Arduino 接收到命令或燈／蜂鳴器執行成功。端到端確認尚未實現。
 
 <a id="当前参数与验证"></a>
 
@@ -81,6 +81,6 @@ BMI160 源碼仍保留在 `firmware/esp32-camera/`，S3 集成韌體通過相對
 - AI 頁面：約 9 FPS，隨光照和畫面複雜度變化；不是動作準確率指標。
 - 無線：開／關／電腦命令過期測試通過。
 - IMU：目前 0x68 / 0x69 均無應答；併發 IMU 驗收仍失敗。
-- 現場待驗收：真實完整動作、Mega 執行效果、物理斷線／掉電。
+- 現場待驗收：真實完整動作、Arduino 執行效果、物理斷線／掉電。
 
 記錄入口：[文檔索引](../README_zh_hk.md)。歷史單板與分片影像實驗放在 `firmware/esp32-camera/`；獨立 UI 工作樹尚未合入目前頁面。

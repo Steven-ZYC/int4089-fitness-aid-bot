@@ -2,12 +2,12 @@
 
 <a id="arduino-unoled-与蜂鸣器"></a>
 
-# Arduino Uno：LED 與蜂鳴器
+# Arduino：LED 與蜂鳴器
 
-任務狀態：**保留的 Arduino Uno 基礎控制説明**。
+任務狀態：**保留的 Arduino 基礎控制説明**。
 
 原負責人為 **Zhang Haoyu**；其目前重點已轉為[模型訓練研究](../../models/README_zh_hk.md)，本檔案不再代表他的目前首要任務。
-Arduino Uno 的課程要求繼續保留，後續硬件任務分工由 Zhang Yancheng 統籌確認。
+後續硬件任務分工由 Zhang Yancheng 統籌。
 
 歷史任務分支：**`Feat-Arduino-Haoyu`**（大小寫必須一致）；該分支目前繼續用於 Haoyu 的模型訓練研究。
 
@@ -19,7 +19,7 @@ Arduino Uno 的課程要求繼續保留，後續硬件任務分工由 Zhang Yanc
 
 ## 保留的硬件目標
 
-使用 **Arduino Uno** 接好 LED 和蜂鳴器，並能分別進行基礎控制。
+使用 **Arduino** 接好 LED 和蜂鳴器，並能分別進行基礎控制。
 本目錄目前是任務説明，尚未提供或驗證韌體與接線。
 
 <a id="交付与验收"></a>
@@ -35,7 +35,7 @@ Arduino Uno 的課程要求繼續保留，後續硬件任務分工由 Zhang Yanc
 
 ## 隨交付記錄
 
-- 實際 Uno 板卡型號／版本、LED 類型與蜂鳴器類型。
+- 實際 Arduino 板卡型號／版本、LED 類型與蜂鳴器類型。
 - 完整引腳映射、供電方式及實際使用的電阻等元件。
 - Arduino IDE 版本、開發板選擇、板卡包版本及上傳連接埠選擇方法。
 - 所需庫及版本；無額外庫時明確寫明。
@@ -43,5 +43,5 @@ Arduino Uno 的課程要求繼續保留，後續硬件任務分工由 Zhang Yanc
 - 已觀察到的表現、失敗現象和排查方法。
 
 硬件型號、引腳、電壓或器件類型尚未確認時，先記錄待確認項，不得猜測接線。
-Arduino Uno 負責本地 LED／蜂鳴器控制，需與 **ESP32-CAM** 建立硬件連接；另一塊 **ESP32-S3 N16R8** 規劃作為連接 Bosch BMI-series IMU 和電腦網絡的主 ESP。**AI 訓練與推理現階段在團隊電腦上進行**，將來原型有效後才考慮雲端 HPC。具體 AI 判斷結果返回 Uno 的鏈路、引腳和電氣設計仍待集成驗證；舊的 ESP32-S3 板上推理與 RDK X5 方案已不是目前主線。
+Arduino 負責本地 LED／蜂鳴器控制，需與 **ESP32-CAM** 建立硬件連接；另一塊 **ESP32-S3 N16R8** 規劃作為連接 Bosch BMI-series IMU 和電腦網絡的主 ESP。**AI 訓練與推理現階段在團隊電腦上進行**，將來原型有效後才考慮雲端 HPC。具體 AI 判斷結果返回 Arduino 的鏈路、引腳和電氣設計仍待集成驗證；舊的 ESP32-S3 板上推理與 RDK X5 方案已不是目前主線。
 不要提交 Wi-Fi 密鑰、憑據或含可識別人像的照片。

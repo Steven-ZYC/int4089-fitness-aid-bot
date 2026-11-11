@@ -5,8 +5,8 @@
 | 模块 | 输入 | 输出 | 代码入口 |
 | --- | --- | --- | --- |
 | 视觉 AI | CAM 的 USB JPEG 图像 | 关键点、动作阶段、计次、违规项、报警状态 | [pose_app.py](../../app/pose_app.py)、[pose_engine.py](../../app/pose_engine.py)、[form_rules.py](../../app/form_rules.py) |
-| IMU | BMI160 六轴数据；无线接收视觉报警状态 | USB IMU CSV；发往 Mega 的报警帧 | [S3 集成固件](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino)、[BMI160 采集实现](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
-| 物理警报 | S3 UART 或电脑直连 USB 的报警帧 | D8 LED、D9 蜂鸣器同开同关 | [Mega 固件](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
+| IMU | BMI160 六轴数据；无线接收视觉报警状态 | USB IMU CSV；发往 Arduino 的报警帧 | [S3 集成固件](../../firmware/usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino)、[BMI160 采集实现](../../firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino) |
+| 物理警报 | S3 UART 或电脑直连 USB 的报警帧 | D8 LED、D9 蜂鸣器同开同关 | [Arduino 固件](../../firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino) |
 
 S3 同时承担 IMU 采集节点和无线报警转发节点，但两项任务独立。当前无线结果不是 IMU 判定结果；尚未实现 IMU 与视觉融合或 IMU 自动报警。
 
@@ -52,10 +52,10 @@ BMI160 源码仍保留在 `firmware/esp32-camera/`，S3 集成固件通过相对
 
 1. **CAM ↔ 电脑 USB**：921600 8N1，JPEG 与文本命令共用同一串口。图像不走无线。[USB 图像协议](../protocols/usb-camera.md)
 2. **CAM ↔ S3 ESP-NOW**：信道 1，固定对端 MAC，20 字节状态／确认包；不传图像。[无线报警协议](../protocols/espnow-alarm.md)
-3. **S3 → Mega UART**：9600 8N1，GPIO17 TX → D19 RX1，GND 共地，反向 TX 不接。[Mega 报警协议](../protocols/alarm-control.md)
+3. **S3 → Arduino UART**：9600 8N1，GPIO17 TX → D19 RX1，GND 共地，反向 TX 不接。[Arduino 报警协议](../protocols/alarm-control.md)
 4. **BMI160 → S3 I²C**：GPIO4 SDA、GPIO5 SCL，自动探测 0x68 / 0x69；当前无应答，待接线检查。
 
-协议帧隔离了视觉分析与执行器。无线确认到 S3 为止，不能证明 Mega 接收到命令或灯／蜂鸣器执行成功。端到端确认尚未实现。
+协议帧隔离了视觉分析与执行器。无线确认到 S3 为止，不能证明 Arduino 接收到命令或灯／蜂鸣器执行成功。端到端确认尚未实现。
 
 ## 当前参数与验证
 
@@ -65,6 +65,6 @@ BMI160 源码仍保留在 `firmware/esp32-camera/`，S3 集成固件通过相对
 - AI 页面：约 9 FPS，随光照和画面复杂度变化；不是动作准确率指标。
 - 无线：开／关／电脑命令过期测试通过。
 - IMU：目前 0x68 / 0x69 均无应答；并发 IMU 验收仍失败。
-- 现场待验收：真实完整动作、Mega 执行效果、物理断线／掉电。
+- 现场待验收：真实完整动作、Arduino 执行效果、物理断线／掉电。
 
 记录入口：[文档索引](../README.md)。历史单板与分片图像实验放在 `firmware/esp32-camera/`；独立 UI 工作树尚未合入当前页面。

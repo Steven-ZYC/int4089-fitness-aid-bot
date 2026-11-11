@@ -8,10 +8,10 @@
 
 ## Active deployment
 
-The board runs [S3_IMU_Alarm_Bridge](../usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino). It initializes the existing BMI160 six-axis acquisition and independently receives CAM ESP-NOW alarm states and relays UART commands to Mega. IMU and vision results are not fused; automatic IMU alarm decisions are not implemented.
+The board runs [S3_IMU_Alarm_Bridge](../usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino). It initializes the existing BMI160 six-axis acquisition and independently receives CAM ESP-NOW alarm states and relays UART commands to Arduino. IMU and vision results are not fused; automatic IMU alarm decisions are not implemented.
 
 - BMI160: SDA=GPIO4, SCL=GPIO5; automatic I²C detection at 0x68/0x69.
-- S3 → Mega: GPIO17 TX → D19 RX1, common GND; GPIO18 and Mega TX disconnected.
+- S3 → Arduino: GPIO17 TX → D19 RX1, common GND; GPIO18 and Arduino TX disconnected.
 - USB: 115200; acquisition CSV and diagnostics prefixed with `#`.
 - **Current fault**: neither address responds. The user confirmed the IMU is still wired and will inspect with power off. Wireless alarms operate independently.
 
@@ -27,4 +27,4 @@ The board runs [S3_IMU_Alarm_Bridge](../usb-ai-bridge/S3_IMU_Alarm_Bridge/S3_IMU
 
 The [historical successful reproduction](../esp32-camera/YANCHENG_BMI160_REPRO.md) verified local address 0x69; this does not establish that current wiring has recovered. Original paths preserve script and evidence references.
 
-Details: [current integrated firmware](../usb-ai-bridge/README.md), [system architecture](../../docs/architecture/README.md), [Mega interface](../../docs/protocols/alarm-control.md).
+Details: [current integrated firmware](../usb-ai-bridge/README.md), [system architecture](../../docs/architecture/README.md), [Arduino interface](../../docs/protocols/alarm-control.md).

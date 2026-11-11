@@ -4,17 +4,17 @@
 
 # 模組化警報控制器：USB 電腦或 UART ESP32-S3
 
-維護者：Zhang Yancheng / Feat-Integration-Yancheng。Mega 2560 同時控制 D8 LED（串聯 220Ω）及 D9 無源蜂鳴器。低電流有源蜂鳴器須設定 ACTIVE_BUZZER=true；較高電流型號須使用驅動電路。
+維護者：Zhang Yancheng / Feat-Integration-Yancheng。Arduino 同時控制 D8 LED（串聯 220Ω）及 D9 無源蜂鳴器。低電流有源蜂鳴器須設定 ACTIVE_BUZZER=true；較高電流型號須使用驅動電路。
 
 <a id="wiring"></a>
 
 ## 接線
 
-- S3 GPIO17 TX → Mega D19 RX1；GND → GND。
-- Mega D18 TX1 與 S3 GPIO18 RX 均不連接。
+- S3 GPIO17 TX → Arduino D19 RX1；GND → GND。
+- Arduino D18 TX1 與 S3 GPIO18 RX 均不連接。
 - 不要互接兩板的電源腳；各自使用 USB 供電。
 - 改線時兩板均須斷電；運作時兩板均須供電。
-- Mega RX 已停用內部上拉，避免將 5V 施加到 S3。
+- Arduino RX 已停用內部上拉，避免將 5V 施加到 S3。
 - 標稱 3.3V → 5V 邏輯在最差容差條件下未必可靠；目前接線通過 UART 接收測試，並非完整電氣認證。
 
 <a id="protocol-v2"></a>
@@ -43,7 +43,7 @@ USB 只在命令被套用後回報 ACK <frame>；拒絕時回報 ERR FORMAT/SOUR
 
 ## 電腦使用方式
 
-Arduino Serial Monitor 設 115200、換行結尾，傳送 011 開啟或 000 關閉。單一命令維持 1.5 秒優先期，重複傳送可維持控制。開啟 USB 可能重設 Mega，請等候約 2 秒再傳送。
+Arduino Serial Monitor 設 115200、換行結尾，傳送 011 開啟或 000 關閉。單一命令維持 1.5 秒優先期，重複傳送可維持控制。開啟 USB 可能重設 Arduino，請等候約 2 秒再傳送。
 使用 pyserial 的 Python 範例；按實際情況更改連接埠：
 
 ```python
@@ -57,7 +57,7 @@ with serial.Serial('COM3', 115200, timeout=0.1) as port:
     port.write(b'000\n')
 ```
 
-這使警報執行器與 IMU 採集／判定演算法解耦：兩種上位模組都輸出相同的抽象警報狀態。來源控制權與心跳仍屬介面約定。Mega 不解析 IMU 樣本，也不判斷姿勢是否正確。
+這使警報執行器與 IMU 採集／判定演算法解耦：兩種上位模組都輸出相同的抽象警報狀態。來源控制權與心跳仍屬介面約定。Arduino 不解析 IMU 樣本，也不判斷姿勢是否正確。
 
 S3_UART_TX_Test 是刻意設計的三秒關／開測試，並非 IMU 邏輯。燒錄會取代正在執行的 IMU 韌體；原 BMI160 源碼保留。舊 ALARM,0 / ALARM,1 命令已不支援，兩板均須使用 v2。
 
@@ -65,7 +65,7 @@ S3_UART_TX_Test 是刻意設計的三秒關／開測試，並非 IMU 邏輯。�
 
 ## 驗證
 
-2026-11-10 初版 v1：兩板燒錄完成，觀察到 Mega 實際 UART 接收。
+2026-11-10 初版 v1：兩板燒錄完成，觀察到 Arduino 實際 UART 接收。
 v2 燒錄／測試後的驗證記錄為 ../validation/2026-11-10-alarm-protocol.txt。
 LED 是否亮起、蜂鳴器是否發聲及實體拔線行為均須現場觀察。本階段未進行分支合併。
 
@@ -73,7 +73,7 @@ LED 是否亮起、蜂鳴器是否發聲及實體拔線行為均須現場觀察�
 
 ## 源碼位置與編譯
 
-- Mega：`firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino`
+- Arduino：`firmware/alarm-mega/Mega_Alarm_RX/Mega_Alarm_RX.ino`
 - S3 測試發送端：`firmware/imu-s3/S3_UART_TX_Test/S3_UART_TX_Test.ino`
 - BMI160 採集：`firmware/esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino`（歷史路徑，未變更）。
 
@@ -82,4 +82,4 @@ arduino-cli compile --fqbn arduino:avr:mega firmware/alarm-mega/Mega_Alarm_RX
 arduino-cli compile --fqbn esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot=default,USBMode=hwcdc,PartitionScheme=app3M_fat9M_16MB,UploadSpeed=115200 firmware/imu-s3/S3_UART_TX_Test
 ```
 
-確認連接埠身分後，Mega 可加 `--upload --port COM3`，S3 可加 `--upload --port COM4`；連接埠編號可能改變。
+確認連接埠身分後，Arduino 可加 `--upload --port COM3`，S3 可加 `--upload --port COM4`；連接埠編號可能改變。

@@ -5,7 +5,7 @@ Downloaded 11 November 2026. Images are external product/identification referenc
 - cam.jpg: FlyRobo, Ai-Thinker ESP32-CAM with OV2640 product photograph.
 - s3.jpg: Elektroweb, ESP32-S3 DevKitC-1 N16R8 product photograph.
 - bmi160.jpg: HALJIA, purple BMI160 module product photograph.
-- mega.jpg: Arduino official Mega 2560 Rev3 product photograph.
+- mega.jpg: Arduino official Arduino product photograph.
 - usb.jpg: UGREEN France USB connector identification graphic.
 - components.jpg: Psytfei component chart, located through manuals.plus/asin/B0D929MYW4.
 

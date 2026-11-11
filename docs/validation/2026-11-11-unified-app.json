@@ -54,7 +54,7 @@
   "imu_live_pass": false,
   "limitations": [
     "BMI160 remains without valid live samples; CSV replay is software validation only.",
-    "No new physical Mega light/buzzer acceptance or complete exercise accuracy measurement.",
+    "No new physical Arduino light/buzzer acceptance or complete exercise accuracy measurement.",
     "Camera USB startup needed an EN reset after reconnect; startup handshake recovery and manual reconnect added.",
     "One serial framing error was observed before increasing Windows receive buffer; this report is a bounded smoke test, not long-term certification."
   ]

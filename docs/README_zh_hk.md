@@ -11,7 +11,7 @@
 - [系統架構與程式碼依賴](architecture/README_zh_hk.md)
 - [CAM USB 影像／控制協議](protocols/usb-camera_zh_hk.md)
 - [CAM ↔ S3 ESP-NOW 報警協議](protocols/espnow-alarm_zh_hk.md)
-- [Mega USB／UART 報警協議](protocols/alarm-control_zh_hk.md)
+- [Arduino USB／UART 報警協議](protocols/alarm-control_zh_hk.md)
 - [韌體導航與目前入口](../firmware/README_zh_hk.md)
 - [電腦端運行與測試](../app/README_zh_hk.md)
 
@@ -21,7 +21,7 @@
 
 | 記錄 | 驗證內容 |
 | --- | --- |
-| [報警協議](validation/2026-11-10-alarm-protocol.txt) | Mega USB 命令、校驗／來源拒絕、電腦優先後 ESP 接管 |
+| [報警協議](validation/2026-11-10-alarm-protocol.txt) | Arduino USB 命令、校驗／來源拒絕、電腦優先後 ESP 接管 |
 | [攝影機基線](validation/2026-11-10-camera-reproduction.json) | 歷史 115200 USB 單張拍照／解碼 |
 | [真實影像 AI](validation/2026-11-10-usb-ai-smoke.json) | USB 影像輸入模型，未進行動作準確性驗收 |
 | [無線與 IMU 分項](validation/2026-11-10-usb-espnow-bridge.json) | 無線狀態成功，IMU 無應答；整體併發測試失敗 |

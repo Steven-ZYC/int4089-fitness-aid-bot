@@ -25,7 +25,7 @@ This directory should progressively establish a reproducible **dataset selection
 3. **Training/validation:** establish a minimum baseline, retaining versions, environment, hyperparameters, preprocessing and results. If not working, label it untrained rather than forecasting accuracy.
 4. **PC inference service:** implement image input, inference, postprocessing and output runnable on the team PC. Agree with Yuankun on network message formats, camera-frame and IMU-timestamp interfaces.
 5. **Fusion strategy/metrics:** state whether v1 is image-only or image+IMU. Mark fusion as unimplemented if so. Record model latency, effective FPS and integration-related end-to-end latency.
-6. **Integration delivery:** define result structures with usable action, timestamp, confidence/threshold and feedback fields, examples and instructions so Yancheng can connect Arduino Uno LED/buzzer feedback.
+6. **Integration delivery:** define result structures with usable action, timestamp, confidence/threshold and feedback fields, examples and instructions so Yancheng can connect Arduino LED/buzzer feedback.
 
 <a id="协作接口"></a>
 

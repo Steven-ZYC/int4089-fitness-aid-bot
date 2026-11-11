@@ -5,13 +5,13 @@
       "english": "AGENTS.md",
       "zh_cn": "AGENTS_zh_cn.md",
       "zh_hk": "AGENTS_zh_hk.md",
-      "original_sha256": "851d94a1f55dc3f50e7dafc712473415a926a1e924665ba3fb4cfd6af9e6315f"
+      "original_sha256": "89c56e82890c71d6926419de1bcc8f75e7f00a37fd26d4d1cc28249ba7da342c"
     },
     {
       "english": "README.md",
       "zh_cn": "README_zh_cn.md",
       "zh_hk": "README_zh_hk.md",
-      "original_sha256": "996ee60e299c4768d2ff4c3005066c914f00f0af2070e90421a7d46fd7b19da7",
+      "original_sha256": "8e8cf53c9be586e985827956c1908ca6a26241eb72cb37acde1ee15a0b4e4927",
       "migration_snapshot_sha256": "504660a7222c6408148f060bfc22ba6bd97e7cad1935a002f2ed25798336a39e",
       "content_updated": "2026-11-11: current workspace/screenshots and merged assembly guide links; migration hash retained separately"
     },
@@ -19,7 +19,7 @@
       "english": "app/POSE.md",
       "zh_cn": "app/POSE_zh_cn.md",
       "zh_hk": "app/POSE_zh_hk.md",
-      "original_sha256": "ca8efe71244bd49b1d77d0fa11906e65c4a8e9365335dc916f5a881a732b02b5"
+      "original_sha256": "c5a99903303ff6ebe9df76ea874d6682b48705affb4586898a49f725ba698dcd"
     },
     {
       "english": "app/README.md",
@@ -31,25 +31,25 @@
       "english": "docs/README.md",
       "zh_cn": "docs/README_zh_cn.md",
       "zh_hk": "docs/README_zh_hk.md",
-      "original_sha256": "d9e30e1181aab8d3d7484cc494cd7801698af5b6ffaac7a8256af5f2e2f36ccd"
+      "original_sha256": "8ad402b22c01107f36be210dae0964f210c2d641344add3561dd52a15accb1cc"
     },
     {
       "english": "docs/architecture/README.md",
       "zh_cn": "docs/architecture/README_zh_cn.md",
       "zh_hk": "docs/architecture/README_zh_hk.md",
-      "original_sha256": "8f7f40a160bfd9e758b0faa91620972c7352017ef57e46883579fe8c469e2307"
+      "original_sha256": "adcab0394b93e732ee975afd9e3cd2df3ac0caeda81171bfd967f42ea260917a"
     },
     {
       "english": "docs/protocols/alarm-control.md",
       "zh_cn": "docs/protocols/alarm-control_zh_cn.md",
       "zh_hk": "docs/protocols/alarm-control_zh_hk.md",
-      "original_sha256": "9baab9e76fa495038727b8c83e31b67ef0f9edd8dfd1b6894fe963ddc32feccd"
+      "original_sha256": "142cf6b27919831ffcb339064f0c8603a1d34edfd87d78ba56dbdda826e0782e"
     },
     {
       "english": "docs/protocols/espnow-alarm.md",
       "zh_cn": "docs/protocols/espnow-alarm_zh_cn.md",
       "zh_hk": "docs/protocols/espnow-alarm_zh_hk.md",
-      "original_sha256": "592266e955de5c54a84ad1e3b7c6c89a032f0c4c80ca59ffda6fa7911a0862b8"
+      "original_sha256": "f82e6b547258a22b742ebe327081472d1be7b21673d133f8f0d78cf26783da8d"
     },
     {
       "english": "docs/protocols/usb-camera.md",
@@ -61,37 +61,37 @@
       "english": "firmware/README.md",
       "zh_cn": "firmware/README_zh_cn.md",
       "zh_hk": "firmware/README_zh_hk.md",
-      "original_sha256": "65dd948372c3742c10f19cf4aa362c7dd578648067f3549b42474d0147cd2117"
+      "original_sha256": "472cf1648c85b0da639f0342ba35d8c15c1ac47161eed7efbb960d69c6abb2e1"
     },
     {
       "english": "firmware/alarm-mega/README.md",
       "zh_cn": "firmware/alarm-mega/README_zh_cn.md",
       "zh_hk": "firmware/alarm-mega/README_zh_hk.md",
-      "original_sha256": "ca1c6f3b247c548eaf0090dcab9edfdbe216f42028d0063e99fcab2c4dd8a6f4"
+      "original_sha256": "a1c187a7b51abe4d284d3b30141b6fa0b96e54b8a4e0f49463ce1d05f6574371"
     },
     {
       "english": "firmware/arduino-uno/README.md",
       "zh_cn": "firmware/arduino-uno/README_zh_cn.md",
       "zh_hk": "firmware/arduino-uno/README_zh_hk.md",
-      "original_sha256": "7df111e6775c61da965dc5c62a696f06e3f2b8eeaefe2c4e5e6ba87df7a8a971"
+      "original_sha256": "9311d3b4478ff8bd93e9b1b564317912e5776dcab7be6a2a5fbbf55beaea0d55"
     },
     {
       "english": "firmware/imu-s3/README.md",
       "zh_cn": "firmware/imu-s3/README_zh_cn.md",
       "zh_hk": "firmware/imu-s3/README_zh_hk.md",
-      "original_sha256": "531cdaa69fbe371f85590e0941392400771e5465bdc1b2dc1ce3b4580384426c"
+      "original_sha256": "0f550018360903e2c53f4773694669b6592b5a7183b23028f64223bdd78c8620"
     },
     {
       "english": "firmware/usb-ai-bridge/README.md",
       "zh_cn": "firmware/usb-ai-bridge/README_zh_cn.md",
       "zh_hk": "firmware/usb-ai-bridge/README_zh_hk.md",
-      "original_sha256": "8d53c0769103e71629ebc6b98a93fd87611f5fa7e978f2bb964495f19fffb554"
+      "original_sha256": "086c58994e9c8dbf96ffe9f5edc48098bf771f564147752df852b91c08371dd7"
     },
     {
       "english": "models/README.md",
       "zh_cn": "models/README_zh_cn.md",
       "zh_hk": "models/README_zh_hk.md",
-      "original_sha256": "fe85c43fe3ad212baa9625761d00bcb1e301faacaffd393db48b4b3e3d9e5229"
+      "original_sha256": "b2389336ee112324f732037f8e5c88cc0fb0ef4c4ce7f9a687460613e03a06a3"
     },
     {
       "english": "tools/imu-position/README.md",
@@ -103,7 +103,7 @@
       "english": "app/UNIFIED_APP.md",
       "zh_cn": "app/UNIFIED_APP_zh_cn.md",
       "zh_hk": "app/UNIFIED_APP_zh_hk.md",
-      "original_sha256": "4a0abe3bbbb126152df6e0d0238909a0cfe2df8b4939ff3e0baadcb313a82e54",
+      "original_sha256": "17036549fe8a8d9b04dabc0737c5679ffd502be4ebe39e60fb3ef75dee74ad4e",
       "introduced": "2026-11-11 unified PC application",
       "migration_snapshot_sha256": "d51841582025994e9e13fcdad55f5bd60359a3d5a20e314f4d5e25e058ca79ab",
       "content_updated": "2026-11-11: current dashboard screenshots, first-four overview, six-movement library, live monitoring and module/session controls; migration hash retained separately"
@@ -139,9 +139,38 @@
     "firmware/esp32-camera/YANCHENG_BMI160_REPRO.md"
   ],
   "policy": {
-    "zh_cn": "Byte-for-byte original snapshots, including any originally English content.",
+    "zh_cn": "Reviewed documentation baseline with user-requested Arduino naming (2026-11-11).",
     "english": "Full prose translations under original filenames. Commands, literal logs and JSON payloads preserved.",
     "zh_hk": "Hong Kong written Chinese, with localized terminology and links to in-scope Hong Kong counterparts.",
-    "history": "27 historical experiment, reproduction and handoff records excluded and unchanged."
+    "history": "Historical content retains technical evidence; controller display names standardized to Arduino (2026-11-11)."
+  },
+  "historical_sha256": {
+    "experiments/yancheng/esp32-pose-bench/README.md": "611136258cc5a9f83f3c71bcd224ec6b18d6cb54e606fdf7a9575224be8c7b93",
+    "experiments/yancheng/esp32-pose-bench/results/2026-10-23-classic-esp32.md": "1b50787c8c15d871f19cfc9077ffb688e88f9432dca1b2d35140994b1be3cc33",
+    "firmware/esp32-camera/BMI160_AXES_CALIBRATION.md": "25417cd4f9ff11cacbdb3dd2997aaee587bc9b2ab107115f7b5de3cbd87b1be3",
+    "firmware/esp32-camera/BMI160_BUS_DIAG.md": "8863e9ebf4bde879c0abd65dd7ed383e4b5058c7c84b421a86d29998b148c88e",
+    "firmware/esp32-camera/BMI160_RECOVERY.md": "57be579224a488119f2e380384f8f86284e0a732cd2f6a3de5c284194ff5cf58",
+    "firmware/esp32-camera/BMI160_SIX_AXIS.md": "43818183fad2a352ae2968c58b7f1247e58c0974a8e60ef66d77eb2d6a9d20b7",
+    "firmware/esp32-camera/BMI160_SIX_AXIS_RESULT.md": "3cd69b1853a1d59e7b50758223d2f8f3fd909c380e64d6dfc454368d5abc9ac8",
+    "firmware/esp32-camera/BMI160_TEST_RESULT.md": "aa59e4b80881522448641502760c719bac49f045ef8572581339270e82b4ff6c",
+    "firmware/esp32-camera/BMI160_WIRING.md": "28760d902f99d124e9ceb74b52429f05c50160a460bcfa1b88d9da3a66cc4b1e",
+    "firmware/esp32-camera/CAM_RECHECK.md": "e36996c7de8fe5d6173bde761a770b50bafbe0a6a457ebbce6033fce642c1f28",
+    "firmware/esp32-camera/CAM_RECHECK_RESULT.md": "20f67388e274debbdab5eaf93bbd5569099c74c0c5ff79c47abad81037ff080c",
+    "firmware/esp32-camera/DUAL_ESP_IMAGE.md": "dc659e8d2767df98061484e59442f81f4f277f7c25fbd458d02fe8d12e15853e",
+    "firmware/esp32-camera/DUAL_ESP_IMAGE_RESULT.md": "6dd53a264c4b6091bcfb6107e102fe27036d3c0d1c9e04e35b96522e472782c1",
+    "firmware/esp32-camera/DUAL_ESP_TEXT.md": "6b18e9320ff0cd6601f52dedefeb4985b517999771dfea66c6fc0b61ef7f3603",
+    "firmware/esp32-camera/DUAL_ESP_TEXT_RESULT.md": "3dc39a41dd373344c062b9d10eafb85a693939232b0dc6ea75e94c729e8fa497",
+    "firmware/esp32-camera/HANDOFF.md": "7a72e7ec12d3c002c508b61d8e62eb208abc1ccf222d72bc9e3d46cf808fc32d",
+    "firmware/esp32-camera/IMAGE_IMU_CONCURRENCY.md": "ebaff1b45de18030cc08747be88ea38b9f029d0e80a255a68a00bfff0bca26b4",
+    "firmware/esp32-camera/IMAGE_IMU_RESULT.md": "f627d152eab452f852f673e519ac05d3000f2505520122f1957743d081da6f2d",
+    "firmware/esp32-camera/IMU_SELECTION.md": "85e92d644a85009a98dfa4dacd75bda780baca454fd06d0435229f5732fc394c",
+    "firmware/esp32-camera/PROGRESS.md": "0e5b4a4a5fb67ba2c921e16d9dadce663e8538a56a0265ede8a27ecd5d7e28e1",
+    "firmware/esp32-camera/README.md": "53457ef9208497cd2cef808639a9a36b0f4a3697cfd70f2f97b05e4cba1949d7",
+    "firmware/esp32-camera/S3_BRINGUP.md": "d11a497812e7267e6eb5670930220a7fcbebeee7a7bed9d1a01d709e066a9deb",
+    "firmware/esp32-camera/S3_TEST_RESULT.md": "6cc31a901ccf7741d1526b2f220551d0f16a95ce288696cf7af6a11e8ad22df7",
+    "firmware/esp32-camera/USB_CAMERA_DEMO.md": "aa0038cef53cf90a9f294a5f0b3e5bed58f65f5b187096b08549d28edaad3ed8",
+    "firmware/esp32-camera/WIFI_GATEWAY.md": "70ff5e15a7316302c2520c571793d315e6574f064e054d3a83d9a84eb7afa049",
+    "firmware/esp32-camera/WIFI_GATEWAY_RESULT.md": "9c97d61a5891deb2530034365aa79737c38ce296e3792cc3a4500f9fae8142a3",
+    "firmware/esp32-camera/YANCHENG_BMI160_REPRO.md": "ea9ad3957558114532a02b31d0b0162973ef21a967959c6bb89ba729e2bfb9bf"
   }
 }

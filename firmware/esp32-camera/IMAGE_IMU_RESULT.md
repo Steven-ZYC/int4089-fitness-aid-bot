@@ -50,7 +50,7 @@ CAM 取得新幀 44.046 ms、CAM 無線至 END ACK 450.390 ms、S3 命令至就�
 
 第 5 步前半的 Normal 桌面並發檢查完成，**第 5 步整體仍未完成**。下一步固定鏡頭方向，建立 S3 ↔ 電腦的網絡通路，先用明確 TEST_ONLY 回覆；與 Haoyu 對齊格式、跨板時鐘及固定位置後再聯調 AI。
 
-本合併版未執行 DropAck／CorruptPacket、長時間／距離／自然干擾、FIFO、串流壓力、網絡斷線／重連、跨板校時、AI 或 Uno。第 4 步的三案例屬於舊獨立圖片版，不能當作新合併版三案例皆已通過。
+本合併版未執行 DropAck／CorruptPacket、長時間／距離／自然干擾、FIFO、串流壓力、網絡斷線／重連、跨板校時、AI 或 Arduino。第 4 步的三案例屬於舊獨立圖片版，不能當作新合併版三案例皆已通過。
 
 操作、資料欄位與預先訂定的門檻見 [IMAGE_IMU_CONCURRENCY.md](IMAGE_IMU_CONCURRENCY.md)。
 最新狀態（2026-11-05）：[Wi-Fi 控制／TCP 重連](WIFI_GATEWAY_RESULT.md) 通過；S3 已更新為網關版，但 IMU 在 GYRO_WAKE_WRITE 初始化失敗，0x68／0xD1 身份可讀。COM9 已恢復，斷電與從開機使用 100ms 重檢仍未恢復，見 [IMU 排查](BMI160_RECOVERY.md)；照片／IMU 的 Wi-Fi 傳輸未測。此頁其餘內容保留 11-04 成功基線；當前統一狀態見 [PROGRESS.md](PROGRESS.md)。

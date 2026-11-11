@@ -137,7 +137,7 @@ Performance: YOLOv8n-pose inference **7 ms/frame** on RTX 5080, imgsz 480. End-t
 }
 ```
 
-`/stats` returns this structure directly. It could also be sent over serial/UDP to Arduino Uno for LED/buzzer control.
+`/stats` returns this structure directly. It could also be sent over serial/UDP to Arduino for LED/buzzer control.
 
 <a id="已知限制"></a>
 
@@ -155,5 +155,5 @@ Performance: YOLOv8n-pose inference **7 ms/frame** on RTX 5080, imgsz 480. End-t
 
 1. Calibrate thresholds with real squat videos, recording 10–20 repetitions and examining angle distributions.
 2. Add action recognition to select squat or pushup rules automatically.
-3. Send decisions over UDP/serial to Arduino Uno to close the loop.
+3. Send decisions over UDP/serial to Arduino to close the loop.
 4. Evaluate classifier training only if finer violations such as knee valgus or weight shifts are required.

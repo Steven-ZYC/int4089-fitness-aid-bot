@@ -62,7 +62,7 @@ TCP 比 USB 快，導出階段可能很短：沿用整段 48–52 Hz、最大 30
 
 為沿用圖片協議，TCP 仍使用 `USB_META`、`IMG`、`USB_DONE` 等舊標籤；實際通路須由 `LINK transport=TCP` 核對，報告使用 link／TCP 名稱。phase 2 在本版表示 TCP 圖像導出。舊 `uart_elapsed_us` 只表示本版導出流程的本地時間，TCP flush 不表示電腦已收完；接收端秒錶及三端指紋才是完整接收證據。
 
-尚未驗證：實際 TCP 圖像／IMU、故障案例、傳圖中斷線恢復、AP 掉線重連、長時間穩定性、路由器 STA、TLS／應用層身份認證、跨板校時、AI／Uno。第 5 步不可標完成。
+尚未驗證：實際 TCP 圖像／IMU、故障案例、傳圖中斷線恢復、AP 掉線重連、長時間穩定性、路由器 STA、TLS／應用層身份認證、跨板校時、AI／Arduino。第 5 步不可標完成。
 
 依據：[Espressif Wi-Fi AP API](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html) 和 [ESP-NOW 介面／頻道限制](https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32s3/api-reference/network/esp_now.html)。
 斷電後更新：用戶確認拔掉 S3 全部 USB 10 秒再接回；本機只見 COM3／COM4／相機 COM11，暫未識別 S3 COM9。正等待重新插牢 COM 資料接口，斷電後 IMU 是否恢復未知，見 [USB 狀態](evidence/2026-11-05/s3_after_cold_usb_status_20261105.json)。前述 GYRO_WAKE_WRITE 是斷電前已確認的失敗階段。

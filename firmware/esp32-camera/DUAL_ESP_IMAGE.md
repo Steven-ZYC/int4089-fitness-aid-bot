@@ -58,7 +58,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\firmware\esp32-camera\
 - 核對 CAM 的原圖指紋和 S3 的 `IMAGE_READY`，等待 CAM 收到最後 ACK。
 - 對 S3 發 `DUMP`，**按 N 個原始位元組讀 JPEG**，中間不按文字解碼。
 - 核對三處內容指紋、長度、片數、JPEG 標記和完整點陣圖解碼。
-- 經 S3 向 CAM 發帶隨機 nonce 的 `TEST_ONLY` 訊息，核對兩端接收／回覆；這是反向鏈路測試，不是 AI 結果或 Uno 指令。
+- 經 S3 向 CAM 發帶隨機 nonce 的 `TEST_ONLY` 訊息，核對兩端接收／回覆；這是反向鏈路測試，不是 AI 結果或 Arduino 指令。
 
 只有以上檢查通過才保存 JPG；另保存 JSON 和兩端 TXT 日誌。預設在 Git 忽略的 `captures/dual-image/`，可加 `-OutputDirectory` 指定本機資料夾。包含可識別人像的原圖按 [AGENTS.md](../../AGENTS.md) 留在本機，不作提交證據。
 
@@ -86,6 +86,6 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\firmware\esp32-camera\
 
 它們是不同階段的耗時，不可相加或直接當連續 FPS。S3 使用 PSRAM 最多接收 256 KiB 單張圖片，逐次處理一張；CAM 無線階段有 25 秒上限，S3 收圖有間隔／總時間限制，USB 導出亦有時間限制。這些軟件期限包含可能阻塞的驅動呼叫，並非硬即時承諾。
 
-本步需取得可解碼的經 S3 圖片及反向測試回覆才可通過。IMU 同時採集、Wi-Fi 聯網／頻道共存、長期連續幀率、距離／遮擋／干擾、斷電重啟／最大重試耗盡後恢復、加密和 Uno 聯動仍待整合驗證。
+本步需取得可解碼的經 S3 圖片及反向測試回覆才可通過。IMU 同時採集、Wi-Fi 聯網／頻道共存、長期連續幀率、距離／遮擋／干擾、斷電重啟／最大重試耗盡後恢復、加密和 Arduino 聯動仍待整合驗證。
 
 依據：[Espressif ESP-NOW](https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32/api-reference/network/esp_now.html) 的包長、同頻道、應用層 ACK 和回呼建議；[相機 API 與時間定義](https://github.com/espressif/esp32-camera/blob/master/driver/include/esp_camera.h)。具體封包、故障注入及驗收由本項目程式實現。

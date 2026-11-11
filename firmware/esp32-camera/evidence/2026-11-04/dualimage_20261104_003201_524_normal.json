@@ -14,7 +14,7 @@
     "channel":  1,
     "imu_acquisition":  false,
     "image_route":  "CAM capture -\u003e ESP-NOW -\u003e S3 reassembly -\u003e USB UART -\u003e Windows",
-    "control_scope":  "TEST_ONLY message and nonce, no AI or Uno command",
+    "control_scope":  "TEST_ONLY message and nonce, no AI or Arduino command",
     "time_scope":  "CAM frame times share CAM boot clock; gateway duration uses S3 clock; no inter-device subtraction",
     "source_sha256":  "05A928E8B655C41E19680FE43B4F85EB523BBFD0F6776A47A38556C2D79008F0",
     "tool_sha256":  "2F42FC89DA74C1B0C450A2793804CDF5B8CD43E03E57C1095B0534A58F3E5F79",

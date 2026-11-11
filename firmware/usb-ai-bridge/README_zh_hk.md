@@ -4,7 +4,7 @@
 
 # 目前 CAM / S3 集成韌體
 
-目前鏈路：**CAM USB 影像 → 電腦 AI → CAM USB 狀態 → ESP-NOW → S3 UART → Mega**。影像不走無線。
+目前鏈路：**CAM USB 影像 → 電腦 AI → CAM USB 狀態 → ESP-NOW → S3 UART → Arduino**。影像不走無線。
 
 <a id="文件入口"></a>
 
@@ -16,15 +16,15 @@
 | [S3_IMU_Alarm_Bridge.ino](S3_IMU_Alarm_Bridge/S3_IMU_Alarm_Bridge.ino) | ESP32-S3 N16R8 | 複用 BMI160 採集，啓動獨立無線接收／UART 轉發任務 |
 | [AlarmRadio.h](AlarmRadio.h) | 兩端共用 | 固定對端、20 位元組包、CRC／序號檢查、ACK、週期發送和超時 |
 
-Mega 韌體位於 [alarm-mega](../alarm-mega/README_zh_hk.md)。S3 相對包含 [BMI160_SixAxis](../esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino)，編譯時保持倉庫目錄，避免複製單個草圖。
+Arduino 韌體位於 [alarm-Arduino](../alarm-mega/README_zh_hk.md)。S3 相對包含 [BMI160_SixAxis](../esp32-camera/BMI160_SixAxis/BMI160_SixAxis.ino)，編譯時保持倉庫目錄，避免複製單個草圖。
 
 ## 固定配置
 
 - CAM USB：921600 8N1；640×480 JPEG、quality=18、雙 PSRAM 緩衝、LATEST；取幀時最大 first-DMA 幀齡 200ms。
 - S3 USB：115200 8N1；BMI160 GPIO4 SDA、GPIO5 SCL，自動探測 0x68 / 0x69。
 - ESP-NOW：信道 1、固定目前兩板 MAC、20 位元組命令／ACK、200ms 週期；CAM 電腦命令和 S3 無線接收均為 1.2 秒超時。
-- UART：S3 GPIO17 TX → Mega D19 RX1，9600 8N1；GND 共地；Mega D18 TX 不接。
-- Mega：D8 LED、D9 無源蜂鳴器，同開同關；1.5 秒超時及電腦 USB 優先策略保留。
+- UART：S3 GPIO17 TX → Arduino D19 RX1，9600 8N1；GND 共地；Arduino D18 TX 不接。
+- Arduino：D8 LED、D9 無源蜂鳴器，同開同關；1.5 秒超時及電腦 USB 優先策略保留。
 
 目前兩板各自 USB 供電，電源腳不互接；改線前斷電。換板後核對晶片、相機引腳、串列埠和固定對端 MAC，不沿用本機連接埠假設。
 
@@ -51,6 +51,6 @@ arduino-cli compile --fqbn esp32:esp32:esp32s3:FlashSize=16M,PSRAM=opi,CDCOnBoot
 - AI 頁面：預熱後約 9 FPS。取景會影響 JPEG 大小和速率，並非固定保證值。
 - 無線開／關／命令過期通過；ACK 只確認到 S3。
 - BMI160 目前無應答，用户將斷電檢查；包含 IMU 的整體併發驗收仍失敗。
-- 新閉環的 Mega 接收與現場聲光效果、真實完整動作準確性、物理斷線／掉電仍需驗收。
+- 新閉環的 Arduino 接收與現場聲光效果、真實完整動作準確性、物理斷線／掉電仍需驗收。
 
-設計與證據：[系統架構](../../docs/architecture/README_zh_hk.md)、[USB 協議](../../docs/protocols/usb-camera_zh_hk.md)、[ESP-NOW 協議](../../docs/protocols/espnow-alarm_zh_hk.md)、[Mega 協議](../../docs/protocols/alarm-control_zh_hk.md)、[測試記錄導航](../../docs/README_zh_hk.md)。
+設計與證據：[系統架構](../../docs/architecture/README_zh_hk.md)、[USB 協議](../../docs/protocols/usb-camera_zh_hk.md)、[ESP-NOW 協議](../../docs/protocols/espnow-alarm_zh_hk.md)、[Arduino 協議](../../docs/protocols/alarm-control_zh_hk.md)、[測試記錄導航](../../docs/README_zh_hk.md)。

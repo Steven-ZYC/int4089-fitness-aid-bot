@@ -20,7 +20,7 @@ sequenceDiagram
 
 有回覆的文字叫作 ACK（確認收到）。光是發送函式回報成功，不能證明對方應用程式已處理資料；本測試同時核對接收板的 `APP_RX` 和發送板的 `APP_ACK`。這也為以後圖片分片、結果回傳建立基礎。
 
-第一輪選 ESP-NOW 是為了保留 CAM 接腳供後續 Uno 接口規劃，也讓現有 USB 和 BMI160 六線保持原接法。UART 仍可作有線備選。本步通過不代表連續圖片速度或網絡共存已通過。
+第一輪選 ESP-NOW 是為了保留 CAM 接腳供後續 Arduino 接口規劃，也讓現有 USB 和 BMI160 六線保持原接法。UART 仍可作有線備選。本步通過不代表連續圖片速度或網絡共存已通過。
 
 ## 程式和兩塊板的設定
 
@@ -70,6 +70,6 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\firmware\esp32-camera\
 
 ## 這個小步之後
 
-下一步才是把一張 JPEG 分片傳給 S3、核對完整圖片，再測反向控制訊息。S3 日後連上電腦所用的 Wi-Fi 時，ESP-NOW 還須對齊頻道；本輪固定頻道結果不能代替該共存測試。傳圖、相機／IMU 同時採集、重啟恢復、距離／干擾、與 Uno 的硬件接口仍須分別驗證。
+下一步才是把一張 JPEG 分片傳給 S3、核對完整圖片，再測反向控制訊息。S3 日後連上電腦所用的 Wi-Fi 時，ESP-NOW 還須對齊頻道；本輪固定頻道結果不能代替該共存測試。傳圖、相機／IMU 同時採集、重啟恢復、距離／干擾、與 Arduino 的硬件接口仍須分別驗證。
 
 依據：[Espressif ESP-NOW 指南](https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32/api-reference/network/esp_now.html) 的同頻道、應用層 ACK、序號、回呼與佇列要求；本機 Arduino core 3.3.12 的 `esp_now.h` 已核對回呼型別。
