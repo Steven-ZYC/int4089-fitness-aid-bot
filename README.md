@@ -42,7 +42,7 @@ A modular, PC-powered AI fitness coaching prototype built for **INT4089 — Tech
 | 🌐 | **Multilingual UI** | English, Simplified Chinese and Traditional Chinese (Hong Kong) |
 
 > [!IMPORTANT]
-> **Prototype, not a finished fitness product.** Live BMI160 samples, fully integrated physical LED/buzzer acceptance, and real-exercise accuracy still require verification. The interface distinguishes *enabled*, *connected* and *replay* states; a rule score is **not** model confidence.
+> **Prototype, not a finished fitness product.**
 
 ### Movement library
 
