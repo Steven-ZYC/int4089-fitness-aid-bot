@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">FitCoach AI Project Demo — Open in YouTube</title>
+<desc id="desc">FitCoach AI training dashboard illustration with a prominent YouTube play icon and Open in YouTube call to action.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#f9eedb"/><stop offset="0.57" stop-color="#fbfcfc"/><stop offset="1" stop-color="#e8f1f8"/></linearGradient>
+  <linearGradient id="cta" x1="0" x2="1"><stop stop-color="#e51b23"/><stop offset="1" stop-color="#fa4045"/></linearGradient>
+  <filter id="shadow" x="-15%" y="-25%" width="140%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#53697a" flood-opacity=".16"/></filter>
+</defs>
+<rect width="1280" height="720" rx="36" fill="url(#bg)"/>
+<path d="M0 0 H510 Q410 90 250 124 T0 200 Z" fill="#bdd6e8" opacity=".75"/>
+<path d="M0 655 Q185 612 355 720 H0 Z" fill="#eb9861" opacity=".7"/>
+<path d="M780 720 Q940 592 1130 653 T1280 642 V720 Z" fill="#bdd6e8" opacity=".65"/>
+<g transform="translate(58 46)">
+  <circle cx="20" cy="12" r="10" fill="#eb9861"/>
+  <path d="M0 38 Q30 6 54 34 L73 24 M31 37 L10 81 M34 42 L66 72 M26 47 L58 43" fill="none" stroke="#eb9861" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="50" font-family="Arial,Helvetica,sans-serif" font-size="43" font-weight="800" fill="#172332">FitCoach <tspan fill="#dd8148">AI</tspan></text>
+  <text x="105" y="77" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="600" fill="#697a84" letter-spacing="2">AI FITNESS COACHING</text>
+</g>
+<g filter="url(#shadow)">
+ <rect x="60" y="169" width="650" height="432" rx="22" fill="#ffffff" stroke="#dbe5e8" stroke-width="2"/>
+</g>
+<rect x="60" y="169" width="650" height="55" rx="22" fill="#edf2f5"/>
+<rect x="60" y="203" width="650" height="21" fill="#edf2f5"/>
+<circle cx="88" cy="197" r="6" fill="#eb9861"/><circle cx="110" cy="197" r="6" fill="#bdd6e8"/><circle cx="132" cy="197" r="6" fill="#d9e1e2"/>
+<text x="172" y="204" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#475965">FITCOACH DASHBOARD</text>
+<rect x="80" y="244" width="170" height="335" rx="14" fill="#f5f7f7"/>
+<rect x="95" y="266" width="139" height="46" rx="10" fill="#f9eedb"/>
+<text x="112" y="295" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" fill="#9b643e">Overview</text>
+<g font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#697883">
+<text x="111" y="352">Movement Library</text><text x="111" y="402">Squat Coaching</text>
+<text x="111" y="452">3D Attitude</text><text x="111" y="502">IMU Signals</text>
+</g>
+<text x="275" y="274" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="800" fill="#172332">Training Overview</text>
+<text x="275" y="299" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#798791">Vision · Motion · Feedback</text>
+<rect x="275" y="324" width="247" height="229" rx="16" fill="#eff5f8"/>
+<rect x="537" y="324" width="151" height="102" rx="14" fill="#f9eedb"/>
+<rect x="537" y="440" width="151" height="113" rx="14" fill="#f5f7f7"/>
+<g stroke="#e8a36d" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" transform="translate(330 343)">
+<circle cx="78" cy="30" r="15" fill="#f9eedb" stroke="#e8a36d" stroke-width="5"/>
+<path d="M77 47 L86 99 L48 132 L72 172 M86 99 L119 130 L145 166 M79 65 L43 92 M43 92 L18 84"/>
+</g>
+<g fill="#f9eedb" stroke="#e8a36d" stroke-width="3"><circle cx="415" cy="442" r="6"/><circle cx="378" cy="475" r="6"/><circle cx="448" cy="474" r="6"/></g>
+<text x="550" y="348" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700" fill="#80573a">FORM FEEDBACK</text>
+<circle cx="568" cy="381" r="17" fill="#7cad8c"/><path d="M560 380 L567 387 L579 373" stroke="#fff" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="594" y="370" width="79" height="8" rx="4" fill="#dfc9b6"/><rect x="594" y="390" width="58" height="7" rx="3" fill="#e4d8ca"/>
+<text x="550" y="464" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700" fill="#576e7b">IMU SIGNALS</text>
+<path d="M549 513 Q563 512 570 490 T592 493 T615 496 T640 486 T674 504" fill="none" stroke="#75a9ca" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M549 533 Q568 526 575 537 T598 534 T622 535 T646 529 T675 535" fill="none" stroke="#eb9861" stroke-width="3.5" stroke-linecap="round"/>
+<g font-family="Arial,Helvetica,sans-serif">
+ <text x="771" y="167" font-size="18" font-weight="800" fill="#c47b48" letter-spacing="2.6">PROJECT WALKTHROUGH</text>
+ <text x="767" y="230" font-size="49" font-weight="800" fill="#152334">FitCoach AI</text>
+ <text x="767" y="288" font-size="49" font-weight="800" fill="#152334">Demo Video</text>
+ <text x="769" y="326" font-size="21" fill="#667783">Watch the project in action</text>
+</g>
+<g transform="translate(782 359)">
+ <rect width="112" height="80" rx="20" fill="#ff0033"/>
+ <path d="M45 19 L45 61 L80 40 Z" fill="#fff"/>
+ <text x="129" y="60" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="800" fill="#19212c">YouTube</text>
+</g>
+<rect x="763" y="470" width="458" height="101" rx="26" fill="url(#cta)" filter="url(#shadow)"/>
+<text x="800" y="532" font-family="Arial,Helvetica,sans-serif" font-size="34" font-weight="800" fill="#ffffff">Open in YouTube</text>
+<g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" transform="translate(1152 497)"><path d="M17 5 H43 V31 M43 5 L21 27"/><path d="M36 35 V48 H2 V14 H14"/></g>
+<text x="773" y="618" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600" fill="#5c7482">Click the image to watch on YouTube</text>
+</svg>
