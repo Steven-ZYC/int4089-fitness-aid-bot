@@ -14,13 +14,23 @@ A modular, PC-powered AI fitness coaching prototype built for **INT4089 — Tech
 
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python&logoColor=white) ![Pose](https://img.shields.io/badge/AI-YOLOv8n--pose-8B6FC1?style=flat-square) ![ESP32](https://img.shields.io/badge/Hardware-ESP32-EB9861?style=flat-square) ![Arduino](https://img.shields.io/badge/Controller-Arduino-00878F?style=flat-square) ![Prototype](https://img.shields.io/badge/Status-Course%20Prototype-F2C38D?style=flat-square)
 
-**[✨ Features](#features) · [🧭 Architecture](#architecture) · [🚀 Quick start](#quick-start) · [📖 User manual](docs/guide/README.md)**
+**[🌐 Live UI Demo](https://steven-zyc.github.io/int4089-fitness-aid-bot/) · [▶ Demo Video](https://youtu.be/3kSxbuaiDS8) · [✨ Features](#features) · [🧭 Architecture](#architecture) · [🚀 Quick start](#quick-start) · [📖 User manual](docs/guide/README.md)**
 
 </div>
 
 ---
 
 <a id="features"></a>
+
+## Explore FitCoach AI
+
+[**🌐 Open Live UI Demo**](https://steven-zyc.github.io/int4089-fitness-aid-bot/) · [**▶ Watch Demo Video**](https://youtu.be/3kSxbuaiDS8)
+
+The GitHub Pages site is a **UI-only preview** of the actual application. You can explore the interface, movement library and teaching videos without installing anything. **Camera, IMU, Arduino controls, AI inference, live measurements and training sessions require the local PC application** and are intentionally unavailable in the hosted preview.
+
+[![FitCoach AI demo video](https://img.youtube.com/vi/3kSxbuaiDS8/hqdefault.jpg)](https://youtu.be/3kSxbuaiDS8)
+
+*Click the thumbnail to watch the project demonstration on YouTube.*
 
 ## Product preview
 
