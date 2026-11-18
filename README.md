@@ -28,7 +28,7 @@ A modular, PC-powered AI fitness coaching prototype built for **INT4089 — Tech
 
 The GitHub Pages site is a **UI-only preview** of the actual application. You can explore the interface, movement library and teaching videos without installing anything. **Camera, IMU, Arduino controls, AI inference, live measurements and training sessions require the local PC application** and are intentionally unavailable in the hosted preview.
 
-[![FitCoach AI demo video](https://img.youtube.com/vi/3kSxbuaiDS8/hqdefault.jpg)](https://youtu.be/3kSxbuaiDS8)
+[![FitCoach AI project demo — Open in YouTube](docs/assets/fitcoach-youtube-preview.svg)](https://youtu.be/3kSxbuaiDS8)
 
 *Click the thumbnail to watch the project demonstration on YouTube.*
 
