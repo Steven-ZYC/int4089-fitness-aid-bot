@@ -1,0 +1,51 @@
+name: Deploy UI-only demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/web/**'
+      - '.github/pages/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build static UI-only bundle
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          source = Path('app/web')
+          dest = Path('dist')
+          shutil.copytree(source, dest)
+          html = (dest / 'index.html').read_text(encoding='utf-8')
+          for asset in ('styles.css','i18n.js','workspace.js','exercises.js','dashboard.js'):
+              html = html.replace(f'"/{asset}"', f'"./{asset}"')
+          html = html.replace('href="/"', 'href="./"')
+          html = html.replace('<script src="./i18n.js" defer></script>', '<script src="./demo.js" defer></script><script src="./i18n.js" defer></script>')
+          (dest / 'index.html').write_text(html, encoding='utf-8')
+          shutil.copyfile('.github/pages/demo.js',dest/'demo.js')
+          (dest/'.nojekyll').touch()
+          PY
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
